@@ -6,6 +6,7 @@ import configuration from './config/configuration';
 import { PartsModule } from './modules/parts.module';
 import { CategoriesModule } from './modules/category.module';
 import { SubcategoriesModule } from './modules/subcategory.module';
+import { Color } from './models/color.entity';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { SubcategoriesModule } from './modules/subcategory.module';
     PartsModule,
     CategoriesModule,
     SubcategoriesModule,
+    Color
   ],
   controllers: [AppController],
   providers: [AppService],

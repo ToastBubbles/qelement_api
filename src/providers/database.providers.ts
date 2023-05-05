@@ -1,5 +1,6 @@
 import { Sequelize } from 'sequelize-typescript';
 import { Category } from 'src/models/category.entity';
+import { Color } from 'src/models/color.entity';
 import { Subcategory } from 'src/models/subcategory.entity';
 import { Part } from '../models/part.entity';
 
@@ -15,7 +16,7 @@ export const databaseProviders = [
         password: process.env.POSTGRES_PASSWORD || '',
         database: process.env.POSTGRES_NAME || 'postgres',
       });
-      sequelize.addModels([Part, Category, Subcategory]);
+      sequelize.addModels([Part, Category, Subcategory, Color]);
 
       await sequelize.sync();
       return sequelize;
