@@ -4,6 +4,7 @@
 
 # Environment
 .env
+.yml
 
 # Logs
 logs
