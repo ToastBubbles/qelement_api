@@ -7,6 +7,18 @@ import { PartsModule } from './modules/parts.module';
 import { CategoriesModule } from './modules/category.module';
 import { SubcategoriesModule } from './modules/subcategory.module';
 import { Color } from './models/color.entity';
+import { QPart } from './models/qPart.entity';
+import { User } from './models/user.entity';
+import { Image } from './models/image.entity';
+import { RaretyRating } from './models/raretyRating.entity';
+import { Message } from './models/message.entity';
+import { Comment } from './models/comment.entity';
+import { PriceHistory } from './models/priceHistory.entity';
+import { UserFavorite } from './models/userFavorite.entity';
+import { UserInventory } from './models/userInventory.entity';
+import { KnownColor } from './models/knownColor.entity';
+import { UserPreference } from './models/userPreference.entity';
+import { Status } from './models/status.entity';
 
 @Module({
   imports: [
@@ -16,7 +28,19 @@ import { Color } from './models/color.entity';
     PartsModule,
     CategoriesModule,
     SubcategoriesModule,
-    Color
+    Color,
+    QPart,
+    User,
+    Image,
+    RaretyRating,
+    Message,
+    Comment,
+    PriceHistory,
+    UserFavorite,
+    UserInventory,
+    UserPreference,
+    KnownColor,
+    Status,
   ],
   controllers: [AppController],
   providers: [AppService],

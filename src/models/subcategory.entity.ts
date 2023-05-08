@@ -4,8 +4,10 @@ import {
   Model,
   ForeignKey,
   BelongsTo,
+  HasMany,
 } from 'sequelize-typescript';
 import { Category } from './category.entity';
+import { Part } from './part.entity';
 
 @Table
 export class Subcategory extends Model {
@@ -18,4 +20,7 @@ export class Subcategory extends Model {
 
   @BelongsTo(() => Category)
   category: Category;
+
+  @HasMany(() => Part)
+  parts: Part[];
 }
