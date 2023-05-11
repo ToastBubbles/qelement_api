@@ -5,7 +5,7 @@ import {
   ForeignKey,
   BelongsTo,
 } from 'sequelize-typescript';
-import { Subcategory } from './subcategory.entity';
+import { Category } from './category.entity';
 
 @Table
 export class Part extends Model {
@@ -15,10 +15,10 @@ export class Part extends Model {
   @Column
   number: string;
 
-  @ForeignKey(() => Subcategory)
+  @ForeignKey(() => Category)
   @Column
-  subCatId: number;
+  CatId: number;
 
-  @BelongsTo(() => Subcategory)
-  subCategory: Subcategory;
+  @BelongsTo(() => Category)
+  Category: Category;
 }

@@ -1,4 +1,12 @@
-import { Table, Column, Model } from 'sequelize-typescript';
+import {
+  Table,
+  Column,
+  Model,
+  HasMany,
+  Length,
+  BelongsToMany,
+} from 'sequelize-typescript';
+import { SimilarColor } from './similarColor.entity';
 
 @Table
 export class Color extends Model {
@@ -8,6 +16,19 @@ export class Color extends Model {
   tlg_name: string;
   @Column
   bo_name: string;
-  @Column
+  @Length({ min: 6, max: 6 })
+  @Column({ defaultValue: '000000' })
   hex: string;
+  @Column
+  bl_id: number;
+  @Column
+  tlg_id: number;
+  @Column
+  note: string;
+
+  @BelongsToMany(() => Color, () => SimilarColor, 'colorId1', 'colorId2')
+  similar: Color[];
+
+  // @HasMany(() => Color)
+  // similarColors: Color[];
 }

@@ -1,3 +1,4 @@
+import { DataTypes } from 'sequelize';
 import {
   Table,
   Column,
@@ -15,16 +16,25 @@ export class UserPreference extends Model {
 
   @BelongsTo(() => User)
   user: User;
-
+  @Column({
+    type: DataTypes.ENUM('en', 'other'),
+    defaultValue: 'en',
+  })
   @Column
   lang: string;
 
-  @Column
+  @Column({ defaultValue: true })
   isCollectionVisible: boolean;
-
+  @Column({
+    type: DataTypes.ENUM('bl', 'tlg', 'bo'),
+    defaultValue: 'bl',
+  })
   @Column
   prefName: string;
-
+  @Column({
+    type: DataTypes.ENUM('bl', 'tlg', 'bo'),
+    defaultValue: 'bl',
+  })
   @Column
   prefId: string;
 }

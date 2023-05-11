@@ -1,3 +1,4 @@
+import { DataTypes } from 'sequelize';
 import {
   Table,
   Column,
@@ -5,6 +6,7 @@ import {
   HasMany,
   BelongsToMany,
   HasOne,
+  ForeignKey,
 } from 'sequelize-typescript';
 import { Comment } from './comment.entity';
 import { Image } from './image.entity';
@@ -21,6 +23,12 @@ export class User extends Model {
   @Column
   name: string;
 
+  @Column({
+    type: DataTypes.ENUM('user', 'admin', 'banned', 'other'),
+    defaultValue: 'user',
+  })
+  role: string;
+
   @HasMany(() => Comment)
   comments: Comment[];
 
@@ -30,8 +38,16 @@ export class User extends Model {
   @HasMany(() => RaretyRating)
   ratings: RaretyRating[];
 
+  @ForeignKey(() => Message)
+  @Column
+  sentMessageId: number;
+
   @HasMany(() => Message)
   recievedMessages: Message[];
+
+  @ForeignKey(() => Message)
+  @Column
+  recievedMessageId: number;
 
   @HasMany(() => Message)
   sentMessages: Message[];

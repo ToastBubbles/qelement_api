@@ -5,20 +5,19 @@ import { ConfigModule } from '@nestjs/config';
 import configuration from './config/configuration';
 import { PartsModule } from './modules/parts.module';
 import { CategoriesModule } from './modules/category.module';
-import { SubcategoriesModule } from './modules/subcategory.module';
-import { Color } from './models/color.entity';
-import { QPart } from './models/qPart.entity';
-import { User } from './models/user.entity';
-import { Image } from './models/image.entity';
-import { RaretyRating } from './models/raretyRating.entity';
-import { Message } from './models/message.entity';
-import { Comment } from './models/comment.entity';
-import { PriceHistory } from './models/priceHistory.entity';
-import { UserFavorite } from './models/userFavorite.entity';
-import { UserInventory } from './models/userInventory.entity';
-import { KnownColor } from './models/knownColor.entity';
-import { UserPreference } from './models/userPreference.entity';
-import { Status } from './models/status.entity';
+import { ColorModule } from './modules/color.module';
+import { QPartModule } from './modules/qPart.module';
+import { UserModule } from './modules/user.module';
+import { ImageModule } from './modules/image.module';
+import { RaretyRatingModule } from './modules/raretyRating.module';
+import { PartStatusModule } from './modules/partStatus.module';
+import { MessageModule } from './modules/message.module';
+import { CommentModule } from './modules/comment.module';
+import { UserFavoriteModule } from './modules/userFavorite.module';
+import { UserInventoryModule } from './modules/userInventory.module';
+import { UserPreferenceModule } from './modules/userPreference.module';
+import { EverythingController } from './controllers/everything.controller';
+import { SimilarColorModule } from './modules/similarColor.module';
 
 @Module({
   imports: [
@@ -27,22 +26,20 @@ import { Status } from './models/status.entity';
     }),
     PartsModule,
     CategoriesModule,
-    SubcategoriesModule,
-    Color,
-    QPart,
-    User,
-    Image,
-    RaretyRating,
-    Message,
-    Comment,
-    PriceHistory,
-    UserFavorite,
-    UserInventory,
-    UserPreference,
-    KnownColor,
-    Status,
+    ColorModule,
+    QPartModule,
+    UserModule,
+    ImageModule,
+    RaretyRatingModule,
+    PartStatusModule,
+    MessageModule,
+    CommentModule,
+    UserFavoriteModule,
+    UserInventoryModule,
+    UserPreferenceModule,
+    SimilarColorModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, EverythingController],
   providers: [AppService],
 })
 export class AppModule {}

@@ -1,11 +1,11 @@
 import { Table, Column, Model, HasMany } from 'sequelize-typescript';
-import { Subcategory } from './subcategory.entity';
+import { Part } from './part.entity';
 
 @Table
 export class Category extends Model {
   @Column
   name: string;
 
-  @HasMany(() => Subcategory)
-  subcategories: Subcategory[];
+  @HasMany(() => Part)
+  parts: Part[];
 }

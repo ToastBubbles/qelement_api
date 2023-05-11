@@ -2,19 +2,17 @@ import { Sequelize } from 'sequelize-typescript';
 import { Category } from 'src/models/category.entity';
 import { Color } from 'src/models/color.entity';
 import { QPart } from 'src/models/qPart.entity';
-import { Subcategory } from 'src/models/subcategory.entity';
 import { User } from 'src/models/user.entity';
 import { Part } from '../models/part.entity';
 import { Image } from '../models/image.entity';
 import { RaretyRating } from 'src/models/raretyRating.entity';
 import { Message } from 'src/models/message.entity';
 import { Comment } from 'src/models/comment.entity';
-import { PriceHistory } from 'src/models/priceHistory.entity';
 import { UserFavorite } from 'src/models/userFavorite.entity';
 import { UserInventory } from 'src/models/userInventory.entity';
-import { KnownColor } from 'src/models/knownColor.entity';
 import { UserPreference } from 'src/models/userPreference.entity';
-import { Status } from 'src/models/status.entity';
+import { PartStatus } from 'src/models/partStatus.entity';
+import { SimilarColor } from 'src/models/similarColor.entity';
 
 export const databaseProviders = [
   {
@@ -31,20 +29,18 @@ export const databaseProviders = [
       sequelize.addModels([
         Part,
         Category,
-        Subcategory,
         Color,
         QPart,
         User,
         Image,
         RaretyRating,
+        PartStatus,
         Message,
         Comment,
-        PriceHistory,
         UserFavorite,
         UserInventory,
         UserPreference,
-        KnownColor,
-        Status
+        SimilarColor
       ]);
 
       await sequelize.sync();
