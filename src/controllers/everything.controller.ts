@@ -15,10 +15,11 @@ export class EverythingController {
         Color.create({
           bl_name: color.BLName,
           tlg_name: color.LName,
-          bo_name: color.OName ,
+          bo_name: color.OName,
           hex: color.color || '000000',
           bl_id: Number(color.id) || 0,
           tlg_id: Number(color.Lid) || 0,
+          type: color.type,
           note: color.note || '',
         });
       } catch (e) {

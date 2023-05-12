@@ -24,6 +24,8 @@ export class Color extends Model {
   @Column
   tlg_id: number;
   @Column
+  type: string;
+  @Column
   note: string;
 
   @BelongsToMany(() => Color, () => SimilarColor, 'colorId1', 'colorId2')
