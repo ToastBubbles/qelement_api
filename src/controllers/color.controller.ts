@@ -19,6 +19,26 @@ export class ColorsController {
     return this.colorsService.findById(id);
   }
 
+  @Post()
+  async addNewColor(
+    @Body()
+    { bl_name, tlg_name, bo_name, hex, bl_id, tlg_id, type, note }: IColorDTO,
+  ): Promise<string> {
+    let newColor = new Color({
+      bl_name,
+      tlg_name,
+      bo_name,
+      hex,
+      bl_id,
+      tlg_id,
+      type,
+      note,
+    });
+    newColor.save();
+
+    return `new color added`;
+  }
+
   @Post('/:id')
   async addSimilar(
     @Param('id') id: number,
