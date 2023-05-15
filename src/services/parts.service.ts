@@ -7,7 +7,13 @@ export class PartsService {
     @Inject('PART_REPOSITORY')
     private partsRepository: typeof Part,
   ) {}
+  async findById(id: number): Promise<Part | null> {
+    const result = await this.partsRepository.findOne({
+      where: { id: id },
+    });
 
+    return result;
+  }
   async findAll(): Promise<Part[]> {
     return this.partsRepository.findAll<Part>();
   }

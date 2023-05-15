@@ -1,20 +1,24 @@
-import { DataTypes } from 'sequelize';
+import { DataTypes, Sequelize } from 'sequelize';
 import {
   Table,
   Column,
   Model,
   BelongsTo,
   ForeignKey,
+  createIndexDecorator,
 } from 'sequelize-typescript';
 import { QPart } from './qPart.entity';
 import { User } from './user.entity';
 
-@Table
+@Table({
+  indexes: [{ fields: ['creatorId', 'qpartId'], unique: true }],
+})
 export class RaretyRating extends Model {
   // @Column({
   //   type: DataTypes.ENUM('user', 'admin', 'banned', 'other'),
   //   defaultValue: 'user',
   // })
+
   @Column({
     // type: DataTypes.INTEGER(100)
     allowNull: false,

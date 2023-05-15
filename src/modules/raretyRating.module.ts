@@ -8,5 +8,6 @@ import { DatabaseModule } from './database.module';
   imports: [DatabaseModule],
   controllers: [RaretyRatingsController],
   providers: [RaretyRatingsService, ...raretyRatingsProviders],
+  exports: [RaretyRatingsService],
 })
 export class RaretyRatingModule {}

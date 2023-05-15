@@ -13,3 +13,25 @@ export interface IColorDTO {
   type: string;
   note: string;
 }
+export interface IQPartDTO {
+  id: number;
+  isKnown: string;
+  partId: number;
+  colorId: number;
+  creatorId: number;
+  rarety: number;
+  // createdAt: string;
+  // updatedAt: string;
+}
+export interface IRatingDTO {
+  // id: number;
+  rating: number;
+  qpartId: number;
+  creatorId: number;
+}
+export interface IUserDTO {
+  name: string;
+  email: string;
+  password: string;
+  role: string;
+}

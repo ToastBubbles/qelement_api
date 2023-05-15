@@ -10,4 +10,13 @@ export class CategoriesController {
   async getAllCategories(): Promise<Category[]> {
     return this.categoriesService.findAll();
   }
+
+  @Get('/add')
+  async addTestCat(): Promise<Category> {
+    let testCat = new Category({
+      name: 'Brick',
+    });
+    testCat.save();
+    return testCat;
+  }
 }
