@@ -8,20 +8,22 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
-import { ILoginDTO } from 'src/interfaces/general';
+import { ILoginDTO, Public } from 'src/interfaces/general';
 import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
 
+// @Public()
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  @Public()
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  signIn(@Body() signInDto: ILoginDTO) {
-    console.log('attempting to login', signInDto);
-    console.log(signInDto);
+  async signIn(@Body() signInDto: ILoginDTO) {
+    // const saltOrRounds = 10;
 
+    // const isMatch = await bcrypt.compare(password, hash);
     return this.authService.signIn(signInDto.username, signInDto.password);
   }
 

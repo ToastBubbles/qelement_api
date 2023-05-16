@@ -12,9 +12,11 @@ export class UsersService {
     return this.usersRepository.findAll<User>();
   }
   async findOneByUsername(username: string): Promise<User | null> {
-    return this.usersRepository.findOne({
+    let foundUser = this.usersRepository.findOne({
       where: { name: username },
     });
+
+    return foundUser;
   }
   async findOneById(id: number): Promise<User | null> {
     return this.usersRepository.findOne({

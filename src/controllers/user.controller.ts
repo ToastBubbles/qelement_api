@@ -1,7 +1,8 @@
 import { Controller, Get, Post, Body } from '@nestjs/common';
-import { IUserDTO } from 'src/interfaces/general';
+import { IUserDTO, Public } from 'src/interfaces/general';
 import { User } from 'src/models/user.entity';
 import { UsersService } from '../services/user.service';
+import * as bcrypt from 'bcrypt';
 
 @Controller('user')
 export class UsersController {
@@ -12,26 +13,20 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
-  @Get('/add')
-  async addTestUser(): Promise<User> {
-    let testUser = new User({
-      name: 'tester',
-      role: 'user',
-    });
-    testUser.save();
-    return testUser;
-  }
-
+  @Public()
   @Post()
   async registerNewUser(
     @Body()
     userDTO: IUserDTO,
   ) {
     try {
+      const salt = await bcrypt.genSalt();
+
+      const hash = await bcrypt.hash(userDTO.password, salt);
       let newUser = new User({
         name: userDTO.name,
         email: userDTO.email,
-        password: userDTO.password,
+        password: hash,
         role: userDTO.role,
       });
       newUser.save();
