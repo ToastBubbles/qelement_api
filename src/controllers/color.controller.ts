@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { Param } from '@nestjs/common/decorators';
 import { IQelementError } from 'src/interfaces/error';
-import { IColorDTO } from 'src/interfaces/general';
+import { IColorDTO, Public } from 'src/interfaces/general';
 import { Color } from 'src/models/color.entity';
 import { ColorsService } from '../services/color.service';
 
@@ -9,11 +9,13 @@ import { ColorsService } from '../services/color.service';
 export class ColorsController {
   constructor(private readonly colorsService: ColorsService) {}
 
+  @Public()
   @Get()
   async getAllColors(): Promise<Color[]> {
     return this.colorsService.findAll();
   }
 
+  @Public()
   @Get('/:id')
   async findOne(@Param('id') id: number): Promise<Color | IQelementError> {
     return this.colorsService.findById(id);

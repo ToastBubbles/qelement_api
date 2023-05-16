@@ -1,3 +1,7 @@
+import { SetMetadata } from '@nestjs/common';
+
+export const IS_PUBLIC_KEY = 'isPublic';
+export const Public = () => SetMetadata(IS_PUBLIC_KEY, true);
 export interface ISimilarColorDTO {
   color_one: number;
   color_two: number;
@@ -34,4 +38,8 @@ export interface IUserDTO {
   email: string;
   password: string;
   role: string;
+}
+export interface ILoginDTO {
+  username: string;
+  password: string;
 }
