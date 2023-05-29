@@ -1,9 +1,26 @@
-import { Table, Column, Model, ForeignKey } from 'sequelize-typescript';
+import { DataTypes } from 'sequelize';
+import {
+  Table,
+  Column,
+  Model,
+  ForeignKey,
+  DeletedAt,
+} from 'sequelize-typescript';
 import { QPart } from './qPart.entity';
 import { User } from './user.entity';
 
 @Table
 export class UserInventory extends Model {
+  @Column({
+    defaultValue: false,
+  })
+  forTrade: boolean;
+
+  @Column({
+    defaultValue: false,
+  })
+  forSale: boolean;
+
   @ForeignKey(() => QPart)
   @Column
   qpartId: number;
@@ -17,4 +34,7 @@ export class UserInventory extends Model {
 
   @Column
   condition: string;
+
+  @DeletedAt
+  deletionDate: Date;
 }

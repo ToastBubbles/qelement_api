@@ -9,4 +9,9 @@ export default () => ({
     name: process.env.POSTGRES_NAME || 'postgres',
     username: process.env.POSTGRES_USERNAME || 'postgres',
   },
+  jwt: {
+    privateKey: process.env.JWT_PRIVATE_KEY_LOCATION || './keys/jwtRSA256-private.pem',
+    publicKey: process.env.JWT_PUBLIC_KEY_LOCATION || './keys/jwtRSA256-public.pem',
+    ttl: process.env.JWT_TTL || '60m',
+}
 });

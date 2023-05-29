@@ -43,3 +43,16 @@ export interface ILoginDTO {
   username: string;
   password: string;
 }
+export interface iNameOnly {
+  name: string;
+}
+
+export interface IAPIResponse {
+  code: number;
+  message: string;
+}
+export interface IPartDTO {
+  name: string;
+  number: string;
+  CatId: number;
+}

@@ -9,8 +9,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ILoginDTO, Public } from 'src/interfaces/general';
-import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
+import { StandardUserAuth } from './standard.guard';
 
 // @Public()
 @Controller('auth')
@@ -20,14 +20,11 @@ export class AuthController {
   @Public()
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  async signIn(@Body() signInDto: ILoginDTO) {
-    // const saltOrRounds = 10;
-
-    // const isMatch = await bcrypt.compare(password, hash);
-    return this.authService.signIn(signInDto.username, signInDto.password);
+  async signIn(@Body() { username, password}: ILoginDTO) {
+    return this.authService.signIn(username, password);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(StandardUserAuth)
   @Get('profile')
   getProfile(@Request() req: any) {
     return req.user;

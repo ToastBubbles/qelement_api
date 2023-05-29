@@ -1,4 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
+import { Public } from 'src/interfaces/general';
 
 import { Color } from 'src/models/color.entity';
 import { colors } from '../utils/colorData';
@@ -7,6 +8,7 @@ import { colors } from '../utils/colorData';
 export class EverythingController {
   constructor() {}
 
+  @Public()
   @Get()
   boss(): string {
     colors.forEach((color) => {

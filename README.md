@@ -58,6 +58,11 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
+## RSA Key Generation
+
+`openssl genrsa -out jwtRSA256-private.pem 2048`
+`openssl rsa -in jwtRSA256-private.pem -pubout -outform PEM -out jwtRSA256-public.pem`
+
 ## Support
 
 Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).

@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Inject, Param, Post } from '@nestjs/common';
-import { ISimilarColorDTO } from 'src/interfaces/general';
+import { ISimilarColorDTO, Public } from 'src/interfaces/general';
 import { Color } from 'src/models/color.entity';
 import { SimilarColor } from 'src/models/similarColor.entity';
 import { ColorsService } from 'src/services/color.service';
@@ -12,11 +12,12 @@ export class SimilarColorsController {
     private readonly colorsService: ColorsService, // private readonly colorsService: ColorsService, //
   ) {}
 
+  @Public()
   @Get()
   async getAllSimilarColors(): Promise<SimilarColor[]> {
     return this.similarColorsService.findAll();
   }
-
+  @Public()
   @Get('/:id')
   async findSimilar(@Param('id') id: number): Promise<SimilarColor[]> {
     // console.log(this.similarColorsService.findAllSimilar(id));

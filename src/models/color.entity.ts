@@ -5,6 +5,7 @@ import {
   HasMany,
   Length,
   BelongsToMany,
+  DeletedAt,
 } from 'sequelize-typescript';
 import { SimilarColor } from './similarColor.entity';
 
@@ -27,6 +28,9 @@ export class Color extends Model {
   type: string;
   @Column
   note: string;
+
+  @DeletedAt
+  deletionDate: Date;
 
   @BelongsToMany(() => Color, () => SimilarColor, 'colorId1', 'colorId2')
   similar: Color[];

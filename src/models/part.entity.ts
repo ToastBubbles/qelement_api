@@ -4,15 +4,20 @@ import {
   Model,
   ForeignKey,
   BelongsTo,
+  DeletedAt,
 } from 'sequelize-typescript';
 import { Category } from './category.entity';
 
 @Table
 export class Part extends Model {
-  @Column
+  @Column({
+    unique: true,
+  })
   name: string;
 
-  @Column
+  @Column({
+    unique: true,
+  })
   number: string;
 
   @ForeignKey(() => Category)
@@ -21,4 +26,7 @@ export class Part extends Model {
 
   @BelongsTo(() => Category)
   Category: Category;
+
+  @DeletedAt
+  deletionDate: Date;
 }

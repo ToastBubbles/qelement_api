@@ -7,6 +7,7 @@ import {
   HasMany,
   HasOne,
   BelongsToMany,
+  DeletedAt,
 } from 'sequelize-typescript';
 import { Color } from './color.entity';
 import { Comment } from './comment.entity';
@@ -61,4 +62,7 @@ export class QPart extends Model {
 
   @BelongsToMany(() => User, () => UserInventory)
   userInventories: User[];
+
+  @DeletedAt
+  deletionDate: Date;
 }

@@ -5,6 +5,7 @@ import {
   Model,
   BelongsTo,
   ForeignKey,
+  DeletedAt,
 } from 'sequelize-typescript';
 import { User } from './user.entity';
 
@@ -37,4 +38,7 @@ export class UserPreference extends Model {
   })
   @Column
   prefId: string;
+
+  @DeletedAt
+  deletionDate: Date;
 }

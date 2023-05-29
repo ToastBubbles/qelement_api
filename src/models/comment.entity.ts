@@ -4,6 +4,7 @@ import {
   Model,
   BelongsTo,
   ForeignKey,
+  DeletedAt,
 } from 'sequelize-typescript';
 import { QPart } from './qPart.entity';
 import { User } from './user.entity';
@@ -26,4 +27,7 @@ export class Comment extends Model {
 
   @BelongsTo(() => QPart)
   qpart: QPart;
+
+  @DeletedAt
+  deletionDate: Date;
 }
