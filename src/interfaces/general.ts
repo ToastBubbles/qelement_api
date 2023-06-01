@@ -56,3 +56,25 @@ export interface IPartDTO {
   number: string;
   CatId: number;
 }
+export interface IMessageDTO {
+  recipientId: number;
+  senderId: number;
+  subject: string;
+  body: string;
+}
+export interface IExtendedMessageDTO {
+  id: number;
+  recipientId: number;
+  senderId: number;
+  recipientName: string;
+  senderName: string;
+  subject: string;
+  body: string;
+  read: boolean;
+  createdAt: string;
+}
+
+export interface IMailbox {
+  inbox: IExtendedMessageDTO[];
+  outbox: IExtendedMessageDTO[];
+}

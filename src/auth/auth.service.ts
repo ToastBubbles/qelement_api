@@ -2,6 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/services/user.service';
 import * as bcrypt from 'bcrypt';
+import { IQelementError } from 'src/interfaces/error';
 @Injectable()
 export class AuthService {
   constructor(
@@ -13,7 +14,7 @@ export class AuthService {
     console.log('in signin service');
 
     const user = await this.usersService.findOneByUsername(username);
-    if (!user) return new UnauthorizedException();
+    if (!user || isError(user)) return new UnauthorizedException();
     const isMatch = await bcrypt.compare(pass, user?.password);
 
     if (!isMatch) {
@@ -25,4 +26,7 @@ export class AuthService {
       access_token: await this.jwtService.signAsync(payload),
     };
   }
+}
+function isError(object: any): object is IQelementError {
+  return 'message' in object;
 }
