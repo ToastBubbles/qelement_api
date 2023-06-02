@@ -32,7 +32,7 @@ export class QPartsController {
       creatorId: thisQPart?.creatorId,
       rarety: await this.ratingService.getRatingTotal(id),
     };
-    console.log(qpartDTOOutput);
+
 
     return qpartDTOOutput as IQPartDTO;
   }

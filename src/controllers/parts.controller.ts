@@ -34,7 +34,6 @@ export class PartsController {
   ): Promise<IAPIResponse> {
     let didSave = false;
     try {
-      console.log(data);
 
       let newPart = new Part({
         name: data.name,

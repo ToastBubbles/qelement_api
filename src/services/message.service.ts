@@ -16,7 +16,35 @@ export class MessagesService {
   async findAll(): Promise<Message[]> {
     return this.messagesRepository.findAll<Message>();
   }
-  async findById(id: number): Promise<IExtendedMessageDTO> {
+  async findUnreadCountByUserID(id: number): Promise<number> {
+    const results = await this.messagesRepository.findAll({
+      where: {
+        recipientId: id,
+      },
+    });
+
+    if (results) {
+      let count = 0;
+      results.forEach((msg) => {
+        if (!msg.read) {
+          count++;
+        }
+      });
+      return count;
+    } else return 0;
+  }
+
+  async findById(id: number): Promise<Message | undefined> {
+    let result = await this.messagesRepository.findOne({
+      where: {
+        id,
+      },
+    });
+    if (result) return result;
+    return undefined;
+  }
+
+  async findByIdAsDTO(id: number): Promise<IExtendedMessageDTO> {
     const users = await this.userService.findAll();
     const result = await this.messagesRepository.findOne({
       where: {
@@ -33,7 +61,7 @@ export class MessagesService {
       senderName: checksender?.name || 'Unknown',
       subject: result?.subject || 'No Subject',
       body: result?.content || 'No Content',
-      read: false,
+      read: result?.read || false,
       createdAt: result?.createdAt,
     };
     if (result) return resultConvert;
@@ -63,7 +91,7 @@ export class MessagesService {
         senderName: '',
         subject: msg.subject,
         body: msg.content,
-        read: false,
+        read: msg.read,
         createdAt: msg.createdAt,
       };
       let checksender = users.find((u) => u.id == msg.senderId);

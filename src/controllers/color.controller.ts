@@ -47,16 +47,7 @@ export class ColorsController {
     @Body()
     { bl_name, tlg_name, bo_name, hex, bl_id, tlg_id, type, note }: IColorDTO,
   ): Promise<string> {
-    // id: number;
-    // bl_name: string;
-    // tlg_name: string;
-    // bo_name: string;
-    // hex: string;
-    // bl_id: number;
-    // tlg_id: number;
-    // type: string;
-    // note: string;
-    console.log(id);
+
 
     let hasChanged = false;
     let colorToChange = (await this.colorsService.findById(id)) as Color;

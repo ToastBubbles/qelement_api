@@ -9,6 +9,9 @@ export class Message extends Model {
   @Column
   content: string;
 
+  @Column({ defaultValue: false })
+  read: boolean;
+
   @ForeignKey(() => User)
   @Column
   recipientId: number;

@@ -13,7 +13,7 @@ export class EverythingController {
   boss(): string {
     colors.forEach((color) => {
       try {
-        console.log(color);
+
         Color.create({
           bl_name: color.BLName,
           tlg_name: color.LName,

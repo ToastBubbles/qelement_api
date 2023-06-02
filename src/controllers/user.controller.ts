@@ -19,7 +19,6 @@ export class UsersController {
     @Param('username') username: string,
   ): Promise<User | IQelementError> {
     let result = this.usersService.findOneByUsername(username);
-    console.log(await result);
 
     return result;
   }
@@ -29,7 +28,6 @@ export class UsersController {
     @Param('userid') id: number,
   ): Promise<User | IQelementError> {
     let result = this.usersService.findOneById(id);
-    console.log(await result);
 
     return result;
   }

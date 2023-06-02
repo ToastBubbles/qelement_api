@@ -18,12 +18,17 @@ export class MessagesController {
 
   @Get('/:id')
   async getMessageById(@Param('id') id: number): Promise<IExtendedMessageDTO> {
-    return this.messagesService.findById(id);
+    return this.messagesService.findByIdAsDTO(id);
   }
 
   @Get('/getAllById/:id')
   async getAllMessagesByUserID(@Param('id') id: number): Promise<IMailbox> {
     return this.messagesService.findAllByUserID(id);
+  }
+
+  @Get('/getUnreadCountById/:id')
+  async getUnreadCountByUserID(@Param('id') id: number): Promise<number> {
+    return this.messagesService.findUnreadCountByUserID(id);
   }
 
   @Post()
@@ -39,6 +44,20 @@ export class MessagesController {
         recipientId: messageDTO.recipientId,
       });
       newMessage.save();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  @Post('/:id')
+  async markMessageRead(@Param('id') id: number) {
+    try {
+      let msg = await this.messagesService.findById(id);
+      if (msg) {
+        // msg.read = true;
+        // msg.save();
+        msg.update({ read: true });
+      }
     } catch (error) {
       console.log(error);
     }
