@@ -17,28 +17,34 @@ export class UserPreference extends Model {
 
   @BelongsTo(() => User)
   user: User;
+
   @Column({
     type: DataTypes.ENUM('en', 'other'),
     defaultValue: 'en',
   })
-  @Column
   lang: string;
 
   @Column({ defaultValue: true })
   isCollectionVisible: boolean;
+
+  @Column({ defaultValue: true })
+  isWantedVisible: boolean;
+
+  @Column({ defaultValue: true })
+  allowMessages: boolean;
+
   @Column({
     type: DataTypes.ENUM('bl', 'tlg', 'bo'),
     defaultValue: 'bl',
   })
-  @Column
   prefName: string;
+
   @Column({
-    type: DataTypes.ENUM('bl', 'tlg', 'bo'),
+    type: DataTypes.ENUM('bl', 'tlg', 'bo', 'qe'),
     defaultValue: 'bl',
   })
-  @Column
   prefId: string;
 
   @DeletedAt
-  deletionDate: Date;
+  deletedAt: Date;
 }

@@ -29,5 +29,5 @@ export class Comment extends Model {
   qpart: QPart;
 
   @DeletedAt
-  deletionDate: Date;
+  deletedAt: Date;
 }

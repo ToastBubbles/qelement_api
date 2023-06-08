@@ -36,5 +36,5 @@ export class UserInventory extends Model {
   condition: string;
 
   @DeletedAt
-  deletionDate: Date;
+  deletedAt: Date;
 }

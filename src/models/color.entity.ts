@@ -16,6 +16,8 @@ export class Color extends Model {
   @Column
   tlg_name: string;
   @Column
+  bo_id: number;
+  @Column
   bo_name: string;
   @Length({ min: 6, max: 6 })
   @Column({ defaultValue: '000000' })
@@ -30,7 +32,7 @@ export class Color extends Model {
   note: string;
 
   @DeletedAt
-  deletionDate: Date;
+  deletedAt: Date;
 
   @BelongsToMany(() => Color, () => SimilarColor, 'colorId1', 'colorId2')
   similar: Color[];

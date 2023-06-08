@@ -26,25 +26,12 @@ export class QPartsController {
     let thisQPart = await this.qPartsService.findById(id);
     let qpartDTOOutput = {
       id: thisQPart?.id,
-      isKnown: thisQPart?.isKnown,
       partId: thisQPart?.partId,
       colorId: thisQPart?.colorId,
       creatorId: thisQPart?.creatorId,
       rarety: await this.ratingService.getRatingTotal(id),
     };
 
-
     return qpartDTOOutput as IQPartDTO;
-  }
-  @Get('/add/:id')
-  async addTestQPart(@Param('id') id: number): Promise<QPart> {
-    let testQPart = new QPart({
-      isKnown: 'false',
-      partId: 1,
-      colorId: id,
-      creatorId: 1,
-    });
-    testQPart.save();
-    return testQPart;
   }
 }

@@ -9,7 +9,8 @@ export class CategoriesController {
 
   @Get()
   async getAllCategories(): Promise<Category[]> {
-    return this.categoriesService.findAll();
+    let categories = await this.categoriesService.findAll();
+    return categories.sort((a, b) => a.name.localeCompare(b.name));
   }
 
   // @Get('/add')

@@ -7,7 +7,6 @@ import {
   AutoIncrement,
   Unique,
   DeletedAt,
-  
 } from 'sequelize-typescript';
 import { Color } from './color.entity';
 
@@ -27,5 +26,5 @@ export class SimilarColor extends Model {
   colorId2: number;
 
   @DeletedAt
-  deletionDate: Date;
+  deletedAt: Date;
 }

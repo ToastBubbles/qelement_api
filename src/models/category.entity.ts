@@ -9,7 +9,7 @@ export class Category extends Model {
   name: string;
 
   @DeletedAt
-  deletionDate: Date;
+  deletedAt: Date;
 
   @HasMany(() => Part)
   parts: Part[];

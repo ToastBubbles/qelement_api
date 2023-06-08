@@ -8,11 +8,29 @@ import {
 } from 'sequelize-typescript';
 import { QPart } from './qPart.entity';
 import { User } from './user.entity';
+import { DataTypes } from 'sequelize';
 
 @Table
 export class PartStatus extends Model {
-  @Column
+  @Column({
+    type: DataTypes.ENUM(
+      'unknown',
+      'found',
+      'seen',
+      'known',
+      'nightshift',
+      'prototype',
+      'other',
+    ),
+    defaultValue: 'unknown',
+  })
   status: string;
+
+  @Column
+  location: string;
+
+  @Column
+  note: string;
 
   @ForeignKey(() => QPart)
   @Column
@@ -29,5 +47,5 @@ export class PartStatus extends Model {
   creator: User;
 
   @DeletedAt
-  deletionDate: Date;
+  deletedAt: Date;
 }

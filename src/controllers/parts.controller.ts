@@ -3,6 +3,7 @@ import { IAPIResponse, IPartDTO } from 'src/interfaces/general';
 import { Category } from 'src/models/category.entity';
 import { Part } from 'src/models/part.entity';
 import { PartsService } from '../services/parts.service';
+import { log } from 'console';
 
 @Controller('parts')
 export class PartsController {
@@ -33,12 +34,14 @@ export class PartsController {
     data: IPartDTO,
   ): Promise<IAPIResponse> {
     let didSave = false;
-    try {
 
+    try {
       let newPart = new Part({
         name: data.name,
         number: data.number,
+        secondaryNumber: data.secondaryNumber,
         CatId: data.CatId,
+        note: data.note,
       });
       await newPart
         .save()

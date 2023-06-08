@@ -4,7 +4,7 @@ import { Public } from 'src/interfaces/general';
 import { Color } from 'src/models/color.entity';
 import { colors } from '../utils/colorData';
 
-@Controller('Everything')
+@Controller('addAllColors')
 export class EverythingController {
   constructor() {}
 
@@ -13,7 +13,6 @@ export class EverythingController {
   boss(): string {
     colors.forEach((color) => {
       try {
-
         Color.create({
           bl_name: color.BLName,
           tlg_name: color.LName,

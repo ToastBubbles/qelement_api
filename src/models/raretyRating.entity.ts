@@ -46,5 +46,5 @@ export class RaretyRating extends Model {
   creator: User;
 
   @DeletedAt
-  deletionDate: Date;
+  deletedAt: Date;
 }

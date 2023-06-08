@@ -25,6 +25,7 @@ export const databaseProviders = [
         username: process.env.POSTGRES_USERNAME || 'postgres',
         password: process.env.POSTGRES_PASSWORD || '',
         database: process.env.POSTGRES_NAME || 'postgres',
+        timezone: 'utc',
       });
       sequelize.addModels([
         Part,
@@ -40,7 +41,7 @@ export const databaseProviders = [
         UserFavorite,
         UserInventory,
         UserPreference,
-        SimilarColor
+        SimilarColor,
       ]);
 
       await sequelize.sync();

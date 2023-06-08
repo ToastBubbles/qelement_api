@@ -8,6 +8,9 @@ import {
   HasOne,
   BelongsToMany,
   DeletedAt,
+  DataType,
+  CreatedAt,
+  UpdatedAt,
 } from 'sequelize-typescript';
 import { Color } from './color.entity';
 import { Comment } from './comment.entity';
@@ -18,11 +21,18 @@ import { RaretyRating } from './raretyRating.entity';
 import { User } from './user.entity';
 import { UserFavorite } from './userFavorite.entity';
 import { UserInventory } from './userInventory.entity';
+// import { DataType, DataTypes, DateOnlyDataType } from 'sequelize';
 
 @Table
 export class QPart extends Model {
   @Column
-  isKnown: string;
+  note: string;
+
+  @Column
+  elementId: string;
+
+  @Column
+  secondaryElementId: string;
 
   @ForeignKey(() => Part)
   @Column
@@ -64,5 +74,5 @@ export class QPart extends Model {
   userInventories: User[];
 
   @DeletedAt
-  deletionDate: Date;
+  deletedAt: Date;
 }

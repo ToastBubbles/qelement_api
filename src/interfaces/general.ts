@@ -54,7 +54,9 @@ export interface IAPIResponse {
 export interface IPartDTO {
   name: string;
   number: string;
+  secondaryNumber: string;
   CatId: number;
+  note: string;
 }
 export interface IMessageDTO {
   recipientId: number;

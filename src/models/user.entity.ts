@@ -72,5 +72,5 @@ export class User extends Model {
   inventory: QPart[];
 
   @DeletedAt
-  deletionDate: Date;
+  deletedAt: Date;
 }

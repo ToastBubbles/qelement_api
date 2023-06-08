@@ -26,5 +26,5 @@ export class UserFavorite extends Model {
   qpartId: number;
 
   @DeletedAt
-  deletionDate: Date;
+  deletedAt: Date;
 }

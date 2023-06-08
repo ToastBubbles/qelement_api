@@ -20,6 +20,12 @@ export class Part extends Model {
   })
   number: string;
 
+  @Column
+  secondaryNumber: string;
+
+  @Column
+  note: string;
+
   @ForeignKey(() => Category)
   @Column
   CatId: number;
@@ -28,5 +34,5 @@ export class Part extends Model {
   Category: Category;
 
   @DeletedAt
-  deletionDate: Date;
+  deletedAt: Date;
 }

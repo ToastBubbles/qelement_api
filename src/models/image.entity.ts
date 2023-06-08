@@ -29,5 +29,5 @@ export class Image extends Model {
   qpart: QPart;
 
   @DeletedAt
-  deletionDate: Date;
+  deletedAt: Date;
 }
