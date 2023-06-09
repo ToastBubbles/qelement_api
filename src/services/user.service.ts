@@ -1,6 +1,7 @@
 import { Injectable, Inject, HttpException } from '@nestjs/common';
 import { IQelementError } from 'src/interfaces/error';
 import { User } from '../models/user.entity';
+import { Op, Sequelize } from 'sequelize';
 
 @Injectable()
 export class UsersService {
@@ -15,6 +16,21 @@ export class UsersService {
   async findOneByUsername(username: string): Promise<User | IQelementError> {
     let foundUser = await this.usersRepository.findOne({
       where: { name: username },
+    });
+    if (foundUser) return foundUser;
+    let error = { message: 'not found' } as IQelementError;
+    return error;
+    // throw new HttpException('User not found', 404);
+  }
+  async findOneByUsernameInsensitive(
+    username: string,
+  ): Promise<User | IQelementError> {
+    let foundUser = await this.usersRepository.findOne({
+      where: {
+        name: {
+          [Op.iLike]: username,
+        },
+      },
     });
     if (foundUser) return foundUser;
     let error = { message: 'not found' } as IQelementError;

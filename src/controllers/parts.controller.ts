@@ -14,6 +14,11 @@ export class PartsController {
     return this.partsService.findAll();
   }
 
+  @Get('/byCatId/:id')
+  async getPartsByCatId(@Param('id') id: number): Promise<Part[] | null> {
+    return this.partsService.findPartsByCatId(id);
+  }
+
   @Get('/:id')
   async findById(@Param('id') id: number): Promise<Part | null> {
     return this.partsService.findById(id);

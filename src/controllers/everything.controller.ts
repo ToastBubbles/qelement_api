@@ -20,6 +20,7 @@ export class EverythingController {
           hex: color.color || '000000',
           bl_id: Number(color.id) || 0,
           tlg_id: Number(color.Lid) || 0,
+          bo_id: Number(color.Lid) || 0,
           type: color.type,
           note: color.note || '',
         });

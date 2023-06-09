@@ -14,7 +14,16 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
-  @Get('/:username')
+  @Get('/checkInsensitive/:username')
+  async findOneByUsernameInsensitive(
+    @Param('username') username: string,
+  ): Promise<User | IQelementError> {
+    let result = this.usersService.findOneByUsernameInsensitive(username);
+
+    return result;
+  }
+
+  @Get('/username/:username')
   async findOneByUsername(
     @Param('username') username: string,
   ): Promise<User | IQelementError> {

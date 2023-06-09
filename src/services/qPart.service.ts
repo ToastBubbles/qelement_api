@@ -12,13 +12,23 @@ export class QPartsService {
     return this.qPartsRepository.findAll<QPart>();
   }
 
-  
   async findById(id: number): Promise<QPart | null> {
     const result = await this.qPartsRepository.findOne({
       where: { id: id },
     });
     // if (result) {
     return result;
+    // }
+    // return { message: 'No color found with the TLG id.' } as IQelementError;
+    // throw new HttpException('Color not found', 404);
+  }
+
+  async findMatchesById(partId: number): Promise<QPart[] | null> {
+    const results = await this.qPartsRepository.findAll({
+      where: { partId: partId },
+    });
+    // if (result) {
+    return results;
     // }
     // return { message: 'No color found with the TLG id.' } as IQelementError;
     // throw new HttpException('Color not found', 404);

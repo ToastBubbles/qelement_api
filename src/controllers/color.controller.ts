@@ -24,15 +24,26 @@ export class ColorsController {
   @Post()
   async addNewColor(
     @Body()
-    { bl_name, tlg_name, bo_name, hex, bl_id, tlg_id, type, note }: IColorDTO,
-  ): Promise<string> {
-    let newColor = new Color({
+    {
       bl_name,
       tlg_name,
       bo_name,
       hex,
       bl_id,
       tlg_id,
+      bo_id,
+      type,
+      note,
+    }: IColorDTO,
+  ): Promise<string> {
+    let newColor = new Color({
+      bl_name,
+      tlg_name,
+      bo_name,
+      hex,
+      bl_id: bl_id == -1 ? null : bl_id,
+      tlg_id: tlg_id == -1 ? null : tlg_id,
+      bo_id: bo_id == -1 ? null : bo_id,
       type,
       note,
     });
@@ -47,8 +58,6 @@ export class ColorsController {
     @Body()
     { bl_name, tlg_name, bo_name, hex, bl_id, tlg_id, type, note }: IColorDTO,
   ): Promise<string> {
-
-
     let hasChanged = false;
     let colorToChange = (await this.colorsService.findById(id)) as Color;
     if (colorToChange) {

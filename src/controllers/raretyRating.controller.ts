@@ -15,8 +15,12 @@ export class RaretyRatingsController {
   async getUserRatingOfQPart(
     @Param('userId') userId: number,
     @Param('qpartId') qpartId: number,
-  ): Promise<RaretyRating | null> {
-    return this.raretyRatingsService.findByUserAndQPartId(userId, qpartId);
+  ): Promise<number | undefined> {
+    let rating = await this.raretyRatingsService.findByUserAndQPartId(
+      userId,
+      qpartId,
+    );
+    return rating?.rating;
   }
 
   @Post()

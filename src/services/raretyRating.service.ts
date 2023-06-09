@@ -1,7 +1,12 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { IRatingDTO } from 'src/interfaces/general';
 import { RaretyRating } from '../models/raretyRating.entity';
+import { QPart } from 'src/models/qPart.entity';
 
+export interface IRaretyObject {
+  id: number;
+  rarety: number;
+}
 @Injectable()
 export class RaretyRatingsService {
   constructor(
@@ -33,6 +38,8 @@ export class RaretyRatingsService {
   // }
   async addRating({ rating, qpartId, creatorId }: IRatingDTO) {
     try {
+      console.log(creatorId);
+
       if (rating >= 0 && rating <= 100) {
         rating = Math.round(rating);
         let newRating = new RaretyRating({
@@ -40,6 +47,8 @@ export class RaretyRatingsService {
           qpartId,
           creatorId,
         });
+        console.log(newRating);
+
         const checkIfExists = await this.raretyRatingsRepository.findOne({
           where: { creatorId: creatorId, qpartId: qpartId },
         });
@@ -80,6 +89,25 @@ export class RaretyRatingsService {
         count++;
       }
       return Math.round(total / count);
+    }
+  }
+  async getRatingTotals(qpartId: number): Promise<IRaretyObject> {
+    const results = await this.raretyRatingsRepository.findAll({
+      where: {
+        qpartId: qpartId,
+      },
+    });
+
+    if (results.length == 0) {
+      return { id: qpartId, rarety: -1 };
+    } else {
+      let count = 0;
+      let total = 0;
+      for (let rating of results) {
+        total += rating.rating;
+        count++;
+      }
+      return { id: qpartId, rarety: Math.round(total / count) };
     }
   }
 }

@@ -20,6 +20,7 @@ export class PartStatus extends Model {
       'known',
       'nightshift',
       'prototype',
+      'employee',
       'other',
     ),
     defaultValue: 'unknown',

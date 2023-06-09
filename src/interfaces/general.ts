@@ -14,15 +14,27 @@ export interface IColorDTO {
   hex: string;
   bl_id: number;
   tlg_id: number;
+  bo_id: number;
   type: string;
+  note: string;
+}
+
+export interface iQPartDTO {
+  partId: number;
+  colorId: number;
+  elementId: string;
+  secondaryElementId: string;
+  creatorId: number;
   note: string;
 }
 export interface IQPartDTO {
   id: number;
-  isKnown: string;
   partId: number;
   colorId: number;
+  elementId: string;
+  secondaryElementId: string;
   creatorId: number;
+  note: string;
   rarety: number;
   // createdAt: string;
   // updatedAt: string;

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { IAPIResponse, iNameOnly } from 'src/interfaces/general';
 import { Category } from 'src/models/category.entity';
 import { CategoriesService } from '../services/category.service';
@@ -11,6 +11,11 @@ export class CategoriesController {
   async getAllCategories(): Promise<Category[]> {
     let categories = await this.categoriesService.findAll();
     return categories.sort((a, b) => a.name.localeCompare(b.name));
+  }
+
+  @Get('/:id')
+  async getOneCategory(@Param('id') id: number): Promise<Category> {
+    return this.categoriesService.findById(id);
   }
 
   // @Get('/add')

@@ -17,4 +17,11 @@ export class PartsService {
   async findAll(): Promise<Part[]> {
     return this.partsRepository.findAll<Part>();
   }
+  async findPartsByCatId(catId: number): Promise<Part[] | null> {
+    const result = await this.partsRepository.findAll({
+      where: { CatId: catId },
+    });
+
+    return result;
+  }
 }
