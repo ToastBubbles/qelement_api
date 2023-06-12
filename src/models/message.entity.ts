@@ -1,7 +1,10 @@
-import { Table, Column, Model, HasOne, ForeignKey } from 'sequelize-typescript';
+import { Table, Column, Model, HasOne, ForeignKey, DeletedAt } from 'sequelize-typescript';
 import { User } from './user.entity';
 
-@Table
+@Table({
+  timestamps: true,
+  paranoid: true,
+})
 export class Message extends Model {
   @Column
   subject: string;
@@ -25,4 +28,5 @@ export class Message extends Model {
 
   @HasOne(() => User)
   sender: User;
+
 }

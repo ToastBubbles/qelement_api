@@ -19,6 +19,15 @@ export class PartsController {
     return this.partsService.findPartsByCatId(id);
   }
 
+  @Get('/byNumber/:num')
+  async getPartByNum(@Param('num') num: string): Promise<Part | undefined> {
+    let result = await this.partsService.findPartByNum(num);
+
+    if (result != null) return result;
+
+    return undefined;
+  }
+
   @Get('/:id')
   async findById(@Param('id') id: number): Promise<Part | null> {
     return this.partsService.findById(id);

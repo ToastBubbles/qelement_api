@@ -9,7 +9,10 @@ import {
 import { QPart } from './qPart.entity';
 import { User } from './user.entity';
 
-@Table
+@Table({
+  timestamps: true,
+  paranoid: true,
+})
 export class UserInventory extends Model {
   @Column({
     defaultValue: false,
@@ -34,7 +37,4 @@ export class UserInventory extends Model {
 
   @Column
   condition: string;
-
-  @DeletedAt
-  deletedAt: Date;
 }

@@ -10,7 +10,10 @@ import {
 } from 'sequelize-typescript';
 import { Color } from './color.entity';
 
-@Table
+@Table({
+  timestamps: true,
+  paranoid: true,
+})
 export class SimilarColor extends Model {
   @PrimaryKey
   @AutoIncrement
@@ -24,7 +27,4 @@ export class SimilarColor extends Model {
   @ForeignKey(() => Color)
   @Column
   colorId2: number;
-
-  @DeletedAt
-  deletedAt: Date;
 }

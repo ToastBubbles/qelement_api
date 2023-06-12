@@ -19,7 +19,10 @@ import { UserFavorite } from './userFavorite.entity';
 import { UserInventory } from './userInventory.entity';
 import { UserPreference } from './userPreference.entity';
 
-@Table
+@Table({
+  timestamps: true,
+  paranoid: true,
+})
 export class User extends Model {
   @Column
   name: string;
@@ -70,7 +73,4 @@ export class User extends Model {
 
   @BelongsToMany(() => QPart, () => UserInventory)
   inventory: QPart[];
-
-  @DeletedAt
-  deletedAt: Date;
 }

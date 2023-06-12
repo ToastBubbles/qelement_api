@@ -9,7 +9,10 @@ import {
 import { QPart } from './qPart.entity';
 import { User } from './user.entity';
 
-@Table
+@Table({
+  timestamps: true,
+  paranoid: true,
+})
 export class UserFavorite extends Model {
   @Column({
     type: DataTypes.ENUM('favorite', 'wanted', 'topfive', 'other'),
@@ -24,7 +27,4 @@ export class UserFavorite extends Model {
   @ForeignKey(() => QPart)
   @Column
   qpartId: number;
-
-  @DeletedAt
-  deletedAt: Date;
 }

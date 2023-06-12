@@ -10,7 +10,10 @@ import { QPart } from './qPart.entity';
 import { User } from './user.entity';
 import { DataTypes } from 'sequelize';
 
-@Table
+@Table({
+  timestamps: true,
+  paranoid: true,
+})
 export class PartStatus extends Model {
   @Column({
     type: DataTypes.ENUM(
@@ -46,7 +49,4 @@ export class PartStatus extends Model {
 
   @BelongsTo(() => User)
   creator: User;
-
-  @DeletedAt
-  deletedAt: Date;
 }

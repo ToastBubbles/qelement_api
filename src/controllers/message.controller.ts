@@ -49,7 +49,20 @@ export class MessagesController {
     }
   }
 
-  @Post('/:id')
+  @Post('/delete/:id')
+  async markMessageDelete(@Param('id') id: number) {
+    try {
+      let msg = await this.messagesService.findById(id);
+      if (msg) {
+        // msg.update({ deletedAt: Date.now });
+        msg.destroy();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  @Post('/read/:id')
   async markMessageRead(@Param('id') id: number) {
     try {
       let msg = await this.messagesService.findById(id);

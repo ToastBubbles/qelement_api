@@ -9,7 +9,10 @@ import {
 import { QPart } from './qPart.entity';
 import { User } from './user.entity';
 
-@Table
+@Table({
+  timestamps: true,
+  paranoid: true,
+})
 export class Comment extends Model {
   @Column
   content: string;
@@ -27,7 +30,4 @@ export class Comment extends Model {
 
   @BelongsTo(() => QPart)
   qpart: QPart;
-
-  @DeletedAt
-  deletedAt: Date;
 }

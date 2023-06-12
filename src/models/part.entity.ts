@@ -8,7 +8,10 @@ import {
 } from 'sequelize-typescript';
 import { Category } from './category.entity';
 
-@Table
+@Table({
+  timestamps: true,
+  paranoid: true,
+})
 export class Part extends Model {
   @Column({
     unique: true,
@@ -32,7 +35,4 @@ export class Part extends Model {
 
   @BelongsTo(() => Category)
   Category: Category;
-
-  @DeletedAt
-  deletedAt: Date;
 }

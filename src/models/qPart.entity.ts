@@ -21,9 +21,10 @@ import { RaretyRating } from './raretyRating.entity';
 import { User } from './user.entity';
 import { UserFavorite } from './userFavorite.entity';
 import { UserInventory } from './userInventory.entity';
-// import { DataType, DataTypes, DateOnlyDataType } from 'sequelize';
-
-@Table
+@Table({
+  timestamps: true,
+  paranoid: true,
+})
 export class QPart extends Model {
   @Column
   note: string;
@@ -72,7 +73,4 @@ export class QPart extends Model {
 
   @BelongsToMany(() => User, () => UserInventory)
   userInventories: User[];
-
-  @DeletedAt
-  deletedAt: Date;
 }

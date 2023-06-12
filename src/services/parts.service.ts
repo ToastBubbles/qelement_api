@@ -1,5 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Part } from '../models/part.entity';
+import { Op } from 'sequelize';
 
 @Injectable()
 export class PartsService {
@@ -7,6 +8,18 @@ export class PartsService {
     @Inject('PART_REPOSITORY')
     private partsRepository: typeof Part,
   ) {}
+  async findPartByNum(num: string): Promise<Part | null> {
+    const result = await this.partsRepository.findOne({
+      where: {
+        number: {
+          [Op.iLike]: num,
+        },
+      },
+    });
+    if (result) return result;
+
+    return null;
+  }
   async findById(id: number): Promise<Part | null> {
     const result = await this.partsRepository.findOne({
       where: { id: id },

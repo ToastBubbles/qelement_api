@@ -9,7 +9,10 @@ import {
 } from 'sequelize-typescript';
 import { SimilarColor } from './similarColor.entity';
 
-@Table
+@Table({
+  timestamps: true,
+  paranoid: true,
+})
 export class Color extends Model {
   @Column
   bl_name: string;
@@ -30,9 +33,6 @@ export class Color extends Model {
   type: string;
   @Column
   note: string;
-
-  @DeletedAt
-  deletedAt: Date;
 
   @BelongsToMany(() => Color, () => SimilarColor, 'colorId1', 'colorId2')
   similar: Color[];

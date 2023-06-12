@@ -13,6 +13,8 @@ import { User } from './user.entity';
 
 @Table({
   indexes: [{ fields: ['creatorId', 'qpartId'], unique: true }],
+  timestamps: true,
+  paranoid: true,
 })
 export class RaretyRating extends Model {
   // @Column({
@@ -44,7 +46,4 @@ export class RaretyRating extends Model {
 
   @BelongsTo(() => User)
   creator: User;
-
-  @DeletedAt
-  deletedAt: Date;
 }

@@ -9,7 +9,10 @@ import {
 } from 'sequelize-typescript';
 import { User } from './user.entity';
 
-@Table
+@Table({
+  timestamps: true,
+  paranoid: true,
+})
 export class UserPreference extends Model {
   @ForeignKey(() => User)
   @Column
@@ -44,7 +47,4 @@ export class UserPreference extends Model {
     defaultValue: 'bl',
   })
   prefId: string;
-
-  @DeletedAt
-  deletedAt: Date;
 }
