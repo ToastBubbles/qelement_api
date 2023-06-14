@@ -3,6 +3,7 @@ import { Public } from 'src/interfaces/general';
 
 import { Color } from 'src/models/color.entity';
 import { colors } from '../utils/colorData';
+import { SimilarColor } from 'src/models/similarColor.entity';
 
 @Controller('addAllColors')
 export class EverythingController {
@@ -18,9 +19,9 @@ export class EverythingController {
           tlg_name: color.LName,
           bo_name: color.OName,
           hex: color.color || '000000',
-          bl_id: Number(color.id) || 0,
-          tlg_id: Number(color.Lid) || 0,
-          bo_id: Number(color.Lid) || 0,
+          bl_id: Number(color.id) || null,
+          tlg_id: Number(color.Lid) || null,
+          bo_id: Number(color.Oid) || null,
           type: color.type,
           note: color.note || '',
         });

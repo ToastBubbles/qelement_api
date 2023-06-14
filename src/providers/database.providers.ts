@@ -13,6 +13,8 @@ import { UserInventory } from 'src/models/userInventory.entity';
 import { UserPreference } from 'src/models/userPreference.entity';
 import { PartStatus } from 'src/models/partStatus.entity';
 import { SimilarColor } from 'src/models/similarColor.entity';
+import { Title } from 'src/models/title.entity';
+import { UserTitle } from 'src/models/userTitle.entity';
 
 export const databaseProviders = [
   {
@@ -42,6 +44,8 @@ export const databaseProviders = [
         UserInventory,
         UserPreference,
         SimilarColor,
+        Title,
+        UserTitle
       ]);
 
       await sequelize.sync();

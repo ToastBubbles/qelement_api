@@ -19,6 +19,9 @@ import { UserPreferenceModule } from './modules/userPreference.module';
 import { EverythingController } from './controllers/everything.controller';
 import { SimilarColorModule } from './modules/similarColor.module';
 import { AuthModule } from './auth/auth.module';
+import { Title } from './models/title.entity';
+import { TitleModule } from './modules/title.module';
+import { UserTitleModule } from './modules/userTitle.module';
 
 @Module({
   imports: [
@@ -40,6 +43,8 @@ import { AuthModule } from './auth/auth.module';
     UserPreferenceModule,
     SimilarColorModule,
     AuthModule,
+    TitleModule,
+    UserTitleModule,
   ],
   controllers: [AppController, EverythingController],
   providers: [AppService],

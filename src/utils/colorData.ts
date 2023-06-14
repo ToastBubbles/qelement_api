@@ -2,6 +2,7 @@ let solidColors = [
   {
     id: '1',
     Lid: '1',
+    Oid: '92',
     swatchId: '1',
     color: 'FFFFFF',
     BLName: 'White',
@@ -18,6 +19,7 @@ let solidColors = [
   {
     id: '49',
     Lid: '103',
+    Oid: '19',
     swatchId: '2',
     color: 'E8E8E8',
     BLName: 'Very Light Gray',
@@ -34,6 +36,7 @@ let solidColors = [
   {
     id: '99',
     Lid: '208',
+    Oid: '90',
     swatchId: '3',
     color: 'E4E8E8',
     BLName: 'Very Light Bluish Gray',
@@ -50,6 +53,7 @@ let solidColors = [
   {
     id: '86',
     Lid: '194',
+    Oid: '64',
     swatchId: '4',
     color: 'AFB5C7',
     BLName: 'Light Bluish Gray',
@@ -66,6 +70,7 @@ let solidColors = [
   {
     id: '9',
     Lid: '2',
+    Oid: '66',
     swatchId: '5',
     color: '9C9C9C',
     BLName: 'Light Gray',
@@ -82,6 +87,7 @@ let solidColors = [
   {
     id: '10',
     Lid: '27',
+    Oid: '53',
     swatchId: '6',
     color: '6B5A5A',
     BLName: 'Dark Gray',
@@ -98,6 +104,7 @@ let solidColors = [
   {
     id: '85',
     Lid: '199',
+    Oid: '50',
     swatchId: '7',
     color: '595D60',
     BLName: 'Dark Bluish Gray',
@@ -114,6 +121,7 @@ let solidColors = [
   {
     id: '11',
     Lid: '26',
+    Oid: '38',
     swatchId: '8',
     color: '212121',
     BLName: 'Black',
@@ -130,6 +138,7 @@ let solidColors = [
   {
     id: '59',
     Lid: '154',
+    Oid: '56',
     swatchId: '9',
     color: '6A0E15',
     BLName: 'Dark Red',
@@ -146,6 +155,7 @@ let solidColors = [
   {
     id: '5',
     Lid: '21',
+    Oid: '81',
     swatchId: '10',
     color: 'B30006',
     BLName: 'Red',
@@ -162,6 +172,7 @@ let solidColors = [
   {
     id: '220',
     Lid: '353',
+    Oid: '173',
     swatchId: '11',
     color: 'FF8172',
     BLName: 'Coral',
@@ -178,6 +189,7 @@ let solidColors = [
   {
     id: '231',
     Lid: '123',
+    Oid: '158',
     swatchId: '12',
     color: 'FF6326',
     BLName: 'Dark Salmon',
@@ -194,6 +206,7 @@ let solidColors = [
   {
     id: '25',
     Lid: '12',
+    Oid: '84',
     swatchId: '13',
     color: 'FF7D5D',
     BLName: 'Salmon',
@@ -210,6 +223,7 @@ let solidColors = [
   {
     id: '26',
     Lid: '100',
+    Oid: '5',
     swatchId: '14',
     color: 'FCC7B7',
     BLName: 'Light Salmon',
@@ -226,6 +240,7 @@ let solidColors = [
   {
     id: '58',
     Lid: '153',
+    Oid: '87',
     swatchId: '15',
     color: 'C58D80',
     BLName: 'Sand Red',
@@ -242,6 +257,7 @@ let solidColors = [
   {
     id: '120',
     Lid: '308',
+    Oid: '51',
     swatchId: '16',
     color: '50372F',
     BLName: 'Dark Brown',
@@ -258,6 +274,7 @@ let solidColors = [
   {
     id: '8',
     Lid: '217',
+    Oid: '46',
     swatchId: '17',
     color: '6B3F22',
     BLName: 'Brown',
@@ -274,6 +291,7 @@ let solidColors = [
   {
     id: '91',
     Lid: '86',
+    Oid: '52',
     swatchId: '18',
     color: '99663E',
     BLName: 'Light Brown',
@@ -290,6 +308,7 @@ let solidColors = [
   {
     id: '240',
     Lid: '370',
+    Oid: '213',
     swatchId: '19',
     color: 'A16C42',
     BLName: 'Medium Brown',
@@ -306,6 +325,7 @@ let solidColors = [
   {
     id: '88',
     Lid: '192',
+    Oid: '82',
     swatchId: '20',
     color: '82422A',
     BLName: 'Reddish Brown',
@@ -322,6 +342,7 @@ let solidColors = [
   {
     id: '106',
     Lid: '12',
+    Oid: '23',
     swatchId: '21',
     color: 'B3694E',
     BLName: 'Fabuland Brown',
@@ -338,6 +359,7 @@ let solidColors = [
   {
     id: '69',
     Lid: '138',
+    Oid: '57',
     swatchId: '22',
     color: 'B89869',
     BLName: 'Dark Tan',
@@ -353,7 +375,8 @@ let solidColors = [
   },
   {
     id: '241',
-    Lid: '',
+    Lid: '371',
+    Oid: '217',
     swatchId: '23',
     color: 'D9C594',
     BLName: 'Medium Tan',
@@ -370,6 +393,7 @@ let solidColors = [
   {
     id: '2',
     Lid: '19',
+    Oid: '89',
     swatchId: '24',
     color: 'EED9A4',
     BLName: 'Tan',
@@ -386,6 +410,7 @@ let solidColors = [
   {
     id: '',
     Lid: '224',
+    Oid: '',
     swatchId: '2038',
     color: 'F3C988',
     BLName: '',
@@ -402,6 +427,7 @@ let solidColors = [
   {
     id: '90',
     Lid: '283',
+    Oid: '65',
     swatchId: '25',
     color: 'FECCB0',
     BLName: 'Light Nougat',
@@ -418,6 +444,7 @@ let solidColors = [
   {
     id: '28',
     Lid: '18',
+    Oid: '6',
     swatchId: '26',
     color: 'FFAF7D',
     BLName: 'Nougat',
@@ -434,6 +461,7 @@ let solidColors = [
   {
     id: '150',
     Lid: '312',
+    Oid: '74',
     swatchId: '27',
     color: 'E3A05B',
     BLName: 'Medium Nougat',
@@ -450,6 +478,7 @@ let solidColors = [
   {
     id: '225',
     Lid: '128',
+    Oid: '160',
     swatchId: '28',
     color: 'CE7942',
     BLName: 'Dark Nougat',
@@ -466,6 +495,7 @@ let solidColors = [
   {
     id: '160',
     Lid: '19',
+    Oid: '60',
     swatchId: '29',
     color: 'EF9121',
     BLName: 'Fabuland Orange',
@@ -482,6 +512,7 @@ let solidColors = [
   {
     id: '29',
     Lid: '12',
+    Oid: '59',
     swatchId: '30',
     color: 'E6881D',
     BLName: 'Earth Orange',
@@ -498,6 +529,7 @@ let solidColors = [
   {
     id: '68',
     Lid: '38',
+    Oid: '54',
     swatchId: '31',
     color: 'B35408',
     BLName: 'Dark Orange',
@@ -514,6 +546,7 @@ let solidColors = [
   {
     id: '27',
     Lid: '216',
+    Oid: '83',
     swatchId: '32',
     color: 'B24817',
     BLName: 'Rust',
@@ -530,6 +563,7 @@ let solidColors = [
   {
     id: '165',
     Lid: '133',
+    Oid: '',
     swatchId: '33',
     color: 'FA5947',
     BLName: 'Neon Orange',
@@ -546,6 +580,7 @@ let solidColors = [
   {
     id: '4',
     Lid: '106',
+    Oid: '80',
     swatchId: '34',
     color: 'FF7E14',
     BLName: 'Orange',
@@ -562,6 +597,7 @@ let solidColors = [
   {
     id: '31',
     Lid: '105',
+    Oid: '7',
     swatchId: '35',
     color: 'FFA531',
     BLName: 'Medium Orange',
@@ -578,6 +614,7 @@ let solidColors = [
   {
     id: '110',
     Lid: '191',
+    Oid: '43',
     swatchId: '36',
     color: 'FFC700',
     BLName: 'Bright Light Orange',
@@ -594,6 +631,7 @@ let solidColors = [
   {
     id: '32',
     Lid: '121',
+    Oid: '8',
     swatchId: '37',
     color: 'FFBC36',
     BLName: 'Light Orange',
@@ -610,6 +648,7 @@ let solidColors = [
   {
     id: '',
     Lid: '125',
+    Oid: '',
     swatchId: '2014',
     color: 'F9A777',
     BLName: '',
@@ -626,6 +665,7 @@ let solidColors = [
   {
     id: '',
     Lid: '225',
+    Oid: '',
     swatchId: '2039',
     color: 'FAA964',
     BLName: '',
@@ -642,6 +682,7 @@ let solidColors = [
   {
     id: '96',
     Lid: '36',
+    Oid: '91',
     swatchId: '38',
     color: 'FFDCA4',
     BLName: 'Very Light Orange',
@@ -658,6 +699,7 @@ let solidColors = [
   {
     id: '161',
     Lid: '180',
+    Oid: '169',
     swatchId: '39',
     color: 'DD982E',
     BLName: 'Dark Yellow',
@@ -674,6 +716,7 @@ let solidColors = [
   {
     id: '3',
     Lid: '24',
+    Oid: '93',
     swatchId: '40',
     color: 'FFE001',
     BLName: 'Yellow',
@@ -690,6 +733,7 @@ let solidColors = [
   {
     id: '',
     Lid: '190',
+    Oid: '',
     swatchId: '2030',
     color: 'FFCF0B',
     BLName: '',
@@ -706,6 +750,7 @@ let solidColors = [
   {
     id: '33',
     Lid: '24',
+    Oid: '9',
     swatchId: '41',
     color: 'FFE383',
     BLName: 'Light Yellow',
@@ -722,6 +767,7 @@ let solidColors = [
   {
     id: '103',
     Lid: '226',
+    Oid: '44',
     swatchId: '42',
     color: 'FEED83',
     BLName: 'Bright Light Yellow',
@@ -738,6 +784,7 @@ let solidColors = [
   {
     id: '236',
     Lid: '368',
+    Oid: '211',
     swatchId: '43',
     color: 'FFFC00',
     BLName: 'Neon Yellow',
@@ -754,6 +801,7 @@ let solidColors = [
   {
     id: '166',
     Lid: '134',
+    Oid: '',
     swatchId: '44',
     color: 'DBF355',
     BLName: 'Neon Green',
@@ -770,6 +818,7 @@ let solidColors = [
   {
     id: '35',
     Lid: '120',
+    Oid: '67',
     swatchId: '45',
     color: 'ECEEBD',
     BLName: 'Light Lime',
@@ -786,6 +835,7 @@ let solidColors = [
   {
     id: '',
     Lid: '15',
+    Oid: '',
     swatchId: '2006',
     color: 'FFF230',
     BLName: '',
@@ -802,6 +852,7 @@ let solidColors = [
   {
     id: '158',
     Lid: '326',
+    Oid: '94',
     swatchId: '46',
     color: 'E7F2A7',
     BLName: 'Yellowish Green',
@@ -818,6 +869,7 @@ let solidColors = [
   {
     id: '76',
     Lid: '115',
+    Oid: '77',
     swatchId: '47',
     color: 'DFE000',
     BLName: 'Medium Lime',
@@ -834,11 +886,12 @@ let solidColors = [
   {
     id: '248',
     Lid: '14',
+    Oid: '237',
     swatchId: '48',
     color: 'ADD237',
     BLName: 'Fabuland Lime',
     LName: 'Pastel Green',
-    OName: '',
+    OName: 'Fabuland Lime',
     parts: '9',
     inSets: '5',
     type: '',
@@ -850,6 +903,7 @@ let solidColors = [
   {
     id: '34',
     Lid: '119',
+    Oid: '70',
     swatchId: '49',
     color: 'C4E000',
     BLName: 'Lime',
@@ -866,6 +920,7 @@ let solidColors = [
   {
     id: '242',
     Lid: '144',
+    Oid: '',
     swatchId: '50',
     color: '76753F',
     BLName: 'Dark Olive Green',
@@ -882,6 +937,7 @@ let solidColors = [
   {
     id: '155',
     Lid: '330',
+    Oid: '79',
     swatchId: '51',
     color: 'ABA953',
     BLName: 'Olive Green',
@@ -898,6 +954,7 @@ let solidColors = [
   {
     id: '80',
     Lid: '141',
+    Oid: '20',
     swatchId: '52',
     color: '2E5543',
     BLName: 'Dark Green',
@@ -914,6 +971,7 @@ let solidColors = [
   {
     id: '6',
     Lid: '28',
+    Oid: '61',
     swatchId: '53',
     color: '00923D',
     BLName: 'Green',
@@ -930,6 +988,7 @@ let solidColors = [
   {
     id: '36',
     Lid: '37',
+    Oid: '41',
     swatchId: '54',
     color: '10CB31',
     BLName: 'Bright Green',
@@ -946,6 +1005,7 @@ let solidColors = [
   {
     id: '37',
     Lid: '29',
+    Oid: '10',
     swatchId: '55',
     color: '91DF8C',
     BLName: 'Medium Green',
@@ -962,6 +1022,7 @@ let solidColors = [
   {
     id: '38',
     Lid: '6',
+    Oid: '11',
     swatchId: '56',
     color: 'D7EED1',
     BLName: 'Light Green',
@@ -978,6 +1039,7 @@ let solidColors = [
   {
     id: '',
     Lid: '210',
+    Oid: '',
     swatchId: '2034',
     color: '468A5F',
     BLName: '',
@@ -994,6 +1056,7 @@ let solidColors = [
   {
     id: '',
     Lid: '233',
+    Oid: '',
     swatchId: '2041',
     color: '60BA76',
     BLName: '',
@@ -1010,6 +1073,7 @@ let solidColors = [
   {
     id: '48',
     Lid: '151',
+    Oid: '18',
     swatchId: '57',
     color: 'A2BFA3',
     BLName: 'Sand Green',
@@ -1026,6 +1090,7 @@ let solidColors = [
   {
     id: '39',
     Lid: '107',
+    Oid: '58',
     swatchId: '58',
     color: '00A29F',
     BLName: 'Dark Turquoise',
@@ -1042,6 +1107,7 @@ let solidColors = [
   {
     id: '40',
     Lid: '116',
+    Oid: '12',
     swatchId: '59',
     color: '00C5BC',
     BLName: 'Light Turquoise',
@@ -1058,6 +1124,7 @@ let solidColors = [
   {
     id: '41',
     Lid: '118',
+    Oid: '13',
     swatchId: '60',
     color: 'BCE5DC',
     BLName: 'Aqua',
@@ -1074,6 +1141,7 @@ let solidColors = [
   {
     id: '152',
     Lid: '323',
+    Oid: '62',
     swatchId: '61',
     color: 'CFEFEA',
     BLName: 'Light Aqua',
@@ -1090,6 +1158,7 @@ let solidColors = [
   {
     id: '63',
     Lid: '140',
+    Oid: '48',
     swatchId: '62',
     color: '243757',
     BLName: 'Dark Blue',
@@ -1106,6 +1175,7 @@ let solidColors = [
   {
     id: '7',
     Lid: '23',
+    Oid: '39',
     swatchId: '63',
     color: '0057A6',
     BLName: 'Blue',
@@ -1122,6 +1192,7 @@ let solidColors = [
   {
     id: '153',
     Lid: '321',
+    Oid: '47',
     swatchId: '64',
     color: '009FE0',
     BLName: 'Dark Azure',
@@ -1138,6 +1209,7 @@ let solidColors = [
   {
     id: '247',
     Lid: '269',
+    Oid: '',
     swatchId: '65',
     color: '5DBFE4',
     BLName: 'Little Robots Blue',
@@ -1154,6 +1226,7 @@ let solidColors = [
   {
     id: '',
     Lid: '269',
+    Oid: '',
     swatchId: '2043',
     color: '3E95B6',
     BLName: '',
@@ -1170,6 +1243,7 @@ let solidColors = [
   {
     id: '72',
     Lid: '11',
+    Oid: '71',
     swatchId: '66',
     color: '7DC1D8',
     BLName: 'Maersk Blue',
@@ -1186,6 +1260,7 @@ let solidColors = [
   {
     id: '156',
     Lid: '322',
+    Oid: '73',
     swatchId: '67',
     color: '6ACEE0',
     BLName: 'Medium Azure',
@@ -1202,6 +1277,7 @@ let solidColors = [
   {
     id: '87',
     Lid: '232',
+    Oid: '88',
     swatchId: '68',
     color: '8AD4E1',
     BLName: 'Sky Blue',
@@ -1218,6 +1294,7 @@ let solidColors = [
   {
     id: '42',
     Lid: '102',
+    Oid: '14',
     swatchId: '69',
     color: '82ADD8',
     BLName: 'Medium Blue',
@@ -1234,6 +1311,7 @@ let solidColors = [
   {
     id: '105',
     Lid: '212',
+    Oid: '42',
     swatchId: '70',
     color: 'BCD1ED',
     BLName: 'Bright Light Blue',
@@ -1250,6 +1328,7 @@ let solidColors = [
   {
     id: '62',
     Lid: '45',
+    Oid: '63',
     swatchId: '71',
     color: 'C8D9E1',
     BLName: 'Light Blue',
@@ -1266,6 +1345,7 @@ let solidColors = [
   {
     id: '55',
     Lid: '135',
+    Oid: '85',
     swatchId: '72',
     color: '8899AB',
     BLName: 'Sand Blue',
@@ -1282,6 +1362,7 @@ let solidColors = [
   {
     id: '109',
     Lid: '196',
+    Oid: '49',
     swatchId: '73',
     color: '2032B0',
     BLName: 'Dark Blue-Violet',
@@ -1298,6 +1379,7 @@ let solidColors = [
   {
     id: '43',
     Lid: '110',
+    Oid: '15',
     swatchId: '74',
     color: '3448A4',
     BLName: 'Violet',
@@ -1314,6 +1396,7 @@ let solidColors = [
   {
     id: '97',
     Lid: '195',
+    Oid: '40',
     swatchId: '75',
     color: '506CEF',
     BLName: 'Blue-Violet',
@@ -1330,6 +1413,7 @@ let solidColors = [
   {
     id: '',
     Lid: '213',
+    Oid: '',
     swatchId: '2036',
     color: '476FB6',
     BLName: '',
@@ -1346,6 +1430,7 @@ let solidColors = [
   {
     id: '245',
     Lid: '219',
+    Oid: '221',
     swatchId: '76',
     color: '7862CE',
     BLName: 'Lilac',
@@ -1362,6 +1447,7 @@ let solidColors = [
   {
     id: '73',
     Lid: '112',
+    Oid: '78',
     swatchId: '77',
     color: '9391E4',
     BLName: 'Medium Violet',
@@ -1378,6 +1464,7 @@ let solidColors = [
   {
     id: '246',
     Lid: '220',
+    Oid: '',
     swatchId: '78',
     color: 'CDCCEE',
     BLName: 'Light Lilac',
@@ -1394,6 +1481,7 @@ let solidColors = [
   {
     id: '44',
     Lid: '39',
+    Oid: '16',
     swatchId: '79',
     color: 'C9CAE2',
     BLName: 'Light Violet',
@@ -1410,6 +1498,7 @@ let solidColors = [
   {
     id: '',
     Lid: '197',
+    Oid: '',
     swatchId: '2032',
     color: '312B87',
     BLName: '',
@@ -1426,6 +1515,7 @@ let solidColors = [
   {
     id: '89',
     Lid: '268',
+    Oid: '55',
     swatchId: '80',
     color: '5F2683',
     BLName: 'Dark Purple',
@@ -1442,6 +1532,7 @@ let solidColors = [
   {
     id: '24',
     Lid: '104',
+    Oid: '4',
     swatchId: '81',
     color: '7A238D',
     BLName: 'Purple',
@@ -1458,6 +1549,7 @@ let solidColors = [
   {
     id: '93',
     Lid: '198',
+    Oid: '69',
     swatchId: '82',
     color: 'AF3195',
     BLName: 'Light Purple',
@@ -1474,6 +1566,7 @@ let solidColors = [
   {
     id: '157',
     Lid: '324',
+    Oid: '76',
     swatchId: '83',
     color: 'C689D9',
     BLName: 'Medium Lavender',
@@ -1490,6 +1583,7 @@ let solidColors = [
   {
     id: '154',
     Lid: '325',
+    Oid: '36',
     swatchId: '84',
     color: 'D3BDE3',
     BLName: 'Lavender',
@@ -1506,6 +1600,7 @@ let solidColors = [
   {
     id: '227',
     Lid: '218',
+    Oid: '223',
     swatchId: '85',
     color: 'E0AAD9',
     BLName: 'Clikits Lavender',
@@ -1522,6 +1617,7 @@ let solidColors = [
   {
     id: '54',
     Lid: '136',
+    Oid: '86',
     swatchId: '86',
     color: 'B57DA5',
     BLName: 'Sand Purple',
@@ -1538,6 +1634,7 @@ let solidColors = [
   {
     id: '71',
     Lid: '124',
+    Oid: '72',
     swatchId: '87',
     color: 'B72276',
     BLName: 'Magenta',
@@ -1554,6 +1651,7 @@ let solidColors = [
   {
     id: '47',
     Lid: '221',
+    Oid: '17',
     swatchId: '88',
     color: 'EF5BB3',
     BLName: 'Dark Pink',
@@ -1570,6 +1668,7 @@ let solidColors = [
   {
     id: '',
     Lid: '22',
+    Oid: '',
     swatchId: '',
     color: 'EF5BB3',
     BLName: '',
@@ -1586,6 +1685,7 @@ let solidColors = [
   {
     id: '47',
     Lid: '295',
+    Oid: '',
     swatchId: '88',
     color: 'EF5BB3',
     BLName: 'Clikits-Dark Pink*',
@@ -1602,6 +1702,7 @@ let solidColors = [
   {
     id: '94',
     Lid: '16',
+    Oid: '75',
     swatchId: '90',
     color: 'F785B1',
     BLName: 'Medium Dark Pink',
@@ -1618,6 +1719,7 @@ let solidColors = [
   {
     id: '104',
     Lid: '222',
+    Oid: '45',
     swatchId: '91',
     color: 'F7BCDA',
     BLName: 'Bright Pink',
@@ -1634,6 +1736,7 @@ let solidColors = [
   {
     id: '23',
     Lid: '9',
+    Oid: '3',
     swatchId: '92',
     color: 'F5CDD6',
     BLName: 'Pink',
@@ -1650,6 +1753,7 @@ let solidColors = [
   {
     id: '56',
     Lid: '17',
+    Oid: '68',
     swatchId: '93',
     color: 'FFE1FF',
     BLName: 'Light Pink',
@@ -1671,11 +1775,12 @@ let transparentColors = [
   {
     id: '12',
     Lid: '40',
+    Oid: '97',
     swatchId: '150',
     color: 'EEEEEE',
     BLName: 'Trans-Clear',
     LName: 'Transparent',
-    OName: 'Transparent Clear',
+    OName: 'Transparent',
     parts: '968',
     inSets: '4910',
     type: '',
@@ -1687,11 +1792,12 @@ let transparentColors = [
   {
     id: '13',
     Lid: '111',
+    Oid: '95',
     swatchId: '151',
     color: '939484',
     BLName: 'Trans-Brown',
     LName: 'Transparent Brown',
-    OName: 'Transparent Brown',
+    OName: 'Transparent Black (<2023)',
     parts: '451',
     inSets: '1733',
     type: '',
@@ -1704,11 +1810,12 @@ let transparentColors = [
   {
     id: '251',
     Lid: '375',
+    Oid: '235',
     swatchId: '',
     color: '777777',
     BLName: 'Trans-Black',
     LName: 'Transparent Black',
-    OName: 'Transparent Black',
+    OName: 'Transparent Black (2023)',
     parts: '1',
     inSets: '1',
     type: '',
@@ -1720,6 +1827,7 @@ let transparentColors = [
   {
     id: '17',
     Lid: '41',
+    Oid: '108',
     swatchId: '152',
     color: '9C0010',
     BLName: 'Trans-Red',
@@ -1736,6 +1844,7 @@ let transparentColors = [
   {
     id: '18',
     Lid: '47',
+    Oid: '161',
     swatchId: '153',
     color: 'FF4231',
     BLName: 'Trans-Neon Orange',
@@ -1752,6 +1861,7 @@ let transparentColors = [
   {
     id: '98',
     Lid: '182',
+    Oid: '105',
     swatchId: '154',
     color: 'D04010',
     BLName: 'Trans-Orange',
@@ -1768,6 +1878,7 @@ let transparentColors = [
   {
     id: '164',
     Lid: '231',
+    Oid: '171',
     swatchId: '155',
     color: 'E99A3A',
     BLName: 'Trans-Light Orange',
@@ -1784,6 +1895,7 @@ let transparentColors = [
   {
     id: '121',
     Lid: '157',
+    Oid: '104',
     swatchId: '156',
     color: 'FFD700',
     BLName: 'Trans-Neon Yellow',
@@ -1800,6 +1912,7 @@ let transparentColors = [
   {
     id: '',
     Lid: '234',
+    Oid: '162',
     swatchId: '680',
     color: 'FFD700',
     BLName: '',
@@ -1816,6 +1929,7 @@ let transparentColors = [
   {
     id: '19',
     Lid: '44',
+    Oid: '109',
     swatchId: '157',
     color: 'EBF72D',
     BLName: 'Trans-Yellow',
@@ -1832,6 +1946,7 @@ let transparentColors = [
   {
     id: '16',
     Lid: '49',
+    Oid: '103',
     swatchId: '158',
     color: 'C0F500',
     BLName: 'Trans-Neon Green',
@@ -1848,6 +1963,7 @@ let transparentColors = [
   {
     id: '108',
     Lid: '311',
+    Oid: '96',
     swatchId: '159',
     color: '10Cb31',
     BLName: 'Trans-Bright Green',
@@ -1864,6 +1980,7 @@ let transparentColors = [
   {
     id: '221',
     Lid: '285',
+    Oid: '191',
     swatchId: '160',
     color: '94E5AB',
     BLName: 'Trans-Light Green',
@@ -1880,6 +1997,7 @@ let transparentColors = [
   {
     id: '226',
     Lid: '227',
+    Oid: '205',
     swatchId: '161',
     color: '71EB54',
     BLName: 'Trans-Light Bright Green',
@@ -1896,6 +2014,7 @@ let transparentColors = [
   {
     id: '20',
     Lid: '48',
+    Oid: '100',
     swatchId: '162',
     color: '217625',
     BLName: 'Trans-Green',
@@ -1913,6 +2032,7 @@ let transparentColors = [
   {
     id: '',
     Lid: '156',
+    Oid: '',
     swatchId: '2020',
     color: '00296B',
     BLName: '',
@@ -1929,6 +2049,7 @@ let transparentColors = [
   {
     id: '14',
     Lid: '43',
+    Oid: '98',
     swatchId: '163',
     color: '00296B',
     BLName: 'Trans-Dark Blue',
@@ -1945,6 +2066,7 @@ let transparentColors = [
   {
     id: '74',
     Lid: '143',
+    Oid: '102',
     swatchId: '164',
     color: '7384A5',
     BLName: 'Trans-Medium Blue',
@@ -1961,6 +2083,7 @@ let transparentColors = [
   {
     id: '',
     Lid: '293',
+    Oid: '163',
     swatchId: '681',
     color: '7384A5',
     BLName: '',
@@ -1977,6 +2100,7 @@ let transparentColors = [
   {
     id: '15',
     Lid: '42',
+    Oid: '101',
     swatchId: '165',
     color: '68BCC5',
     BLName: 'Trans-Light Blue',
@@ -1993,6 +2117,7 @@ let transparentColors = [
   {
     id: '113',
     Lid: '229',
+    Oid: '25',
     swatchId: '166',
     color: 'B7C8BF',
     BLName: 'Trans-Aqua',
@@ -2009,6 +2134,7 @@ let transparentColors = [
   {
     id: '114',
     Lid: '284',
+    Oid: '26',
     swatchId: '167',
     color: 'B97AB1',
     BLName: 'Trans-Light Purple',
@@ -2025,6 +2151,7 @@ let transparentColors = [
   {
     id: '234',
     Lid: '236',
+    Oid: '',
     swatchId: '168',
     color: '9C41B6',
     BLName: 'Trans-Medium Purple',
@@ -2041,6 +2168,7 @@ let transparentColors = [
   {
     id: '51',
     Lid: '126',
+    Oid: '107',
     swatchId: '169',
     color: '5525B7',
     BLName: 'Trans-Purple',
@@ -2057,6 +2185,7 @@ let transparentColors = [
   {
     id: '50',
     Lid: '113',
+    Oid: '99',
     swatchId: '170',
     color: 'CE1d9b',
     BLName: 'Trans-Dark Pink',
@@ -2073,6 +2202,7 @@ let transparentColors = [
   {
     id: '50',
     Lid: '158',
+    Oid: '',
     swatchId: '171',
     color: 'F18EBB',
     BLName: 'Trans-Dark Pink*',
@@ -2089,6 +2219,7 @@ let transparentColors = [
   {
     id: '107',
     Lid: '230',
+    Oid: '106',
     swatchId: '172',
     color: 'FF8298',
     BLName: 'Trans-Pink',
@@ -2109,6 +2240,7 @@ let chromeColors = [
   {
     id: '21',
     Lid: '310',
+    Oid: '2',
     swatchId: '200',
     color: 'f1f2e1',
     BLName: 'Chrome Gold',
@@ -2125,6 +2257,7 @@ let chromeColors = [
   {
     id: '',
     Lid: '',
+    Oid: '',
     swatchId: '201',
     color: 'CC9900',
     BLName: 'Chrome Gold*',
@@ -2141,6 +2274,7 @@ let chromeColors = [
   {
     id: '22',
     Lid: '309',
+    Oid: '115',
     swatchId: '202',
     color: 'DCDCDC',
     BLName: 'Chrome Silver',
@@ -2157,6 +2291,7 @@ let chromeColors = [
   {
     id: '57',
     Lid: '',
+    Oid: '110',
     swatchId: '203',
     color: '645a4c',
     BLName: 'Chrome Antique Brass',
@@ -2173,6 +2308,7 @@ let chromeColors = [
   {
     id: '122',
     Lid: '',
+    Oid: '111',
     swatchId: '204',
     color: '544E4F',
     BLName: 'Chrome Black',
@@ -2189,6 +2325,7 @@ let chromeColors = [
   {
     id: '',
     Lid: '',
+    Oid: '',
     swatchId: '205',
     color: 'B30006',
     BLName: 'Chrome Red*',
@@ -2205,6 +2342,7 @@ let chromeColors = [
   {
     id: '52',
     Lid: '',
+    Oid: '112',
     swatchId: '206',
     color: '5C66A4',
     BLName: 'Chrome Blue',
@@ -2221,6 +2359,7 @@ let chromeColors = [
   {
     id: '64',
     Lid: '',
+    Oid: '113',
     swatchId: '207',
     color: '3CB371',
     BLName: 'Chrome Green',
@@ -2237,6 +2376,7 @@ let chromeColors = [
   {
     id: '82',
     Lid: '',
+    Oid: '114',
     swatchId: '208',
     color: 'aa4d8e',
     BLName: 'Chrome Pink',
@@ -2253,6 +2393,7 @@ let chromeColors = [
   {
     id: '',
     Lid: '',
+    Oid: '',
     swatchId: '209',
     color: 'F5CDD6',
     BLName: 'Chrome Rose Gold*',
@@ -2269,6 +2410,7 @@ let chromeColors = [
   {
     id: '',
     Lid: '',
+    Oid: '',
     swatchId: '220',
     color: 'FFFFFF',
     BLName: 'Iridescent White*',
@@ -2285,6 +2427,7 @@ let chromeColors = [
   {
     id: '',
     Lid: '',
+    Oid: '',
     swatchId: '221',
     color: '68BCC5',
     BLName: 'Iridescent Blue*',
@@ -2305,6 +2448,7 @@ let pearlColors = [
   {
     id: '83',
     Lid: '183',
+    Oid: '123',
     swatchId: '250',
     color: 'F6F2DF',
     BLName: 'Pearl White',
@@ -2321,6 +2465,7 @@ let pearlColors = [
   {
     id: '119',
     Lid: '150',
+    Oid: '27',
     swatchId: '251',
     color: 'D4D2CD',
     BLName: 'Pearl Very Light Gray',
@@ -2337,6 +2482,7 @@ let pearlColors = [
   {
     id: '66',
     Lid: '131',
+    Oid: '122',
     swatchId: '252',
     color: 'ACB7C0',
     BLName: 'Pearl Light Gray',
@@ -2353,6 +2499,7 @@ let pearlColors = [
   {
     id: '95',
     Lid: '315',
+    Oid: '117',
     swatchId: '253',
     color: '8D949C',
     BLName: 'Flat Silver',
@@ -2369,6 +2516,7 @@ let pearlColors = [
   {
     id: '239',
     Lid: '179',
+    Oid: '229',
     swatchId: '254',
     color: 'A59287',
     BLName: 'Bionicle Silver',
@@ -2385,6 +2533,7 @@ let pearlColors = [
   {
     id: '77',
     Lid: '316',
+    Oid: '119',
     swatchId: '255',
     color: '666660',
     BLName: 'Pearl Dark Gray',
@@ -2401,6 +2550,7 @@ let pearlColors = [
   {
     id: '244',
     Lid: '149',
+    Oid: '185',
     swatchId: '256',
     color: '282725',
     BLName: 'Pearl Black',
@@ -2417,6 +2567,7 @@ let pearlColors = [
   {
     id: '61',
     Lid: '127',
+    Oid: '121',
     swatchId: '257',
     color: 'E7AE5A',
     BLName: 'Pearl Light Gold',
@@ -2433,6 +2584,7 @@ let pearlColors = [
   {
     id: '115',
     Lid: '297',
+    Oid: '120',
     swatchId: '258',
     color: 'E79E1D',
     BLName: 'Pearl Gold',
@@ -2449,6 +2601,7 @@ let pearlColors = [
   {
     id: '235',
     Lid: '189',
+    Oid: '215',
     swatchId: '259',
     color: 'E7891B',
     BLName: 'Reddish Gold',
@@ -2465,6 +2618,7 @@ let pearlColors = [
   {
     id: '238',
     Lid: '178',
+    Oid: '231',
     swatchId: '260',
     color: 'B9752F',
     BLName: 'Bionicle Gold',
@@ -2481,6 +2635,7 @@ let pearlColors = [
   {
     id: '81',
     Lid: '147',
+    Oid: '21',
     swatchId: '261',
     color: 'AD7118',
     BLName: 'Flat Dark Gold',
@@ -2497,11 +2652,12 @@ let pearlColors = [
   {
     id: '249',
     Lid: '346',
+    Oid: '227',
     swatchId: '262',
     color: 'D06926',
     BLName: 'Reddish Copper',
     LName: 'Copper Metallic',
-    OName: '',
+    OName: 'Reddish Copper',
     parts: '21',
     inSets: '20',
     type: '',
@@ -2513,6 +2669,7 @@ let pearlColors = [
   {
     id: '84',
     Lid: '139',
+    Oid: '116',
     swatchId: '263',
     color: 'AC6D52',
     BLName: 'Copper',
@@ -2529,6 +2686,7 @@ let pearlColors = [
   {
     id: '237',
     Lid: '176',
+    Oid: '233',
     swatchId: '264',
     color: '985750',
     BLName: 'Bionicle Copper',
@@ -2545,6 +2703,7 @@ let pearlColors = [
   {
     id: '',
     Lid: '184',
+    Oid: '181',
     swatchId: '670',
     color: 'B30006',
     BLName: 'Pearl Red*',
@@ -2561,6 +2720,7 @@ let pearlColors = [
   {
     id: '',
     Lid: '187',
+    Oid: '219',
     swatchId: '671',
     color: '6B3F22',
     BLName: 'Pearl Brown*',
@@ -2577,6 +2737,7 @@ let pearlColors = [
   {
     id: '',
     Lid: '186',
+    Oid: '183',
     swatchId: '672',
     color: '00923D',
     BLName: 'Pearl Green*',
@@ -2593,6 +2754,7 @@ let pearlColors = [
   {
     id: '',
     Lid: '185',
+    Oid: '189',
     swatchId: '673',
     color: '0057A6',
     BLName: 'Pearl Blue*',
@@ -2609,11 +2771,12 @@ let pearlColors = [
   {
     id: '78',
     Lid: '145',
+    Oid: '118',
     swatchId: '265',
     color: '868FAA',
     BLName: 'Pearl Sand Blue',
     LName: 'Metallic Sand Blue',
-    OName: '',
+    OName: 'Metallic Blue',
     parts: '45',
     inSets: '25',
     type: '',
@@ -2625,6 +2788,7 @@ let pearlColors = [
   {
     id: '243',
     Lid: '146',
+    Oid: '',
     swatchId: '266',
     color: 'B5A1BA',
     BLName: 'Pearl Sand Purple',
@@ -2645,6 +2809,7 @@ let satinColors = [
   {
     id: '228',
     Lid: '360',
+    Oid: '193',
     swatchId: '300',
     color: 'FFFFFF',
     BLName: 'Satin Trans-Clear',
@@ -2661,6 +2826,7 @@ let satinColors = [
   {
     id: '229',
     Lid: '363',
+    Oid: '201',
     swatchId: '301',
     color: '939484',
     BLName: 'Satin Trans-Brown',
@@ -2677,11 +2843,12 @@ let satinColors = [
   {
     id: '',
     Lid: '',
+    Oid: '',
     swatchId: '',
     color: '777777',
     BLName: 'Satin Trans-Black*',
     LName: 'Transparent Black With Opalescence',
-    OName: 'Transparent Black Opal*',
+    OName: '',
     parts: '',
     inSets: '',
     type: '',
@@ -2693,6 +2860,7 @@ let satinColors = [
   {
     id: '',
     Lid: '',
+    Oid: '',
     swatchId: '302',
     color: '6A0E15',
     BLName: 'Satin Trans-Dark Red*',
@@ -2708,11 +2876,12 @@ let satinColors = [
   },
   {
     id: '',
-    Lid: '',
+    Lid: '361',
+    Oid: '',
     swatchId: '303',
     color: 'B30006',
     BLName: 'Satin Trans-Red*',
-    LName: '',
+    LName: 'Transparent Red With Opalescence',
     OName: '',
     parts: '',
     inSets: '',
@@ -2725,6 +2894,7 @@ let satinColors = [
   {
     id: '',
     Lid: '',
+    Oid: '',
     swatchId: '304',
     color: 'FF4231',
     BLName: 'Satin Trans-Neon Orange*',
@@ -2741,6 +2911,7 @@ let satinColors = [
   {
     id: '',
     Lid: '',
+    Oid: '',
     swatchId: '305',
     color: 'FF7E14',
     BLName: 'Satin Trans-Orange*',
@@ -2757,10 +2928,11 @@ let satinColors = [
   {
     id: '',
     Lid: '376',
+    Oid: '',
     swatchId: '306',
     color: 'FFE001',
     BLName: 'Satin Trans-Yellow*',
-    LName: '',
+    LName: 'Transparent Yellow With Opalescence',
     OName: '',
     parts: '',
     inSets: '',
@@ -2773,6 +2945,7 @@ let satinColors = [
   {
     id: '',
     Lid: '',
+    Oid: '',
     swatchId: '307',
     color: 'DBF355',
     BLName: 'Satin Trans-Neon Green*',
@@ -2789,6 +2962,7 @@ let satinColors = [
   {
     id: '233',
     Lid: '367',
+    Oid: '207',
     swatchId: '308',
     color: '7fe15b',
     BLName: 'Satin Trans-Bright Green',
@@ -2805,6 +2979,7 @@ let satinColors = [
   {
     id: '',
     Lid: '',
+    Oid: '',
     swatchId: '309',
     color: '217625',
     BLName: 'Satin Trans-Green*',
@@ -2821,6 +2996,7 @@ let satinColors = [
   {
     id: '223',
     Lid: '362',
+    Oid: '175',
     swatchId: '310',
     color: '68BCC5',
     BLName: 'Satin Trans-Light Blue',
@@ -2837,6 +3013,7 @@ let satinColors = [
   {
     id: '232',
     Lid: '366',
+    Oid: '209',
     swatchId: '311',
     color: '1552e2',
     BLName: 'Satin Trans-Dark Blue',
@@ -2853,6 +3030,7 @@ let satinColors = [
   {
     id: '230',
     Lid: '365',
+    Oid: '203',
     swatchId: '312',
     color: '8320B7',
     BLName: 'Satin Trans-Purple',
@@ -2870,6 +3048,7 @@ let satinColors = [
   {
     id: '224',
     Lid: '364',
+    Oid: '199',
     swatchId: '313',
     color: 'CE1d9b',
     BLName: 'Satin Trans-Dark Pink',
@@ -2886,6 +3065,7 @@ let satinColors = [
   {
     id: '',
     Lid: '361',
+    Oid: '',
     swatchId: '2067',
     color: 'ffffff',
     BLName: '',
@@ -2906,6 +3086,7 @@ let metallicColors = [
   {
     id: '67',
     Lid: '298',
+    Oid: '126',
     swatchId: '350',
     color: 'C0C0C0',
     BLName: 'Metallic Silver',
@@ -2922,6 +3103,7 @@ let metallicColors = [
   {
     id: '70',
     Lid: '',
+    Oid: '125',
     swatchId: '351',
     color: 'bdb573',
     BLName: 'Metallic Green',
@@ -2938,6 +3120,7 @@ let metallicColors = [
   {
     id: '65',
     Lid: '299',
+    Oid: '124',
     swatchId: '352',
     color: 'B8860B',
     BLName: 'Metallic Gold',
@@ -2954,11 +3137,12 @@ let metallicColors = [
   {
     id: '250',
     Lid: '300',
+    Oid: '225',
     swatchId: '353',
     color: 'C58259',
     BLName: 'Metallic Copper',
     LName: 'Copper, Drum Lacquered',
-    OName: '',
+    OName: 'Metallic Copper',
     parts: '5',
     inSets: '13',
     type: '',
@@ -2974,6 +3158,7 @@ let milkyColors = [
   {
     id: '60',
     Lid: '20',
+    Oid: '130',
     swatchId: '400',
     color: 'd4d3dd',
     BLName: 'Milky White',
@@ -2990,6 +3175,7 @@ let milkyColors = [
   {
     id: '159',
     Lid: '329',
+    Oid: '129',
     swatchId: '401',
     color: 'd9d9d9',
     BLName: 'Glow In Dark White',
@@ -3006,6 +3192,7 @@ let milkyColors = [
   {
     id: '46',
     Lid: '50',
+    Oid: '127',
     swatchId: '402',
     color: 'd4d5c9',
     BLName: 'Glow In Dark Opaque',
@@ -3022,6 +3209,7 @@ let milkyColors = [
   {
     id: '118',
     Lid: '294',
+    Oid: '128',
     swatchId: '403',
     color: 'bdc6ad',
     BLName: 'Glow In Dark Trans',
@@ -3042,6 +3230,7 @@ let glitterColors = [
   {
     id: '',
     Lid: '132',
+    Oid: '',
     swatchId: '448',
     color: '212121',
     BLName: 'Glitter Black*',
@@ -3058,6 +3247,7 @@ let glitterColors = [
   {
     id: '',
     Lid: '122',
+    Oid: '',
     swatchId: '449',
     color: 'D4D3DD',
     BLName: 'Glitter Milky White*',
@@ -3074,6 +3264,7 @@ let glitterColors = [
   {
     id: '101',
     Lid: '117',
+    Oid: '131',
     swatchId: '450',
     color: 'b2adaa',
     BLName: 'Glitter Trans-Clear',
@@ -3090,6 +3281,7 @@ let glitterColors = [
   {
     id: '',
     Lid: '349',
+    Oid: '',
     swatchId: '451',
     color: '939484',
     BLName: 'Glitter Trans-Brown',
@@ -3106,6 +3298,7 @@ let glitterColors = [
   {
     id: '',
     Lid: '',
+    Oid: '',
     swatchId: '',
     color: '777777',
     BLName: 'Glitter Trans-Black*',
@@ -3122,6 +3315,7 @@ let glitterColors = [
   {
     id: '',
     Lid: '173',
+    Oid: '',
     swatchId: '452',
     color: '9C0010',
     BLName: 'Glitter Trans-Red*',
@@ -3138,6 +3332,7 @@ let glitterColors = [
   {
     id: '',
     Lid: '352',
+    Oid: '',
     swatchId: '453',
     color: 'FF4231',
     BLName: 'Glitter Trans-Neon Orange*',
@@ -3154,6 +3349,7 @@ let glitterColors = [
   {
     id: '222',
     Lid: '341',
+    Oid: '179',
     swatchId: '454',
     color: 'D04010',
     BLName: 'Glitter Trans-Orange',
@@ -3170,6 +3366,7 @@ let glitterColors = [
   {
     id: '348',
     Lid: '348',
+    Oid: '',
     swatchId: '455',
     color: 'EBF72D',
     BLName: 'Glitter Trans-Yellow*',
@@ -3186,6 +3383,7 @@ let glitterColors = [
   {
     id: '163',
     Lid: '339',
+    Oid: '167',
     swatchId: '456',
     color: 'C0F500',
     BLName: 'Glitter Trans-Neon Green',
@@ -3202,6 +3400,7 @@ let glitterColors = [
   {
     id: '',
     Lid: '351',
+    Oid: '',
     swatchId: '457',
     color: '10CB31',
     BLName: 'Glitter Trans-Bright Green*',
@@ -3218,6 +3417,7 @@ let glitterColors = [
   {
     id: '',
     Lid: '155',
+    Oid: '',
     swatchId: '458',
     color: '217625',
     BLName: 'Glitter Trans-Green*',
@@ -3234,6 +3434,7 @@ let glitterColors = [
   {
     id: '',
     Lid: '340',
+    Oid: '',
     swatchId: '459',
     color: '00296B',
     BLName: 'Glitter Trans-Dark Blue*',
@@ -3250,6 +3451,7 @@ let glitterColors = [
   {
     id: '',
     Lid: '350',
+    Oid: '',
     swatchId: '460',
     color: '7384A5',
     BLName: 'Glitter Trans-Medium Blue*',
@@ -3266,6 +3468,7 @@ let glitterColors = [
   {
     id: '162',
     Lid: '302',
+    Oid: '165',
     swatchId: '461',
     color: '68BCC5',
     BLName: 'Glitter Trans-Light Blue',
@@ -3282,6 +3485,7 @@ let glitterColors = [
   {
     id: '',
     Lid: '303',
+    Oid: '',
     swatchId: '',
     color: 'B97AB1',
     BLName: '',
@@ -3298,6 +3502,7 @@ let glitterColors = [
   {
     id: '102',
     Lid: '129',
+    Oid: '22',
     swatchId: '462',
     color: '3A2B82',
     BLName: 'Glitter Trans-Purple',
@@ -3314,6 +3519,7 @@ let glitterColors = [
   {
     id: '100',
     Lid: '114',
+    Oid: '132',
     swatchId: '463',
     color: 'CE1d9b',
     BLName: 'Glitter Trans-Dark Pink',
@@ -3334,6 +3540,7 @@ let speckleColors = [
   {
     id: '111',
     Lid: '304',
+    Oid: '24',
     swatchId: '501',
     color: '7C7E7C',
     BLName: 'Speckle Black-Silver',
@@ -3350,6 +3557,7 @@ let speckleColors = [
   {
     id: '151',
     Lid: '',
+    Oid: '35',
     swatchId: '502',
     color: 'AB9421',
     BLName: 'Speckle Black-Gold',
@@ -3366,6 +3574,7 @@ let speckleColors = [
   {
     id: '116',
     Lid: '306',
+    Oid: '133',
     swatchId: '503',
     color: '5F4E47',
     BLName: 'Speckle Black-Copper',
@@ -3382,6 +3591,7 @@ let speckleColors = [
   {
     id: '117',
     Lid: '304',
+    Oid: '134',
     swatchId: '504',
     color: '4A6363',
     BLName: 'Speckle DBGray-Silver',
@@ -3402,6 +3612,7 @@ let modulexColors = [
   {
     id: '123',
     Lid: '1/31',
+    Oid: '154',
     swatchId: '900',
     color: 'FFFFFF',
     BLName: 'Mx White',
@@ -3418,6 +3629,7 @@ let modulexColors = [
   {
     id: '124',
     Lid: '32',
+    Oid: '28',
     swatchId: '901',
     color: 'AfB5C7',
     BLName: 'Mx Light Bluish Gray',
@@ -3434,6 +3646,7 @@ let modulexColors = [
   {
     id: '125',
     Lid: '2',
+    Oid: '141',
     swatchId: '902',
     color: '9C9C9C',
     BLName: 'Mx Light Gray',
@@ -3450,6 +3663,7 @@ let modulexColors = [
   {
     id: '126',
     Lid: '40',
+    Oid: '29',
     swatchId: '903',
     color: '595D60',
     BLName: 'Mx Charcoal Gray',
@@ -3466,6 +3680,7 @@ let modulexColors = [
   {
     id: '127',
     Lid: '',
+    Oid: '152',
     swatchId: '904',
     color: '6B5A5A',
     BLName: 'Mx Tile Gray',
@@ -3482,6 +3697,7 @@ let modulexColors = [
   {
     id: '128',
     Lid: '3',
+    Oid: '136',
     swatchId: '905',
     color: '000000',
     BLName: 'Mx Black',
@@ -3498,6 +3714,7 @@ let modulexColors = [
   {
     id: '131',
     Lid: '',
+    Oid: '151',
     swatchId: '906',
     color: '330000',
     BLName: 'Mx Tile Brown',
@@ -3514,6 +3731,7 @@ let modulexColors = [
   {
     id: '134',
     Lid: '4',
+    Oid: '150',
     swatchId: '907',
     color: '5C5030',
     BLName: 'Mx Terracotta',
@@ -3530,6 +3748,7 @@ let modulexColors = [
   {
     id: '132',
     Lid: '9',
+    Oid: '137',
     swatchId: '908',
     color: '907450',
     BLName: 'Mx Brown',
@@ -3546,6 +3765,7 @@ let modulexColors = [
   {
     id: '133',
     Lid: '5',
+    Oid: '138',
     swatchId: '909',
     color: 'DEC69C',
     BLName: 'Mx Buff',
@@ -3562,6 +3782,7 @@ let modulexColors = [
   {
     id: '129',
     Lid: '13',
+    Oid: '148',
     swatchId: '910',
     color: 'B52C20',
     BLName: 'Mx Red',
@@ -3578,6 +3799,7 @@ let modulexColors = [
   {
     id: '130',
     Lid: '33',
+    Oid: '147',
     swatchId: '911',
     color: 'F45C40',
     BLName: 'Mx Pink Red',
@@ -3594,6 +3816,7 @@ let modulexColors = [
   {
     id: '135',
     Lid: '12',
+    Oid: '30',
     swatchId: '912',
     color: 'F47B30',
     BLName: 'Mx Orange',
@@ -3610,6 +3833,7 @@ let modulexColors = [
   {
     id: '136',
     Lid: '39',
+    Oid: '142',
     swatchId: '913',
     color: 'F7AD63',
     BLName: 'Mx Light Orange',
@@ -3626,6 +3850,7 @@ let modulexColors = [
   {
     id: '137',
     Lid: '35',
+    Oid: '143',
     swatchId: '914',
     color: 'FFE371',
     BLName: 'Mx Light Yellow',
@@ -3642,6 +3867,7 @@ let modulexColors = [
   {
     id: '138',
     Lid: '6',
+    Oid: '31',
     swatchId: '915',
     color: 'FED557',
     BLName: 'Mx Ochre Yellow',
@@ -3658,6 +3884,7 @@ let modulexColors = [
   {
     id: '139',
     Lid: '15',
+    Oid: '140',
     swatchId: '916',
     color: 'BDC618',
     BLName: 'Mx Lemon',
@@ -3674,6 +3901,7 @@ let modulexColors = [
   {
     id: '141',
     Lid: '14',
+    Oid: '33',
     swatchId: '917',
     color: '7DB538',
     BLName: 'Mx Pastel Green',
@@ -3690,6 +3918,7 @@ let modulexColors = [
   {
     id: '140',
     Lid: '7',
+    Oid: '32',
     swatchId: '918',
     color: '7C9051',
     BLName: 'Mx Olive Green',
@@ -3706,6 +3935,7 @@ let modulexColors = [
   {
     id: '142',
     Lid: '34',
+    Oid: '135',
     swatchId: '919',
     color: '27867E',
     BLName: 'Mx Aqua Green',
@@ -3722,6 +3952,7 @@ let modulexColors = [
   {
     id: '146',
     Lid: '8',
+    Oid: '149',
     swatchId: '920',
     color: '467083',
     BLName: 'Mx Teal Blue',
@@ -3738,6 +3969,7 @@ let modulexColors = [
   {
     id: '143',
     Lid: '',
+    Oid: '34',
     swatchId: '921',
     color: '0057A6',
     BLName: 'Mx Tile Blue',
@@ -3754,6 +3986,7 @@ let modulexColors = [
   {
     id: '144',
     Lid: '38',
+    Oid: '144',
     swatchId: '922',
     color: '61AFFF',
     BLName: 'Mx Medium Blue',
@@ -3770,6 +4003,7 @@ let modulexColors = [
   {
     id: '145',
     Lid: '11',
+    Oid: '145',
     swatchId: '923',
     color: '68AECE',
     BLName: 'Mx Pastel Blue',
@@ -3786,6 +4020,7 @@ let modulexColors = [
   {
     id: '147',
     Lid: '37',
+    Oid: '153',
     swatchId: '924',
     color: 'BD7D85',
     BLName: 'Mx Violet',
@@ -3802,6 +4037,7 @@ let modulexColors = [
   {
     id: '148',
     Lid: '16',
+    Oid: '146',
     swatchId: '925',
     color: 'F785B1',
     BLName: 'Mx Pink',
@@ -3818,6 +4054,7 @@ let modulexColors = [
   {
     id: '149',
     Lid: '10',
+    Oid: '139',
     swatchId: '926',
     color: 'FFFFFF',
     BLName: 'Mx Clear',
@@ -3834,6 +4071,7 @@ let modulexColors = [
   {
     id: '',
     Lid: '10',
+    Oid: '',
     swatchId: '927',
     color: 'UNKNWN',
     BLName: 'Mx Strong Red*',
@@ -3850,6 +4088,7 @@ let modulexColors = [
   {
     id: '',
     Lid: '',
+    Oid: '',
     swatchId: '928',
     color: 'UNKNWN',
     BLName: 'Mx Ice White*',
@@ -3866,6 +4105,7 @@ let modulexColors = [
   {
     id: '',
     Lid: '',
+    Oid: '',
     swatchId: '929',
     color: 'UNKNWN',
     BLName: 'Mx Very Light Bluish Gray*',
@@ -3882,6 +4122,7 @@ let modulexColors = [
   {
     id: '',
     Lid: '',
+    Oid: '',
     swatchId: '930',
     color: 'UNKNWN',
     BLName: 'Mx Dark Gray*',
@@ -3902,6 +4143,7 @@ let modulexFoilColors = [
   {
     id: '',
     Lid: '80',
+    Oid: '',
     swatchId: '975',
     color: 'FFFFFF',
     BLName: 'Mx Foil White*',
@@ -3918,6 +4160,7 @@ let modulexFoilColors = [
   {
     id: '',
     Lid: '81',
+    Oid: '',
     swatchId: '976',
     color: '000000',
     BLName: 'Mx Foil Black*',
@@ -3934,6 +4177,7 @@ let modulexFoilColors = [
   {
     id: '210',
     Lid: '82',
+    Oid: '',
     swatchId: '977',
     color: '595D60',
     BLName: 'Mx Foil Dark Gray',
@@ -3950,6 +4194,7 @@ let modulexFoilColors = [
   {
     id: '211',
     Lid: '83',
+    Oid: '',
     swatchId: '978',
     color: '9C9C9C',
     BLName: 'Mx Foil Light Gray',
@@ -3966,6 +4211,7 @@ let modulexFoilColors = [
   {
     id: '212',
     Lid: '84',
+    Oid: '',
     swatchId: '979',
     color: '006400',
     BLName: 'Mx Foil Dark Green',
@@ -3982,6 +4228,7 @@ let modulexFoilColors = [
   {
     id: '213',
     Lid: '85',
+    Oid: '',
     swatchId: '980',
     color: '7DB538',
     BLName: 'Mx Foil Light Green',
@@ -3998,6 +4245,7 @@ let modulexFoilColors = [
   {
     id: '214',
     Lid: '86',
+    Oid: '',
     swatchId: '981',
     color: '0057A6',
     BLName: 'Mx Foil Dark Blue',
@@ -4014,6 +4262,7 @@ let modulexFoilColors = [
   {
     id: '215',
     Lid: '87',
+    Oid: '',
     swatchId: '982',
     color: '68AECE',
     BLName: 'Mx Foil Light Blue',
@@ -4030,6 +4279,7 @@ let modulexFoilColors = [
   {
     id: '216',
     Lid: '88',
+    Oid: '',
     swatchId: '983',
     color: '4B0082',
     BLName: 'Mx Foil Violet',
@@ -4046,6 +4296,7 @@ let modulexFoilColors = [
   {
     id: '217',
     Lid: '89',
+    Oid: '',
     swatchId: '984',
     color: '8B0000',
     BLName: 'Mx Foil Red',
@@ -4062,6 +4313,7 @@ let modulexFoilColors = [
   {
     id: '218',
     Lid: '90',
+    Oid: '',
     swatchId: '985',
     color: 'FED557',
     BLName: 'Mx Foil Yellow',
@@ -4078,6 +4330,7 @@ let modulexFoilColors = [
   {
     id: '219',
     Lid: '91',
+    Oid: '',
     swatchId: '986',
     color: 'F7AD63',
     BLName: 'Mx Foil Orange',
@@ -4098,6 +4351,7 @@ let functional = [
   {
     id: '',
     Lid: '109',
+    Oid: '',
     swatchId: '2012',
     color: '001414',
     BLName: '',
@@ -4114,6 +4368,7 @@ let functional = [
   {
     id: '',
     Lid: '342',
+    Oid: '',
     swatchId: '2054',
     color: '111111',
     BLName: '',
@@ -4130,6 +4385,7 @@ let functional = [
   {
     id: '',
     Lid: '343',
+    Oid: '',
     swatchId: '2055',
     color: 'F5F5F5',
     BLName: '',
@@ -4146,6 +4402,7 @@ let functional = [
   {
     id: '',
     Lid: '354',
+    Oid: '',
     swatchId: '2063',
     color: 'F5F5F5',
     BLName: '',
@@ -4162,6 +4419,7 @@ let functional = [
   {
     id: '',
     Lid: '355',
+    Oid: '',
     swatchId: '2064',
     color: '000000',
     BLName: '',
@@ -4178,6 +4436,7 @@ let functional = [
   {
     id: '',
     Lid: '358',
+    Oid: '',
     swatchId: '2066',
     color: 'F4F4F4',
     BLName: '',
@@ -4194,6 +4453,7 @@ let functional = [
   {
     id: '',
     Lid: '369',
+    Oid: '',
     swatchId: '2068',
     color: 'F5F5F5',
     BLName: '',
@@ -4214,6 +4474,7 @@ let unreleased = [
   {
     id: '',
     Lid: '7',
+    Oid: '',
     swatchId: '2001',
     color: 'FF8500',
     BLName: '',
@@ -4231,6 +4492,7 @@ let unreleased = [
   {
     id: '',
     Lid: '8',
+    Oid: '',
     swatchId: '2002',
     color: '8C00FF',
     BLName: '',
@@ -4248,7 +4510,8 @@ let unreleased = [
   // {
   //   id: "",
   //   Lid: "10",
-  //   swatchId: "2003",
+  //Oid: '',//
+  //swatchId: "2003",
   //   color: "FFFFBB",
   //   BLName: "",
   //   LName: "Clear* / Transparent*",
@@ -4265,7 +4528,8 @@ let unreleased = [
   // {
   //   id: '',
   //   Lid: '10',
-  //   swatchId: '2005',
+  //Oid: '',//
+  //swatchId: '2005',
   //   color: 'ffffff',
   //   BLName: '',
   //   LName: 'Clear',
@@ -4282,7 +4546,8 @@ let unreleased = [
   // {
   //   id: '',
   //   Lid: '31',
-  //   swatchId: '2008',
+  //Oid: '',//
+  //swatchId: '2008',
   //   color: 'ffffff',
   //   BLName: '',
   //   LName: 'White',
@@ -4299,6 +4564,7 @@ let unreleased = [
   {
     id: '',
     Lid: '108',
+    Oid: '',
     swatchId: '2011',
     color: '56472F',
     BLName: '',
@@ -4315,6 +4581,7 @@ let unreleased = [
   {
     id: '',
     Lid: '137',
+    Oid: '',
     swatchId: '2016',
     color: 'F48147',
     BLName: '',
@@ -4332,6 +4599,7 @@ let unreleased = [
   {
     id: '',
     Lid: '142',
+    Oid: '',
     swatchId: '2017',
     color: 'UNKNWN',
     BLName: '',
@@ -4348,6 +4616,7 @@ let unreleased = [
   {
     id: '',
     Lid: '152',
+    Oid: '',
     swatchId: '2018',
     color: 'UNKNWN',
     BLName: '',
@@ -4364,6 +4633,7 @@ let unreleased = [
   {
     id: '',
     Lid: '159',
+    Oid: '',
     swatchId: '2021',
     color: 'UNKNWN',
     BLName: '',
@@ -4380,6 +4650,7 @@ let unreleased = [
   {
     id: '',
     Lid: '168',
+    Oid: '',
     swatchId: '2022',
     color: '60564C',
     BLName: '',
@@ -4396,6 +4667,7 @@ let unreleased = [
   {
     id: '',
     Lid: '193',
+    Oid: '',
     swatchId: '2031',
     color: 'EC441D',
     BLName: '',
@@ -4412,6 +4684,7 @@ let unreleased = [
   {
     id: '',
     Lid: '209',
+    Oid: '',
     swatchId: '2033',
     color: 'A47624',
     BLName: '',
@@ -4428,6 +4701,7 @@ let unreleased = [
   {
     id: '',
     Lid: '211',
+    Oid: '',
     swatchId: '2035',
     color: '3FB6A9',
     BLName: '',
@@ -4444,6 +4718,7 @@ let unreleased = [
   {
     id: '',
     Lid: '223',
+    Oid: '',
     swatchId: '2037',
     color: 'F17880',
     BLName: '',
@@ -4460,6 +4735,7 @@ let unreleased = [
   {
     id: '',
     Lid: '228',
+    Oid: '',
     swatchId: '2040',
     color: '55A5AF',
     BLName: '',
@@ -4476,7 +4752,8 @@ let unreleased = [
   // {
   //   id: "",
   //   Lid: "301",
-  //   swatchId: "2046",
+  //Oid: '',//
+  //swatchId: "2046",
   //   color: "fff",
   //   BLName: "",
   //   LName: "Silver",
@@ -4493,7 +4770,8 @@ let unreleased = [
   // {
   //   id: "",
   //   Lid: "331",
-  //   swatchId: "2048",
+  //Oid: '',//
+  //swatchId: "2048",
   //   color: "EEEEEE",
   //   BLName: "",
   //   LName: "Lacquer",
@@ -4510,7 +4788,8 @@ let unreleased = [
   // {
   //   id: "",
   //   Lid: "332",
-  //   swatchId: "2049",
+  //Oid: '',//
+  //swatchId: "2049",
   //   color: "D06D4F",
   //   BLName: "",
   //   LName: "Fluorescent Red Ink",
@@ -4527,7 +4806,8 @@ let unreleased = [
   // {
   //   id: "",
   //   Lid: "333",
-  //   swatchId: "2050",
+  //Oid: '',//
+  //swatchId: "2050",
   //   color: "DBEA7A",
   //   BLName: "",
   //   LName: "Fluorescent Green Ink",
@@ -4544,7 +4824,8 @@ let unreleased = [
   // {
   //   id: "",
   //   Lid: "334",
-  //   swatchId: "2051",
+  //Oid: '',//
+  //swatchId: "2051",
   //   color: "764D3B",
   //   BLName: "",
   //   LName: "Copper Ink",
@@ -4561,7 +4842,8 @@ let unreleased = [
   // {
   //   id: "",
   //   Lid: "337",
-  //   swatchId: "2052",
+  //Oid: '',//
+  //swatchId: "2052",
   //   color: "3E3C39",
   //   BLName: "",
   //   LName: "Titanium",
@@ -4577,7 +4859,8 @@ let unreleased = [
   // {
   //   id: "",
   //   Lid: "344",
-  //   swatchId: "2056",
+  //Oid: '',//
+  //swatchId: "2056",
   //   color: "fff",
   //   BLName: "",
   //   LName: "Cyan Metallic Ink",
@@ -4594,7 +4877,8 @@ let unreleased = [
   // {
   //   id: "",
   //   Lid: "345",
-  //   swatchId: "2057",
+  //Oid: '',//
+  //swatchId: "2057",
   //   color: "fff",
   //   BLName: "",
   //   LName: "Magenta Metallic Ink",
@@ -4610,7 +4894,8 @@ let unreleased = [
   // {
   //   id: "",
   //   Lid: "357",
-  //   swatchId: "2065",
+  //Oid: '',//
+  //swatchId: "2065",
   //   color: "fff",
   //   BLName: "",
   //   LName: "Rainbow Shimmer Ink",
@@ -4626,7 +4911,8 @@ let unreleased = [
   // {
   //   id: "",
   //   Lid: "429",
-  //   swatchId: "2070",
+  //Oid: '',//
+  //swatchId: "2070",
   //   color: "F2DE2A",
   //   BLName: "",
   //   LName: "Yellow",
@@ -4643,7 +4929,8 @@ let unreleased = [
   // {
   //   id: "",
   //   Lid: "439",
-  //   swatchId: "2071",
+  //Oid: '',//
+  //swatchId: "2071",
   //   color: "C20084",
   //   BLName: "",
   //   LName: "Magenta",
@@ -4660,7 +4947,8 @@ let unreleased = [
   // {
   //   id: "",
   //   Lid: "454",
-  //   swatchId: "2072",
+  //Oid: '',//
+  //swatchId: "2072",
   //   color: "3797CD",
   //   BLName: "",
   //   LName: "Cyan",

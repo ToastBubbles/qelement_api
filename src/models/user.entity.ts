@@ -18,6 +18,8 @@ import { RaretyRating } from './raretyRating.entity';
 import { UserFavorite } from './userFavorite.entity';
 import { UserInventory } from './userInventory.entity';
 import { UserPreference } from './userPreference.entity';
+import { UserTitle } from './userTitle.entity';
+import { Title } from './title.entity';
 
 @Table({
   timestamps: true,
@@ -39,11 +41,26 @@ export class User extends Model {
   })
   role: string;
 
+  @Column
+  selectedTitleId: number;
+
+  @Column
+  patronLevel: number;
+
+  @Column
+  customTitle: string;
+
+  @Column
+  customColor: string;
+
   @HasMany(() => Comment)
   comments: Comment[];
 
   @HasMany(() => Image)
   uploadedImages: Image[];
+
+  @BelongsToMany(() => Title, () => UserTitle)
+  titles: Title[];
 
   @HasMany(() => RaretyRating)
   ratings: RaretyRating[];
