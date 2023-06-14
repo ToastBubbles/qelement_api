@@ -8,6 +8,7 @@ import {
 } from 'sequelize-typescript';
 import { QPart } from './qPart.entity';
 import { User } from './user.entity';
+import { DataTypes } from 'sequelize';
 
 @Table({
   timestamps: true,
@@ -16,6 +17,15 @@ import { User } from './user.entity';
 export class Image extends Model {
   @Column
   path: string;
+
+  @Column({
+    type: DataTypes.ENUM('part', 'sculpture', 'assembled', 'damaged', 'other'),
+    defaultValue: 'part',
+  })
+  type: string;
+
+  @Column
+  isPrimary: boolean;
 
   @ForeignKey(() => User)
   @Column

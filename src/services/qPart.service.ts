@@ -1,5 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { QPart } from '../models/qPart.entity';
+import { log } from 'console';
 
 @Injectable()
 export class QPartsService {
@@ -10,6 +11,14 @@ export class QPartsService {
 
   async findAll(): Promise<QPart[]> {
     return this.qPartsRepository.findAll<QPart>();
+  }
+  async findRecent(limit: number): Promise<QPart[]> {
+    console.log('recent');
+
+    return this.qPartsRepository.findAll<QPart>({
+      limit,
+      order: [['createdAt', 'DESC']],
+    });
   }
 
   async findById(id: number): Promise<QPart | null> {

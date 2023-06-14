@@ -19,6 +19,15 @@ export interface IColorDTO {
   note: string;
 }
 
+export interface IPartStatusDTO {
+  status: string;
+  date: string;
+  location: string;
+  note: string;
+  qpartId: number;
+  creatorId: number;
+}
+
 export interface iQPartDTO {
   partId: number;
   colorId: number;
@@ -57,6 +66,11 @@ export interface ILoginDTO {
 }
 export interface iNameOnly {
   name: string;
+}
+export interface IQPartDetails {
+  part: IPartDTO;
+  color: IColorDTO;
+  qpart: iQPartDTO;
 }
 
 export interface IAPIResponse {

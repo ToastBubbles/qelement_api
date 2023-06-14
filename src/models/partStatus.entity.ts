@@ -8,7 +8,7 @@ import {
 } from 'sequelize-typescript';
 import { QPart } from './qPart.entity';
 import { User } from './user.entity';
-import { DataTypes } from 'sequelize';
+import { DataTypes, Sequelize } from 'sequelize';
 
 @Table({
   timestamps: true,
@@ -29,6 +29,12 @@ export class PartStatus extends Model {
     defaultValue: 'unknown',
   })
   status: string;
+
+  @Column({
+    type: DataTypes.DATEONLY,
+    defaultValue: DataTypes.NOW,
+  })
+  date: Date;
 
   @Column
   location: string;
