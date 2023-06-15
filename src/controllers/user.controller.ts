@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, Param } from '@nestjs/common';
-import { IUserDTO, Public } from 'src/interfaces/general';
+import { IAPIResponse, IUserDTO, Public } from 'src/interfaces/general';
 import { User } from 'src/models/user.entity';
 import { UsersService } from '../services/user.service';
 import * as bcrypt from 'bcrypt';
@@ -39,6 +39,19 @@ export class UsersController {
     let result = this.usersService.findOneById(id);
 
     return result;
+  }
+
+  @Get('/checkIfAdmin/:userid')
+  async checkIfAdminById(@Param('userid') id: number): Promise<IAPIResponse> {
+    let result = await this.usersService.findOneById(id);
+
+    if (result) {
+      if (result?.role == 'admin') {
+        return { code: 200, message: 'user is admin' };
+      } else {
+        return { code: 403, message: `user is not admin` };
+      }
+    } else return { code: 404, message: `user not found` };
   }
 
   @Public()

@@ -40,4 +40,7 @@ export class Image extends Model {
 
   @BelongsTo(() => QPart)
   qpart: QPart;
+
+  @Column
+  approvalDate: Date;
 }

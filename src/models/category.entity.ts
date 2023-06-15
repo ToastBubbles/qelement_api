@@ -13,4 +13,7 @@ export class Category extends Model {
 
   @HasMany(() => Part)
   parts: Part[];
+  
+  @Column
+  approvalDate: Date;
 }

@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { IAPIResponse, iNameOnly } from 'src/interfaces/general';
+import { IAPIResponse, iIdOnly, iNameOnly } from 'src/interfaces/general';
 import { Category } from 'src/models/category.entity';
 import { CategoriesService } from '../services/category.service';
 
@@ -13,19 +13,34 @@ export class CategoriesController {
     return categories.sort((a, b) => a.name.localeCompare(b.name));
   }
 
-  @Get('/:id')
+  @Get('/id/:id')
   async getOneCategory(@Param('id') id: number): Promise<Category> {
     return this.categoriesService.findById(id);
   }
 
-  // @Get('/add')
-  // async addTestCat(): Promise<Category> {
-  //   let testCat = new Category({
-  //     name: 'Brick',
-  //   });
-  //   testCat.save();
-  //   return testCat;
-  // }
+  @Get('/notApproved')
+  async getAllNotApprovedCategories(): Promise<Category[]> {
+    return this.categoriesService.findAllNotApproved();
+  }
+
+  @Post('/approve')
+  async approveCategory(
+    @Body()
+    data: iIdOnly,
+  ): Promise<IAPIResponse> {
+    try {
+      let thisObj = await this.categoriesService.findById(data.id);
+      if (thisObj) {
+        thisObj.update({
+          approvalDate: new Date().toISOString().slice(0, 23).replace('T', ' '),
+        });
+        return { code: 200, message: `approved` };
+      } else return { code: 500, message: `not found` };
+    } catch (error) {
+      console.log(error);
+      return { code: 500, message: `generic error` };
+    }
+  }
 
   @Post()
   async addNewCategory(

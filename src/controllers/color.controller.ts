@@ -1,7 +1,12 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { Param } from '@nestjs/common/decorators';
 import { IQelementError } from 'src/interfaces/error';
-import { IColorDTO, Public } from 'src/interfaces/general';
+import {
+  IAPIResponse,
+  IColorDTO,
+  Public,
+  iIdOnly,
+} from 'src/interfaces/general';
 import { Color } from 'src/models/color.entity';
 import { ColorsService } from '../services/color.service';
 
@@ -16,9 +21,33 @@ export class ColorsController {
   }
 
   @Public()
-  @Get('/:id')
+  @Get('/id/:id')
   async findOne(@Param('id') id: number): Promise<Color | IQelementError> {
     return this.colorsService.findById(id);
+  }
+
+  @Get('/notApproved')
+  async getAllNotApprovedCategories(): Promise<Color[]> {
+    return this.colorsService.findAllNotApproved();
+  }
+
+  @Post('/approve')
+  async approveColor(
+    @Body()
+    data: iIdOnly,
+  ): Promise<IAPIResponse> {
+    try {
+      let thisObj = await this.colorsService.findByIdAll(data.id);
+      if (thisObj) {
+        thisObj.update({
+          approvalDate: new Date().toISOString().slice(0, 23).replace('T', ' '),
+        });
+        return { code: 200, message: `approved` };
+      } else return { code: 500, message: `not found` };
+    } catch (error) {
+      console.log(error);
+      return { code: 500, message: `generic error` };
+    }
   }
 
   @Post()
@@ -36,20 +65,26 @@ export class ColorsController {
       note,
     }: IColorDTO,
   ): Promise<string> {
-    let newColor = new Color({
-      bl_name,
-      tlg_name,
-      bo_name,
-      hex,
-      bl_id: bl_id == -1 ? null : bl_id,
-      tlg_id: tlg_id == -1 ? null : tlg_id,
-      bo_id: bo_id == -1 ? null : bo_id,
-      type,
-      note,
-    });
-    newColor.save();
+    try {
+      let newColor = Color.create({
+        bl_name,
+        tlg_name,
+        bo_name,
+        hex,
+        bl_id: bl_id == -1 ? null : bl_id,
+        tlg_id: tlg_id == -1 ? null : tlg_id,
+        bo_id: bo_id == -1 ? null : bo_id,
+        type,
+        note,
+      });
 
-    return `new color added`;
+      if (newColor instanceof Color) return `new color added`;
+      else return 'error';
+    } catch (error) {
+      console.log(error);
+
+      return 'error';
+    }
   }
 
   @Post('/:id')

@@ -5,6 +5,7 @@ import {
   IPartDTO,
   IQPartDTO,
   IQPartDetails,
+  iIdOnly,
   iQPartDTO,
 } from 'src/interfaces/general';
 import { QPart } from 'src/models/qPart.entity';
@@ -138,6 +139,31 @@ export class QPartsController {
 
     return null;
   }
+
+  @Get('/notApproved')
+  async getAllNotApprovedCategories(): Promise<QPart[]> {
+    return this.qPartsService.findAllNotApproved();
+  }
+
+  @Post('/approve')
+  async approveQPart(
+    @Body()
+    data: iIdOnly,
+  ): Promise<IAPIResponse> {
+    try {
+      let thisObj = await this.qPartsService.findById(data.id);
+      if (thisObj) {
+        thisObj.update({
+          approvalDate: new Date().toISOString().slice(0, 23).replace('T', ' '),
+        });
+        return { code: 200, message: `approved` };
+      } else return { code: 500, message: `not found` };
+    } catch (error) {
+      console.log(error);
+      return { code: 500, message: `generic error` };
+    }
+  }
+
   @Post()
   async addNewPart(
     @Body()

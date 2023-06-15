@@ -24,6 +24,7 @@ export class EverythingController {
           bo_id: Number(color.Oid) || null,
           type: color.type,
           note: color.note || '',
+          approvalDate: new Date().toISOString().slice(0, 23).replace('T', ' '),
         });
       } catch (e) {
         //   let result = (e as Error).message;

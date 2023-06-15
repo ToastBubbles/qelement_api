@@ -73,6 +73,10 @@ export interface IQPartDetails {
   qpart: iQPartDTO;
 }
 
+export interface iIdOnly {
+  id: number;
+}
+
 export interface IAPIResponse {
   code: number;
   message: string;

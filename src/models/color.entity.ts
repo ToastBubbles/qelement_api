@@ -37,6 +37,9 @@ export class Color extends Model {
   @BelongsToMany(() => Color, () => SimilarColor, 'colorId1', 'colorId2')
   similar: Color[];
 
+  @Column
+  approvalDate: Date;
+
   // @HasMany(() => Color)
   // similarColors: Color[];
 }

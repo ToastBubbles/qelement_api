@@ -73,4 +73,7 @@ export class QPart extends Model {
 
   @BelongsToMany(() => User, () => UserInventory)
   userInventories: User[];
+
+  @Column
+  approvalDate: Date;
 }

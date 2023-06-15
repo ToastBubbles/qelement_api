@@ -35,4 +35,7 @@ export class Part extends Model {
 
   @BelongsTo(() => Category)
   Category: Category;
+
+  @Column
+  approvalDate: Date;
 }

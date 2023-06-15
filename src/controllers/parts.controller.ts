@@ -1,5 +1,5 @@
 import { Controller, Get, Param, Post, Body } from '@nestjs/common';
-import { IAPIResponse, IPartDTO } from 'src/interfaces/general';
+import { IAPIResponse, IPartDTO, iIdOnly } from 'src/interfaces/general';
 import { Category } from 'src/models/category.entity';
 import { Part } from 'src/models/part.entity';
 import { PartsService } from '../services/parts.service';
@@ -28,20 +28,35 @@ export class PartsController {
     return undefined;
   }
 
-  @Get('/:id')
+  @Get('/id/:id')
   async findById(@Param('id') id: number): Promise<Part | null> {
     return this.partsService.findById(id);
   }
-  // @Get('/add')
-  // async addTestPart(): Promise<Part> {
-  //   let newPart = new Part({
-  //     name: 'Brick, 2 x 4',
-  //     number: '3001',
-  //     CatId: 2,
-  //   });
-  //   newPart.save();
-  //   return newPart;
-  // }
+
+  @Get('/notApproved')
+  async getAllNotApprovedCategories(): Promise<Part[]> {
+    return this.partsService.findAllNotApproved();
+  }
+
+  @Post('/approve')
+  async approvePart(
+    @Body()
+    data: iIdOnly,
+  ): Promise<IAPIResponse> {
+    try {
+      let thisObj = await this.partsService.findById(data.id);
+      if (thisObj) {
+        thisObj.update({
+          approvalDate: new Date().toISOString().slice(0, 23).replace('T', ' '),
+        });
+        return { code: 200, message: `approved` };
+      } else return { code: 500, message: `not found` };
+    } catch (error) {
+      console.log(error);
+      return { code: 500, message: `generic error` };
+    }
+  }
+
   @Post()
   async addNewPart(
     @Body()

@@ -13,18 +13,14 @@ export class UsersService {
   async findAll(): Promise<User[]> {
     return this.usersRepository.findAll<User>();
   }
-  async findOneByUsername(username: string): Promise<User | IQelementError> {
+  async findOneByUsername(username: string): Promise<User> {
     let foundUser = await this.usersRepository.findOne({
       where: { name: username },
     });
     if (foundUser) return foundUser;
-    let error = { message: 'not found' } as IQelementError;
-    return error;
-    // throw new HttpException('User not found', 404);
+    else throw new HttpException('User not found', 404);
   }
-  async findOneByUsernameInsensitive(
-    username: string,
-  ): Promise<User | IQelementError> {
+  async findOneByUsernameInsensitive(username: string): Promise<User> {
     let foundUser = await this.usersRepository.findOne({
       where: {
         name: {
@@ -33,16 +29,13 @@ export class UsersService {
       },
     });
     if (foundUser) return foundUser;
-    let error = { message: 'not found' } as IQelementError;
-    return error;
-    // throw new HttpException('User not found', 404);
+    else throw new HttpException('User not found', 404);
   }
-  async findOneById(id: number): Promise<User | IQelementError> {
+  async findOneById(id: number): Promise<User> {
     let foundUser = await this.usersRepository.findOne({
       where: { id: id },
     });
     if (foundUser) return foundUser;
-    let error = { message: 'not found' } as IQelementError;
-    return error;
+    else throw new HttpException('User not found', 404);
   }
 }

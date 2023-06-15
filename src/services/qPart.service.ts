@@ -1,6 +1,7 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { QPart } from '../models/qPart.entity';
 import { log } from 'console';
+import { Op } from 'sequelize';
 
 @Injectable()
 export class QPartsService {
@@ -10,7 +11,21 @@ export class QPartsService {
   ) {}
 
   async findAll(): Promise<QPart[]> {
-    return this.qPartsRepository.findAll<QPart>();
+    return this.qPartsRepository.findAll<QPart>({
+      where: {
+        approvalDate: {
+          [Op.ne]: null,
+        },
+      },
+    });
+  }
+
+  async findAllNotApproved(): Promise<QPart[]> {
+    return this.qPartsRepository.findAll<QPart>({
+      where: {
+        approvalDate: null,
+      },
+    });
   }
   async findRecent(limit: number): Promise<QPart[]> {
     console.log('recent');
@@ -18,12 +33,23 @@ export class QPartsService {
     return this.qPartsRepository.findAll<QPart>({
       limit,
       order: [['createdAt', 'DESC']],
+
+      where: {
+        approvalDate: {
+          [Op.ne]: null,
+        },
+      },
     });
   }
 
   async findById(id: number): Promise<QPart | null> {
     const result = await this.qPartsRepository.findOne({
-      where: { id: id },
+      where: {
+        id: id,
+        approvalDate: {
+          [Op.ne]: null,
+        },
+      },
     });
     // if (result) {
     return result;
@@ -34,7 +60,12 @@ export class QPartsService {
 
   async findMatchesById(partId: number): Promise<QPart[] | null> {
     const results = await this.qPartsRepository.findAll({
-      where: { partId: partId },
+      where: {
+        partId: partId,
+        approvalDate: {
+          [Op.ne]: null,
+        },
+      },
     });
     // if (result) {
     return results;

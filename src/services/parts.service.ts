@@ -8,11 +8,30 @@ export class PartsService {
     @Inject('PART_REPOSITORY')
     private partsRepository: typeof Part,
   ) {}
+  async findAll(): Promise<Part[]> {
+    return this.partsRepository.findAll<Part>({
+      where: {
+        approvalDate: {
+          [Op.ne]: null,
+        },
+      },
+    });
+  }
+  async findAllNotApproved(): Promise<Part[]> {
+    return this.partsRepository.findAll<Part>({
+      where: {
+        approvalDate: null,
+      },
+    });
+  }
   async findPartByNum(num: string): Promise<Part | null> {
     const result = await this.partsRepository.findOne({
       where: {
         number: {
           [Op.iLike]: num,
+        },
+        approvalDate: {
+          [Op.ne]: null,
         },
       },
     });
@@ -22,17 +41,25 @@ export class PartsService {
   }
   async findById(id: number): Promise<Part | null> {
     const result = await this.partsRepository.findOne({
-      where: { id: id },
+      where: {
+        id: id,
+        approvalDate: {
+          [Op.ne]: null,
+        },
+      },
     });
 
     return result;
   }
-  async findAll(): Promise<Part[]> {
-    return this.partsRepository.findAll<Part>();
-  }
+
   async findPartsByCatId(catId: number): Promise<Part[] | null> {
     const result = await this.partsRepository.findAll({
-      where: { CatId: catId },
+      where: {
+        CatId: catId,
+        approvalDate: {
+          [Op.ne]: null,
+        },
+      },
     });
 
     return result;

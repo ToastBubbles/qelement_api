@@ -55,4 +55,7 @@ export class PartStatus extends Model {
 
   @BelongsTo(() => User)
   creator: User;
+  
+  @Column
+  approvalDate: Date;
 }
