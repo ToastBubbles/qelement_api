@@ -6,6 +6,7 @@ import {
 } from 'src/interfaces/general';
 import { Message } from 'src/models/message.entity';
 import { MessagesService } from '../services/message.service';
+import { trimAndReturn } from 'src/utils/utils';
 
 @Controller('message')
 export class MessagesController {
@@ -38,8 +39,8 @@ export class MessagesController {
   ) {
     try {
       let newMessage = new Message({
-        subject: messageDTO.subject,
-        content: messageDTO.body,
+        subject: trimAndReturn(messageDTO.subject),
+        content: trimAndReturn(messageDTO.body),
         senderId: messageDTO.senderId,
         recipientId: messageDTO.recipientId,
       });

@@ -2,6 +2,7 @@ import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { PartStatus } from 'src/models/partStatus.entity';
 import { PartStatusesService } from '../services/partStatus.service';
 import { IAPIResponse, IPartStatusDTO, iIdOnly } from 'src/interfaces/general';
+import { trimAndReturn } from 'src/utils/utils';
 
 @Controller('partStatus')
 export class PartStatusesController {
@@ -28,7 +29,7 @@ export class PartStatusesController {
     data: iIdOnly,
   ): Promise<IAPIResponse> {
     try {
-      let thisObj = await this.partStatusesService.findById(data.id);
+      let thisObj = await this.partStatusesService.findByIdAll(data.id);
       if (thisObj) {
         thisObj.update({
           approvalDate: new Date().toISOString().slice(0, 23).replace('T', ' '),
@@ -50,8 +51,8 @@ export class PartStatusesController {
       let newPart = PartStatus.create({
         status: data.status,
         date: data.date,
-        location: data.location,
-        note: data.note,
+        location: trimAndReturn(data.location, 100),
+        note: trimAndReturn(data.note),
         qpartId: data.qpartId,
         creatorId: data.creatorId,
       });

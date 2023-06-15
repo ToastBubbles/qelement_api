@@ -85,4 +85,16 @@ export class SimilarColorsService {
     // return { message: 'No color found with the TLG id.' } as IQelementError;
     throw new HttpException('Cat not found', 404);
   }
+  async findByIdAll(id: number): Promise<SimilarColor> {
+    const result = await this.similarColorsRepository.findOne({
+      where: {
+        id: id,
+      },
+    });
+    if (result) {
+      return result;
+    }
+    // return { message: 'No color found with the TLG id.' } as IQelementError;
+    throw new HttpException('Cat not found', 404);
+  }
 }

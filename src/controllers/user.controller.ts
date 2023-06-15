@@ -17,10 +17,8 @@ export class UsersController {
   @Get('/checkInsensitive/:username')
   async findOneByUsernameInsensitive(
     @Param('username') username: string,
-  ): Promise<User | IQelementError> {
-    let result = this.usersService.findOneByUsernameInsensitive(username);
-
-    return result;
+  ): Promise<IAPIResponse> {
+    return this.usersService.findOneByUsernameInsensitive(username);
   }
 
   @Get('/username/:username')
@@ -61,16 +59,20 @@ export class UsersController {
     userDTO: IUserDTO,
   ) {
     try {
-      const salt = await bcrypt.genSalt();
+      if (userDTO.name.length > 255 || userDTO.email.length > 255) {
+        return;
+      } else {
+        const salt = await bcrypt.genSalt();
 
-      const hash = await bcrypt.hash(userDTO.password, salt);
-      let newUser = new User({
-        name: userDTO.name,
-        email: userDTO.email,
-        password: hash,
-        role: userDTO.role,
-      });
-      newUser.save();
+        const hash = await bcrypt.hash(userDTO.password, salt);
+        let newUser = new User({
+          name: userDTO.name,
+          email: userDTO.email,
+          password: hash,
+          role: userDTO.role,
+        });
+        newUser.save();
+      }
     } catch (error) {
       console.log(error);
     }

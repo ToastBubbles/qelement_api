@@ -2,6 +2,7 @@ import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { IAPIResponse, iIdOnly, iNameOnly } from 'src/interfaces/general';
 import { Category } from 'src/models/category.entity';
 import { CategoriesService } from '../services/category.service';
+import { trimAndReturn } from 'src/utils/utils';
 
 @Controller('categories')
 export class CategoriesController {
@@ -29,7 +30,7 @@ export class CategoriesController {
     data: iIdOnly,
   ): Promise<IAPIResponse> {
     try {
-      let thisObj = await this.categoriesService.findById(data.id);
+      let thisObj = await this.categoriesService.findByIdAll(data.id);
       if (thisObj) {
         thisObj.update({
           approvalDate: new Date().toISOString().slice(0, 23).replace('T', ' '),
@@ -47,17 +48,12 @@ export class CategoriesController {
     @Body()
     data: iNameOnly,
   ): Promise<IAPIResponse> {
-    let didSave = false;
     try {
-      let newCat = new Category({
-        name: data.name,
+      let newCat = Category.create({
+        name: trimAndReturn(data.name, 50),
       });
-      //example of catching duplicates
-      await newCat
-        .save()
-        .then(() => (didSave = true))
-        .catch((err) => {});
-      if (didSave) return { code: 200, message: `new category added` };
+      if (newCat instanceof Category)
+        return { code: 200, message: `new category added` };
       else return { code: 500, message: `category aready exists` };
     } catch (error) {
       console.log(error);

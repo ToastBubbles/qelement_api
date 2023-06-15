@@ -43,4 +43,17 @@ export class CategoriesService {
     // return { message: 'No color found with the TLG id.' } as IQelementError;
     throw new HttpException('Cat not found', 404);
   }
+
+  async findByIdAll(id: number): Promise<Category> {
+    const result = await this.categoriesRepository.findOne({
+      where: {
+        id: id,
+      },
+    });
+    if (result) {
+      return result;
+    }
+    // return { message: 'No color found with the TLG id.' } as IQelementError;
+    throw new HttpException('Cat not found', 404);
+  }
 }

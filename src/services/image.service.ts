@@ -51,4 +51,18 @@ export class ImagesService {
     // return { message: 'No color found with the TLG id.' } as IQelementError;
     throw new HttpException('not found', 404);
   }
+
+  async findByIdAll(id: number): Promise<Image> {
+    const result = await this.imagesRepository.findOne({
+      where: {
+        id: id,
+
+      },
+    });
+    if (result) {
+      return result;
+    }
+    // return { message: 'No color found with the TLG id.' } as IQelementError;
+    throw new HttpException('not found', 404);
+  }
 }

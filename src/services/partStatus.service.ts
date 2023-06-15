@@ -53,4 +53,17 @@ export class PartStatusesService {
     // return { message: 'No color found with the TLG id.' } as IQelementError;
     throw new HttpException('Cat not found', 404);
   }
+
+  async findByIdAll(id: number): Promise<PartStatus> {
+    const result = await this.partStatusesRepository.findOne({
+      where: {
+        id: id,
+      },
+    });
+    if (result) {
+      return result;
+    }
+    // return { message: 'No color found with the TLG id.' } as IQelementError;
+    throw new HttpException('Cat not found', 404);
+  }
 }

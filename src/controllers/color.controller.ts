@@ -9,6 +9,7 @@ import {
 } from 'src/interfaces/general';
 import { Color } from 'src/models/color.entity';
 import { ColorsService } from '../services/color.service';
+import { trimAndReturn } from 'src/utils/utils';
 
 @Controller('color')
 export class ColorsController {
@@ -67,15 +68,15 @@ export class ColorsController {
   ): Promise<string> {
     try {
       let newColor = Color.create({
-        bl_name,
-        tlg_name,
-        bo_name,
-        hex,
+        bl_name: trimAndReturn(bl_name, 100),
+        tlg_name: trimAndReturn(tlg_name, 100),
+        bo_name: trimAndReturn(bo_name, 100),
+        hex: trimAndReturn(hex, 6),
         bl_id: bl_id == -1 ? null : bl_id,
         tlg_id: tlg_id == -1 ? null : tlg_id,
         bo_id: bo_id == -1 ? null : bo_id,
-        type,
-        note,
+        type: trimAndReturn(type),
+        note: trimAndReturn(note),
       });
 
       if (newColor instanceof Color) return `new color added`;

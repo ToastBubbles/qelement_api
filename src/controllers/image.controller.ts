@@ -23,7 +23,7 @@ export class ImagesController {
     data: iIdOnly,
   ): Promise<IAPIResponse> {
     try {
-      let thisObj = await this.imagesService.findById(data.id);
+      let thisObj = await this.imagesService.findByIdAll(data.id);
       if (thisObj) {
         thisObj.update({
           approvalDate: new Date().toISOString().slice(0, 23).replace('T', ' '),

@@ -4,6 +4,7 @@ import { Category } from 'src/models/category.entity';
 import { Part } from 'src/models/part.entity';
 import { PartsService } from '../services/parts.service';
 import { log } from 'console';
+import { trimAndReturn } from 'src/utils/utils';
 
 @Controller('parts')
 export class PartsController {
@@ -44,7 +45,7 @@ export class PartsController {
     data: iIdOnly,
   ): Promise<IAPIResponse> {
     try {
-      let thisObj = await this.partsService.findById(data.id);
+      let thisObj = await this.partsService.findByIdAll(data.id);
       if (thisObj) {
         thisObj.update({
           approvalDate: new Date().toISOString().slice(0, 23).replace('T', ' '),
@@ -62,21 +63,17 @@ export class PartsController {
     @Body()
     data: IPartDTO,
   ): Promise<IAPIResponse> {
-    let didSave = false;
-
     try {
-      let newPart = new Part({
-        name: data.name,
-        number: data.number,
-        secondaryNumber: data.secondaryNumber,
+      let newPart = Part.create({
+        name: trimAndReturn(data.name, 100),
+        number: trimAndReturn(data.number, 20),
+        secondaryNumber: trimAndReturn(data.secondaryNumber, 20),
         CatId: data.CatId,
-        note: data.note,
+        note: trimAndReturn(data.note),
       });
-      await newPart
-        .save()
-        .then(() => (didSave = true))
-        .catch((err) => {});
-      if (didSave) return { code: 200, message: `new part added` };
+
+      if (newPart instanceof Part)
+        return { code: 200, message: `new part added` };
       else return { code: 500, message: `part aready exists` };
     } catch (error) {
       console.log(error);

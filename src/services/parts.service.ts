@@ -64,4 +64,14 @@ export class PartsService {
 
     return result;
   }
+
+  async findByIdAll(id: number): Promise<Part | null> {
+    const result = await this.partsRepository.findOne({
+      where: {
+        id: id,
+      },
+    });
+
+    return result;
+  }
 }

@@ -15,6 +15,7 @@ import { log } from 'console';
 import { PartsService } from 'src/services/parts.service';
 import { ColorsService } from 'src/services/color.service';
 import assert from 'assert';
+import { trimAndReturn } from 'src/utils/utils';
 
 @Controller('qpart')
 export class QPartsController {
@@ -151,7 +152,7 @@ export class QPartsController {
     data: iIdOnly,
   ): Promise<IAPIResponse> {
     try {
-      let thisObj = await this.qPartsService.findById(data.id);
+      let thisObj = await this.qPartsService.findByIdAll(data.id);
       if (thisObj) {
         thisObj.update({
           approvalDate: new Date().toISOString().slice(0, 23).replace('T', ' '),
@@ -170,30 +171,16 @@ export class QPartsController {
     data: iQPartDTO,
   ): Promise<IAPIResponse> {
     try {
-      // let newQPart = new QPart({
-      //   partId: data.partId,
-      //   colorId: data.colorId,
-      //   elementId: data.elementId,
-      //   secondaryElementId: data.secondaryElementId,
-      //   creatorId: data.creatorId == -1 ? 1 : data.creatorId,
-      //   note: data.note,
-      // });
       const newQPart = await QPart.create({
         partId: data.partId,
         colorId: data.colorId,
-        elementId: data.elementId,
-        secondaryElementId: data.secondaryElementId,
+        elementId: trimAndReturn(data.elementId, 20),
+        secondaryElementId: trimAndReturn(data.secondaryElementId, 20),
         creatorId: data.creatorId == -1 ? 1 : data.creatorId,
-        note: data.note,
+        note: trimAndReturn(data.note),
       });
       console.log(newQPart);
 
-      // await newQPart
-      //   .save()
-      //   .then(() => (didSave = true))
-      //   .catch((err) => {
-      //     console.log(err);
-      //   });
       if (newQPart instanceof QPart) return { code: 200, message: newQPart.id };
       else return { code: 500, message: `part aready exists` };
     } catch (error) {

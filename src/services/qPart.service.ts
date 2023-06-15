@@ -58,6 +58,16 @@ export class QPartsService {
     // throw new HttpException('Color not found', 404);
   }
 
+  async findByIdAll(id: number): Promise<QPart | null> {
+    const result = await this.qPartsRepository.findOne({
+      where: {
+        id: id,
+      },
+    });
+
+    return result;
+  }
+
   async findMatchesById(partId: number): Promise<QPart[] | null> {
     const results = await this.qPartsRepository.findAll({
       where: {
