@@ -18,12 +18,10 @@ export class PartStatus extends Model {
   @Column({
     type: DataTypes.ENUM(
       'unknown',
-      'found',
+      'idOnly',
       'seen',
+      'found',
       'known',
-      'nightshift',
-      'prototype',
-      'employee',
       'other',
     ),
     defaultValue: 'unknown',
@@ -55,7 +53,7 @@ export class PartStatus extends Model {
 
   @BelongsTo(() => User)
   creator: User;
-  
+
   @Column
   approvalDate: Date;
 }

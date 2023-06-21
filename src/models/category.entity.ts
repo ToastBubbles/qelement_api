@@ -1,4 +1,11 @@
-import { Table, Column, Model, HasMany, DeletedAt } from 'sequelize-typescript';
+import {
+  Table,
+  Column,
+  Model,
+  HasMany,
+  DeletedAt,
+  ForeignKey,
+} from 'sequelize-typescript';
 import { Part } from './part.entity';
 
 @Table({
@@ -13,7 +20,7 @@ export class Category extends Model {
 
   @HasMany(() => Part)
   parts: Part[];
-  
+
   @Column
   approvalDate: Date;
 }

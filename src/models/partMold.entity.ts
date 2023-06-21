@@ -2,37 +2,30 @@ import {
   Table,
   Column,
   Model,
-  ForeignKey,
   BelongsTo,
-  DeletedAt,
-  HasMany,
+  ForeignKey,
 } from 'sequelize-typescript';
-import { Category } from './category.entity';
-import { PartMold } from './partMold.entity';
+import { Part } from './part.entity';
 import { User } from './user.entity';
 
 @Table({
   timestamps: true,
   paranoid: true,
 })
-export class Part extends Model {
+export class PartMold extends Model {
   @Column({
     unique: true,
   })
-  name: string;
+  number: string;
 
   @Column
   note: string;
 
-  @ForeignKey(() => Category)
+  @ForeignKey(() => Part)
   @Column
-  CatId: number;
-
-  @BelongsTo(() => Category)
-  Category: Category;
-
-  @HasMany(() => PartMold)
-  molds: PartMold[];
+  parentPartId: number;
+  @BelongsTo(() => Part)
+  parentPart: Part;
 
   @ForeignKey(() => User)
   @Column
@@ -40,7 +33,6 @@ export class Part extends Model {
 
   @BelongsTo(() => User)
   creator: User;
-
   @Column
   approvalDate: Date;
 }

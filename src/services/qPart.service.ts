@@ -2,6 +2,12 @@ import { Injectable, Inject } from '@nestjs/common';
 import { QPart } from '../models/qPart.entity';
 import { log } from 'console';
 import { Op } from 'sequelize';
+import { Part } from 'src/models/part.entity';
+import { PartMold } from 'src/models/partMold.entity';
+import { Color } from 'src/models/color.entity';
+import { User } from 'src/models/user.entity';
+import { RaretyRating } from 'src/models/raretyRating.entity';
+import { PartStatus } from 'src/models/partStatus.entity';
 
 @Injectable()
 export class QPartsService {
@@ -22,6 +28,11 @@ export class QPartsService {
 
   async findAllNotApproved(): Promise<QPart[]> {
     return this.qPartsRepository.findAll<QPart>({
+      include: [
+        { model: PartMold, include: [Part] },
+        Color,
+        { model: User, as: 'creator' },
+      ],
       where: {
         approvalDate: null,
       },
@@ -44,6 +55,12 @@ export class QPartsService {
 
   async findById(id: number): Promise<QPart | null> {
     const result = await this.qPartsRepository.findOne({
+      include: [
+        { model: PartMold, include: [Part] },
+        Color,
+        { model: User, as: 'creator' },
+        RaretyRating,
+      ],
       where: {
         id: id,
         approvalDate: {
@@ -68,10 +85,30 @@ export class QPartsService {
     return result;
   }
 
-  async findMatchesById(partId: number): Promise<QPart[] | null> {
+  async findMatchesByPartId(partId: number): Promise<QPart[] | null> {
     const results = await this.qPartsRepository.findAll({
+      include: [
+        {
+          model: PartMold,
+          include: [
+            {
+              model: Part,
+
+              required: true,
+              duplicating: false,
+            },
+          ],
+          required: true,
+          duplicating: false,
+        },
+        Color,
+        { model: User, as: 'creator' },
+        RaretyRating,
+        PartStatus,
+      ],
       where: {
-        partId: partId,
+        // moldId: moldId,
+        '$mold.parentPart.id$': partId,
         approvalDate: {
           [Op.ne]: null,
         },

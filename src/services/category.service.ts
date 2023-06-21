@@ -3,6 +3,7 @@ import { Category } from '../models/category.entity';
 import { IQelementError } from 'src/interfaces/error';
 import { NotNull } from 'sequelize-typescript';
 import { Op } from 'sequelize';
+import { Part } from 'src/models/part.entity';
 
 @Injectable()
 export class CategoriesService {
@@ -13,6 +14,7 @@ export class CategoriesService {
 
   async findAll(): Promise<Category[]> {
     return this.categoriesRepository.findAll<Category>({
+      include: [Part],
       where: {
         approvalDate: {
           [Op.ne]: null,

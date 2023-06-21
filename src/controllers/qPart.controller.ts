@@ -4,6 +4,7 @@ import {
   IColorDTO,
   IPartDTO,
   IQPartDTO,
+  IQPartDTOInclude,
   IQPartDetails,
   iIdOnly,
   iQPartDTO,
@@ -46,7 +47,8 @@ export class QPartsController {
     let thisQPart = await this.qPartsService.findById(id);
     let qpartDTOOutput = {
       id: thisQPart?.id,
-      partId: thisQPart?.partId,
+      moldId: thisQPart?.moldId,
+      type: thisQPart?.type,
       colorId: thisQPart?.colorId,
       creatorId: thisQPart?.creatorId,
       rarety: await this.ratingService.getRatingTotal(id),
@@ -63,19 +65,18 @@ export class QPartsController {
       return 'hex' in object;
     }
     function instanceOfIPartDTO(object: any): object is IPartDTO {
-      return 'secondaryNumber' in object;
+      return 'CatId' in object;
     }
     let match = await this.qPartsService.findById(qpartId);
 
     if (match) {
       let color = await this.colorService.findById(match.colorId);
-      let part = await this.partService.findById(match.partId);
+      let part = await this.partService.findById(match.moldId);
       if (instanceOfIColorDTO(color) && instanceOfIPartDTO(part)) {
         let conversion: IQPartDetails = {
           part: {
             name: part?.name,
-            number: part?.number,
-            secondaryNumber: part?.secondaryNumber,
+            // secondaryNumber: part?.secondaryNumber,
             CatId: part?.CatId,
             note: part?.note,
           },
@@ -91,11 +92,11 @@ export class QPartsController {
             note: color?.note,
           },
           qpart: {
-            partId: match?.partId,
+            moldId: match?.moldId,
             colorId: match?.colorId,
+            type: match?.type,
             creatorId: match?.creatorId,
             elementId: match.elementId,
-            secondaryElementId: match.secondaryElementId,
             note: match.note,
           },
         };
@@ -106,39 +107,41 @@ export class QPartsController {
     return null;
   }
 
+  // @Get('/matchesByPartId/:id')
+  // async findMatches(@Param('id') partId: number): Promise<IQPartDTO[] | null> {
+  //   let matches = await this.qPartsService.findMatchesById(partId);
+
+  //   let conversion: IQPartDTO[] = [];
+  //   if (matches) {
+  //     const ratings = await Promise.all(
+  //       matches?.map((match) => {
+  //         return this.ratingService.getRatingTotals(match.id);
+  //       }),
+  //     );
+
+  //     matches?.forEach((match) => {
+  //       let rating = ratings.find((x) => x.id == match.id)?.rarety;
+  //       let output: IQPartDTO = {
+  //         id: match?.id,
+  //         moldId: match?.moldId,
+  //         colorId: match?.colorId,
+  //         type: match?.type,
+  //         creatorId: match?.creatorId,
+  //         rarety: rating == undefined ? -1 : rating,
+  //         elementId: match.elementId,
+  //         note: match.note,
+  //       };
+  //       conversion.push(output);
+  //     });
+
+  //     return conversion;
+  //   }
+
+  //   return null;
+  // }
   @Get('/matchesByPartId/:id')
-  async findMatches(@Param('id') partId: number): Promise<IQPartDTO[] | null> {
-    let matches = await this.qPartsService.findMatchesById(partId);
-
-    let conversion: IQPartDTO[] = [];
-    if (matches) {
-      const ratings = await Promise.all(
-        matches?.map((match) => {
-          return this.ratingService.getRatingTotals(match.id);
-        }),
-      );
-      // console.log(ratings);
-
-      matches?.forEach((match) => {
-        let rating = ratings.find((x) => x.id == match.id)?.rarety;
-        let output: IQPartDTO = {
-          id: match?.id,
-          partId: match?.partId,
-          colorId: match?.colorId,
-          creatorId: match?.creatorId,
-          rarety: rating == undefined ? -1 : rating,
-          elementId: match.elementId,
-          secondaryElementId: match.secondaryElementId,
-          note: match.note,
-        };
-        conversion.push(output);
-      });
-      // console.log(conversion);
-
-      return conversion;
-    }
-
-    return null;
+  async findMatches(@Param('id') partId: number): Promise<QPart[] | null> {
+    return await this.qPartsService.findMatchesByPartId(partId);
   }
 
   @Get('/notApproved')
@@ -172,10 +175,10 @@ export class QPartsController {
   ): Promise<IAPIResponse> {
     try {
       const newQPart = await QPart.create({
-        partId: data.partId,
+        moldId: data.moldId,
         colorId: data.colorId,
-        elementId: trimAndReturn(data.elementId, 20),
-        secondaryElementId: trimAndReturn(data.secondaryElementId, 20),
+        type: trimAndReturn(data.type),
+        elementId: trimAndReturn(data.elementId),
         creatorId: data.creatorId == -1 ? 1 : data.creatorId,
         note: trimAndReturn(data.note),
       });

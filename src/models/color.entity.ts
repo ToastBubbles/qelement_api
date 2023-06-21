@@ -6,8 +6,11 @@ import {
   Length,
   BelongsToMany,
   DeletedAt,
+  ForeignKey,
+  BelongsTo,
 } from 'sequelize-typescript';
 import { SimilarColor } from './similarColor.entity';
+import { User } from './user.entity';
 
 @Table({
   timestamps: true,
@@ -39,6 +42,13 @@ export class Color extends Model {
 
   @Column
   approvalDate: Date;
+
+  @ForeignKey(() => User)
+  @Column
+  creatorId: number;
+
+  @BelongsTo(() => User)
+  creator: User;
 
   // @HasMany(() => Color)
   // similarColors: Color[];

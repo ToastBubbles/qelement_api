@@ -21,26 +21,38 @@ import { RaretyRating } from './raretyRating.entity';
 import { User } from './user.entity';
 import { UserFavorite } from './userFavorite.entity';
 import { UserInventory } from './userInventory.entity';
+import { PartMold } from './partMold.entity';
+import { DataTypes } from 'sequelize';
 @Table({
   timestamps: true,
   paranoid: true,
 })
 export class QPart extends Model {
+  @Column({
+    type: DataTypes.ENUM(
+      'qelement',
+      'nightshift',
+      'prototype',
+      'employee',
+      'other',
+      'unknown',
+    ),
+    defaultValue: 'unknown',
+  })
+  type: string;
+
   @Column
   note: string;
 
   @Column
   elementId: string;
 
+  @ForeignKey(() => PartMold)
   @Column
-  secondaryElementId: string;
+  moldId: number;
 
-  @ForeignKey(() => Part)
-  @Column
-  partId: number;
-
-  @BelongsTo(() => Part)
-  part: Part;
+  @BelongsTo(() => PartMold)
+  mold: PartMold;
 
   @ForeignKey(() => Color)
   @Column

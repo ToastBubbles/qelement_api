@@ -22,6 +22,7 @@ import { AuthModule } from './auth/auth.module';
 import { Title } from './models/title.entity';
 import { TitleModule } from './modules/title.module';
 import { UserTitleModule } from './modules/userTitle.module';
+import { PartMoldModule } from './modules/partMold.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { UserTitleModule } from './modules/userTitle.module';
     AuthModule,
     TitleModule,
     UserTitleModule,
+    PartMoldModule,
   ],
   controllers: [AppController, EverythingController],
   providers: [AppService],

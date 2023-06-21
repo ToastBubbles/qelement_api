@@ -1,10 +1,19 @@
 import { SetMetadata } from '@nestjs/common';
+import { Color } from 'src/models/color.entity';
+import { Part } from 'src/models/part.entity';
+import { RaretyRating } from 'src/models/raretyRating.entity';
+import { User } from 'src/models/user.entity';
 
 export const IS_PUBLIC_KEY = 'isPublic';
 export const Public = () => SetMetadata(IS_PUBLIC_KEY, true);
 export interface ISimilarColorDTO {
   color_one: number;
   color_two: number;
+}
+
+export interface IMailbox {
+  inbox: IExtendedMessageDTO[];
+  outbox: IExtendedMessageDTO[];
 }
 
 export interface IColorDTO {
@@ -19,6 +28,17 @@ export interface IColorDTO {
   note: string;
 }
 
+export interface IQPartDTOInclude {
+  id: number;
+  type: string;
+  mold: IPartMoldDTO;
+  color: Color;
+  creator: User;
+  note: string;
+  elementId: string;
+  rating: RaretyRating;
+}
+
 export interface IPartStatusDTO {
   status: string;
   date: string;
@@ -29,19 +49,20 @@ export interface IPartStatusDTO {
 }
 
 export interface iQPartDTO {
-  partId: number;
+  moldId: number;
   colorId: number;
   elementId: string;
-  secondaryElementId: string;
+  type: string;
   creatorId: number;
   note: string;
 }
 export interface IQPartDTO {
   id: number;
-  partId: number;
+  moldId: number;
   colorId: number;
   elementId: string;
-  secondaryElementId: string;
+  type: string;
+
   creatorId: number;
   note: string;
   rarety: number;
@@ -83,10 +104,27 @@ export interface IAPIResponse {
 }
 export interface IPartDTO {
   name: string;
-  number: string;
-  secondaryNumber: string;
   CatId: number;
   note: string;
+}
+
+export interface IPartMoldDTO {
+  id: number;
+  number: string;
+  parentPartId: number;
+  creatorId: number;
+  note: string;
+  approvalDate: string;
+  createdAt: string;
+}
+
+export interface IPartWithMoldDTO {
+  id: number;
+  name: string;
+  number: string;
+  CatId: number;
+  partNote: string;
+  moldNote: string;
 }
 export interface IMessageDTO {
   recipientId: number;
@@ -104,9 +142,4 @@ export interface IExtendedMessageDTO {
   body: string;
   read: boolean;
   createdAt: string;
-}
-
-export interface IMailbox {
-  inbox: IExtendedMessageDTO[];
-  outbox: IExtendedMessageDTO[];
 }
