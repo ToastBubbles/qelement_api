@@ -11,5 +11,6 @@ import { PartsModule } from './parts.module';
   imports: [DatabaseModule, RaretyRatingModule, ColorModule, PartsModule],
   controllers: [QPartsController],
   providers: [QPartsService, ...qPartsProviders],
+  exports: [QPartsService],
 })
 export class QPartModule {}

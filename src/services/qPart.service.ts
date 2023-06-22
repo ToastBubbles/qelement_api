@@ -42,6 +42,13 @@ export class QPartsService {
     console.log('recent');
 
     return this.qPartsRepository.findAll<QPart>({
+      include: [
+        { model: PartMold, include: [Part] },
+        Color,
+        { model: User, as: 'creator' },
+        RaretyRating,
+        PartStatus,
+      ],
       limit,
       order: [['createdAt', 'DESC']],
 
@@ -60,6 +67,7 @@ export class QPartsService {
         Color,
         { model: User, as: 'creator' },
         RaretyRating,
+        PartStatus,
       ],
       where: {
         id: id,

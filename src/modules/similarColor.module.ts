@@ -9,5 +9,6 @@ import { ColorModule } from './color.module';
   imports: [DatabaseModule, ColorModule],
   controllers: [SimilarColorsController],
   providers: [SimilarColorsService, ...similarColorsProviders],
+  exports: [SimilarColorsService],
 })
 export class SimilarColorModule {}

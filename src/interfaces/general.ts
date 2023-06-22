@@ -27,7 +27,16 @@ export interface IColorDTO {
   type: string;
   note: string;
 }
-
+export interface INotApporvedCounts {
+  colors: number;
+  categories: number;
+  parts: number;
+  partMolds: number;
+  qelements: number;
+  partStatuses: number;
+  similarColors: number;
+  images: number;
+}
 export interface IQPartDTOInclude {
   id: number;
   type: string;

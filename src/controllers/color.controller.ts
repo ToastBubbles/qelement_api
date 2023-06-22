@@ -88,25 +88,35 @@ export class ColorsController {
     }
   }
 
-  @Post('/:id')
-  async addSimilar(
+  @Post('/id/:id')
+  async editColor(
     @Param('id') id: number,
     @Body()
-    { bl_name, tlg_name, bo_name, hex, bl_id, tlg_id, type, note }: IColorDTO,
-  ): Promise<string> {
+    {
+      bl_name,
+      tlg_name,
+      bo_name,
+      hex,
+      bl_id,
+      bo_id,
+      tlg_id,
+      type,
+      note,
+    }: IColorDTO,
+  ): Promise<IAPIResponse> {
     let hasChanged = false;
     let colorToChange = (await this.colorsService.findById(id)) as Color;
     if (colorToChange) {
       if (bl_name !== 'unchanged' && bl_name != colorToChange.bl_name) {
-        colorToChange.bl_name = bl_name;
+        colorToChange.bl_name = trimAndReturn(bl_name);
         hasChanged = true;
       }
       if (tlg_name !== 'unchanged' && tlg_name != colorToChange.tlg_name) {
-        colorToChange.tlg_name = tlg_name;
+        colorToChange.tlg_name = trimAndReturn(tlg_name);
         hasChanged = true;
       }
       if (bo_name !== 'unchanged' && bo_name != colorToChange.bo_name) {
-        colorToChange.bo_name = bo_name;
+        colorToChange.bo_name = trimAndReturn(bo_name);
         hasChanged = true;
       }
       if (hex !== 'unchanged' && hex.length == 6 && hex != colorToChange.hex) {
@@ -114,11 +124,19 @@ export class ColorsController {
         hasChanged = true;
       }
       if (note !== 'unchanged' && note != colorToChange.note) {
-        colorToChange.note = note;
+        colorToChange.note = trimAndReturn(note);
+        hasChanged = true;
+      }
+      if (type !== 'unchanged' && type != colorToChange.type) {
+        colorToChange.type = trimAndReturn(type);
         hasChanged = true;
       }
       if (bl_id !== -1 && bl_id != colorToChange.bl_id) {
         colorToChange.bl_id = bl_id;
+        hasChanged = true;
+      }
+      if (bo_id !== -1 && bo_id != colorToChange.bo_id) {
+        colorToChange.bo_id = bo_id;
         hasChanged = true;
       }
       if (tlg_id !== -1 && tlg_id != colorToChange.tlg_id) {
@@ -128,9 +146,9 @@ export class ColorsController {
     }
     if (hasChanged) {
       colorToChange.save();
-      return `color changes saved for ${id}`;
+      return { message: `color changes saved for ${id}`, code: 200 };
     }
 
-    return `not changes were made`;
+    return { message: `no changes were made`, code: 500 };
   }
 }
