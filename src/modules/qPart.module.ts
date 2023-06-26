@@ -6,9 +6,17 @@ import { DatabaseModule } from './database.module';
 import { RaretyRatingModule } from './raretyRating.module';
 import { ColorModule } from './color.module';
 import { PartsModule } from './parts.module';
+import { qPartOfTheDayProviders } from 'src/providers/qPartOfTheDay.providers';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
-  imports: [DatabaseModule, RaretyRatingModule, ColorModule, PartsModule],
+  imports: [
+    DatabaseModule, 
+    RaretyRatingModule, 
+    ColorModule, 
+    PartsModule,
+    CacheModule.register()
+  ],
   controllers: [QPartsController],
   providers: [QPartsService, ...qPartsProviders],
   exports: [QPartsService],

@@ -33,6 +33,7 @@ export class QPart extends Model {
       'qelement',
       'nightshift',
       'prototype',
+      'test',
       'employee',
       'other',
       'unknown',

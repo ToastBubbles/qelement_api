@@ -41,6 +41,7 @@ export class EverythingController {
           bo_id: Number(color.Oid) || null,
           type: color.type,
           note: color.note || '',
+          isOfficial: true,
           approvalDate: new Date().toISOString().slice(0, 23).replace('T', ' '),
         });
       } catch (e) {

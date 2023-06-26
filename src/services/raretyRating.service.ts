@@ -38,8 +38,6 @@ export class RaretyRatingsService {
   // }
   async addRating({ rating, qpartId, creatorId }: IRatingDTO) {
     try {
-      console.log(creatorId);
-
       if (rating >= 0 && rating <= 100) {
         rating = Math.round(rating);
         let newRating = new RaretyRating({

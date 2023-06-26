@@ -64,6 +64,7 @@ export class ColorsController {
       bo_id,
       type,
       note,
+      isOfficial,
     }: IColorDTO,
   ): Promise<string> {
     try {
@@ -77,6 +78,7 @@ export class ColorsController {
         bo_id: bo_id == -1 ? null : bo_id,
         type: trimAndReturn(type),
         note: trimAndReturn(note),
+        isOfficial: isOfficial,
       });
 
       if (newColor instanceof Color) return `new color added`;
@@ -102,6 +104,7 @@ export class ColorsController {
       tlg_id,
       type,
       note,
+      isOfficial,
     }: IColorDTO,
   ): Promise<IAPIResponse> {
     let hasChanged = false;
@@ -141,6 +144,10 @@ export class ColorsController {
       }
       if (tlg_id !== -1 && tlg_id != colorToChange.tlg_id) {
         colorToChange.tlg_id = tlg_id;
+        hasChanged = true;
+      }
+      if (isOfficial != isOfficial) {
+        colorToChange.isOfficial = isOfficial;
         hasChanged = true;
       }
     }

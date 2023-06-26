@@ -26,6 +26,7 @@ export interface IColorDTO {
   bo_id: number;
   type: string;
   note: string;
+  isOfficial: boolean
 }
 export interface INotApporvedCounts {
   colors: number;
@@ -140,6 +141,11 @@ export interface IMessageDTO {
   senderId: number;
   subject: string;
   body: string;
+}
+export interface ICommentCreationDTO {
+  userId: number;
+  content: string;
+  qpartId: number;
 }
 export interface IExtendedMessageDTO {
   id: number;

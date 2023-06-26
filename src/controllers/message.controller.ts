@@ -1,5 +1,6 @@
 import { Body, Controller, Get, Post, Param } from '@nestjs/common';
 import {
+  IAPIResponse,
   IExtendedMessageDTO,
   IMailbox,
   IMessageDTO,
@@ -36,17 +37,20 @@ export class MessagesController {
   async sendMessage(
     @Body()
     messageDTO: IMessageDTO,
-  ) {
+  ): Promise<IAPIResponse> {
     try {
-      let newMessage = new Message({
+      let newMessage = Message.create({
         subject: trimAndReturn(messageDTO.subject),
         content: trimAndReturn(messageDTO.body),
         senderId: messageDTO.senderId,
         recipientId: messageDTO.recipientId,
       });
-      newMessage.save();
+      if (newMessage instanceof Message)
+        return { code: 200, message: 'success' };
+      return { code: 500, message: 'error' };
     } catch (error) {
       console.log(error);
+      return { code: 500, message: error };
     }
   }
 

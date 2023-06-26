@@ -1,6 +1,5 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { QPart } from '../models/qPart.entity';
-import { log } from 'console';
 import { Op } from 'sequelize';
 import { Part } from 'src/models/part.entity';
 import { PartMold } from 'src/models/partMold.entity';
@@ -8,6 +7,8 @@ import { Color } from 'src/models/color.entity';
 import { User } from 'src/models/user.entity';
 import { RaretyRating } from 'src/models/raretyRating.entity';
 import { PartStatus } from 'src/models/partStatus.entity';
+import { Cron } from '@nestjs/schedule';
+import { Comment } from 'src/models/comment.entity';
 
 @Injectable()
 export class QPartsService {
@@ -15,6 +16,11 @@ export class QPartsService {
     @Inject('QPART_REPOSITORY')
     private qPartsRepository: typeof QPart,
   ) {}
+
+  @Cron('45 * * * * *')
+  async handleCron() {
+    //  test = await this.getRandom()
+  }
 
   async findAll(): Promise<QPart[]> {
     return this.qPartsRepository.findAll<QPart>({
@@ -39,7 +45,7 @@ export class QPartsService {
     });
   }
   async findRecent(limit: number): Promise<QPart[]> {
-    console.log('recent');
+
 
     return this.qPartsRepository.findAll<QPart>({
       include: [
@@ -109,6 +115,11 @@ export class QPartsService {
           required: true,
           duplicating: false,
         },
+        {
+          model: Comment,
+          include: [{ model: User, as: 'creator' }],
+        },
+
         Color,
         { model: User, as: 'creator' },
         RaretyRating,
@@ -122,10 +133,27 @@ export class QPartsService {
         },
       },
     });
-    // if (result) {
+
+
     return results;
-    // }
-    // return { message: 'No color found with the TLG id.' } as IQelementError;
-    // throw new HttpException('Color not found', 404);
+ 
+  }
+
+  async getRandom(): Promise<QPart> {
+    const results = await this.qPartsRepository.findAll({
+      include: [
+        { model: PartMold, include: [Part] },
+        Color,
+        { model: User, as: 'creator' },
+        RaretyRating,
+        PartStatus,
+      ],
+      where: {
+        approvalDate: {
+          [Op.ne]: null,
+        },
+      },
+    });
+    return results[Math.floor(Math.random() * results.length)];
   }
 }

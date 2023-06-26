@@ -36,6 +36,8 @@ export class Color extends Model {
   type: string;
   @Column
   note: string;
+  @Column({ defaultValue: false })
+  isOfficial: boolean;
 
   @BelongsToMany(() => Color, () => SimilarColor, 'colorId1', 'colorId2')
   similar: Color[];

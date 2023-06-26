@@ -41,6 +41,7 @@ export class User extends Model {
   })
   role: string;
 
+  @ForeignKey(() => Title)
   @Column
   selectedTitleId: number;
 

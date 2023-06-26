@@ -23,12 +23,16 @@ import { Title } from './models/title.entity';
 import { TitleModule } from './modules/title.module';
 import { UserTitleModule } from './modules/userTitle.module';
 import { PartMoldModule } from './modules/partMold.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       load: [configuration],
     }),
+    ScheduleModule.forRoot(),
+    CacheModule.register(),
     PartsModule,
     CategoriesModule,
     ColorModule,

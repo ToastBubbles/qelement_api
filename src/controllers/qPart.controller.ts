@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Post } from '@nestjs/common';
 import {
   IAPIResponse,
   IColorDTO,
@@ -17,6 +17,9 @@ import { PartsService } from 'src/services/parts.service';
 import { ColorsService } from 'src/services/color.service';
 import assert from 'assert';
 import { trimAndReturn } from 'src/utils/utils';
+import { QPartOfTheDayService } from 'src/services/qPartOfTheDay.service';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
 
 @Controller('qpart')
 export class QPartsController {
@@ -25,6 +28,8 @@ export class QPartsController {
     private readonly ratingService: RaretyRatingsService,
     private readonly partService: PartsService,
     private readonly colorService: ColorsService,
+    @Inject(CACHE_MANAGER)
+    private cacheManager: Cache,
   ) {}
 
   @Get()
@@ -40,6 +45,18 @@ export class QPartsController {
   @Get('/id/:id')
   async findById(@Param('id') id: number): Promise<QPart | null> {
     return this.qPartsService.findById(id);
+  }
+
+  @Get('/qpotd')
+  async getQPartOfTheDay(): Promise<QPart> {
+    let partOfTheDay = await this.cacheManager.get<QPart>('PartOfTheDay');
+    if (partOfTheDay) {
+      return partOfTheDay;
+    }
+
+    partOfTheDay = await this.qPartsService.getRandom();
+    this.cacheManager.set('PartOfTheDay', partOfTheDay, 1000 * 60 * 60 * 24);
+    return partOfTheDay as QPart;
   }
 
   @Get('/dto/:id')
@@ -90,6 +107,7 @@ export class QPartsController {
             bo_id: color?.bo_id,
             type: color?.type,
             note: color?.note,
+            isOfficial: color?.isOfficial,
           },
           qpart: {
             moldId: match?.moldId,
@@ -107,38 +125,6 @@ export class QPartsController {
     return null;
   }
 
-  // @Get('/matchesByPartId/:id')
-  // async findMatches(@Param('id') partId: number): Promise<IQPartDTO[] | null> {
-  //   let matches = await this.qPartsService.findMatchesById(partId);
-
-  //   let conversion: IQPartDTO[] = [];
-  //   if (matches) {
-  //     const ratings = await Promise.all(
-  //       matches?.map((match) => {
-  //         return this.ratingService.getRatingTotals(match.id);
-  //       }),
-  //     );
-
-  //     matches?.forEach((match) => {
-  //       let rating = ratings.find((x) => x.id == match.id)?.rarety;
-  //       let output: IQPartDTO = {
-  //         id: match?.id,
-  //         moldId: match?.moldId,
-  //         colorId: match?.colorId,
-  //         type: match?.type,
-  //         creatorId: match?.creatorId,
-  //         rarety: rating == undefined ? -1 : rating,
-  //         elementId: match.elementId,
-  //         note: match.note,
-  //       };
-  //       conversion.push(output);
-  //     });
-
-  //     return conversion;
-  //   }
-
-  //   return null;
-  // }
   @Get('/matchesByPartId/:id')
   async findMatches(@Param('id') partId: number): Promise<QPart[] | null> {
     return await this.qPartsService.findMatchesByPartId(partId);
