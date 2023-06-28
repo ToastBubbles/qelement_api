@@ -167,6 +167,8 @@ export class QPartsController {
         elementId: trimAndReturn(data.elementId),
         creatorId: data.creatorId == -1 ? 1 : data.creatorId,
         note: trimAndReturn(data.note),
+      }).catch((e) => {
+        return { code: 500, message: `generic error` };
       });
       console.log(newQPart);
 

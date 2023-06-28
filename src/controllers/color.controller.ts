@@ -79,6 +79,8 @@ export class ColorsController {
         type: trimAndReturn(type),
         note: trimAndReturn(note),
         isOfficial: isOfficial,
+      }).catch((e) => {
+        return { code: 500, message: `generic error` };
       });
 
       if (newColor instanceof Color) return `new color added`;

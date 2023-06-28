@@ -1,16 +1,22 @@
+import { Injectable, Inject } from '@nestjs/common';
+import { UserFavorite } from '../models/userFavorite.entity';
 
-    import { Injectable, Inject } from '@nestjs/common';
-    import { UserFavorite } from '../models/userFavorite.entity';
+@Injectable()
+export class UserFavoritesService {
+  constructor(
+    @Inject('USERFAVORITE_REPOSITORY')
+    private userFavoritesRepository: typeof UserFavorite,
+  ) {}
 
-    @Injectable()
-    export class UserFavoritesService {
-    constructor(
-        @Inject('USERFAVORITE_REPOSITORY')
-        private userFavoritesRepository: typeof UserFavorite,
-    ) {}
-    
-    async findAll(): Promise<UserFavorite[]> {
-        return this.userFavoritesRepository.findAll<UserFavorite>();
-    }
-    }
-    
+  async findAll(): Promise<UserFavorite[]> {
+    return this.userFavoritesRepository.findAll<UserFavorite>();
+  }
+  async getTopFive(id: number): Promise<UserFavorite[]> {
+    return this.userFavoritesRepository.findAll<UserFavorite>({
+      where: {
+        userId: id,
+        type: 'topfive',
+      },
+    });
+  }
+}

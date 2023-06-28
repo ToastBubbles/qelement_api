@@ -5,6 +5,8 @@ import {
   Model,
   ForeignKey,
   DeletedAt,
+  AutoIncrement,
+  PrimaryKey,
 } from 'sequelize-typescript';
 import { QPart } from './qPart.entity';
 import { User } from './user.entity';
@@ -12,8 +14,15 @@ import { User } from './user.entity';
 @Table({
   timestamps: true,
   paranoid: true,
+  tableName: 'UserInventory',
+  indexes: [{ fields: ['userId', 'qpartId', 'condition'], unique: true }],
 })
 export class UserInventory extends Model {
+  @PrimaryKey
+  @AutoIncrement
+  @Column
+  id: number;
+
   @Column({
     defaultValue: false,
   })
@@ -25,16 +34,22 @@ export class UserInventory extends Model {
   forSale: boolean;
 
   @ForeignKey(() => QPart)
-  @Column
+  @Column({ unique: false })
   qpartId: number;
 
   @ForeignKey(() => User)
-  @Column
+  @Column({ unique: false })
   userId: number;
 
   @Column
   quantity: number;
 
-  @Column
+  @Column({
+    type: DataTypes.ENUM('damaged', 'used', 'new'),
+    defaultValue: 'used',
+  })
   condition: string;
+
+  @Column
+  note: string;
 }

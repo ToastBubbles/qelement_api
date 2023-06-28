@@ -158,3 +158,18 @@ export interface IExtendedMessageDTO {
   read: boolean;
   createdAt: string;
 }
+
+export interface ICollectionDTO {
+  forTrade: boolean;
+  forSale: boolean;
+  qpartId: number;
+  userId: number;
+  quantity: number;
+  condition: string;
+  note: string;
+}
+export interface IWantedDTO {
+  type: string;
+  qpartId: number;
+  userId: number;
+}

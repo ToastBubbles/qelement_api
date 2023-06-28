@@ -8,6 +8,7 @@ import {
   HasOne,
   ForeignKey,
   DeletedAt,
+  Unique,
 } from 'sequelize-typescript';
 import { Comment } from './comment.entity';
 import { Image } from './image.entity';
@@ -36,10 +37,25 @@ export class User extends Model {
   password: string;
 
   @Column({
-    type: DataTypes.ENUM('user', 'admin', 'banned', 'other'),
+    type: DataTypes.ENUM(
+      'user',
+      'trusted',
+      'admin',
+      'suspended',
+      'banned',
+      'other',
+    ),
     defaultValue: 'user',
   })
   role: string;
+
+  @Column
+  suspentionDate: Date;
+
+  @Column({
+    type: DataTypes.STRING(1000),
+  })
+  suspentionReason: string;
 
   @ForeignKey(() => Title)
   @Column
@@ -86,9 +102,16 @@ export class User extends Model {
   @HasOne(() => UserPreference)
   preferences: UserPreference;
 
-  @BelongsToMany(() => QPart, () => UserFavorite)
+  // @BelongsToMany(() => QPart, () => UserFavorite)
+  // @BelongsToMany(() => QPart, {through: 'userFavorites'})
+  @BelongsToMany(() => QPart, {
+    through: { model: () => UserFavorite, unique: false },
+  })
   favoriteQParts: QPart[];
 
-  @BelongsToMany(() => QPart, () => UserInventory)
+  // @BelongsToMany(() => QPart, () => UserInventory)
+  @BelongsToMany(() => QPart, {
+    through: { model: () => UserInventory, unique: false },
+  })
   inventory: QPart[];
 }

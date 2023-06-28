@@ -43,6 +43,8 @@ export class EverythingController {
           note: color.note || '',
           isOfficial: true,
           approvalDate: new Date().toISOString().slice(0, 23).replace('T', ' '),
+        }).catch((e) => {
+          return { code: 500, message: `generic error` };
         });
       } catch (e) {
         //   let result = (e as Error).message;

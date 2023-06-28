@@ -89,12 +89,12 @@ export class PartsController {
       if (data.id == -1) {
         let newPart = Part.create({
           name: trimAndReturn(data.name, 100),
-          // number: trimAndReturn(data.number, 20),
-          // secondaryNumber: trimAndReturn(data.secondaryNumber, 20),
           CatId: data.CatId,
           note: trimAndReturn(data.partNote),
+        }).catch((e) => {
+          return { code: 500, message: `generic error` };
         });
-        id = (await newPart).dataValues.id;
+        id = ((await newPart) as Part).dataValues.id;
       } else {
         id = data.id;
       }
@@ -102,6 +102,8 @@ export class PartsController {
         number: data.number,
         note: data.moldNote,
         parentPartId: id,
+      }).catch((e) => {
+        return { code: 500, message: `generic error` };
       });
 
       if (newMold instanceof PartMold)

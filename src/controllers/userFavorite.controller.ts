@@ -1,15 +1,53 @@
+import { Body, Controller, Get, Post } from '@nestjs/common';
+import { UserFavorite } from 'src/models/userFavorite.entity';
+import { UserFavoritesService } from '../services/userFavorite.service';
+import { IAPIResponse, IWantedDTO } from 'src/interfaces/general';
 
-    import { Controller, Get } from '@nestjs/common';
-    import { UserFavorite } from 'src/models/userFavorite.entity';
-    import { UserFavoritesService } from '../services/userFavorite.service';
-    
-    @Controller('userFavorite')
-    export class UserFavoritesController {
-      constructor(private readonly userFavoritesService: UserFavoritesService) {}
-    
-      @Get()
-      async getAllUserFavorites(): Promise<UserFavorite[]> {
-        return this.userFavoritesService.findAll();
+@Controller('userFavorite')
+export class UserFavoritesController {
+  constructor(private readonly userFavoritesService: UserFavoritesService) {}
+
+  @Get()
+  async getAllUserFavorites(): Promise<UserFavorite[]> {
+    return this.userFavoritesService.findAll();
+  }
+
+  @Post('/add')
+  async addWantedItem(
+    @Body()
+    wantedDTO: IWantedDTO,
+  ): Promise<IAPIResponse> {
+    try {
+      let failed = false;
+      if (wantedDTO.type == 'topfive') {
+        let totalInFavorites = await this.userFavoritesService.getTopFive(
+          wantedDTO.userId,
+        );
+        if (totalInFavorites.length >= 5) {
+          return { code: 502, message: `Too many in Top 5` };
+        }
       }
+      let newWantedItem = await UserFavorite.create({
+        type: wantedDTO.type.toLowerCase(),
+        userId: wantedDTO.userId,
+        qpartId: wantedDTO.qpartId,
+      }).catch((e) => {
+        console.log(e);
+        console.log(wantedDTO);
+
+        failed = true;
+      });
+
+      if (newWantedItem instanceof UserFavorite) {
+        return { code: 200, message: 'success' };
+      }
+      if (failed) {
+        return { code: 501, message: `Already Exists` };
+      }
+      return { code: 500, message: 'failed' };
+    } catch (error) {
+      console.log(error);
+      return { code: 500, message: error };
     }
-    
+  }
+}

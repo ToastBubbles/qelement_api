@@ -43,6 +43,23 @@ export class CategoriesController {
     }
   }
 
+  @Post('/delete')
+  async deleteCategory(
+    @Body()
+    data: iIdOnly,
+  ): Promise<IAPIResponse> {
+    try {
+      let thisObj = await this.categoriesService.findByIdAll(data.id);
+      if (thisObj) {
+        thisObj.destroy();
+        return { code: 200, message: `deleted` };
+      } else return { code: 500, message: `not found` };
+    } catch (error) {
+      console.log(error);
+      return { code: 500, message: `generic error` };
+    }
+  }
+
   @Post()
   async addNewCategory(
     @Body()
@@ -51,10 +68,13 @@ export class CategoriesController {
     try {
       let newCat = Category.create({
         name: trimAndReturn(data.name, 50),
+      }).catch((e) => {
+        return { code: 500, message: `generic error` };
       });
-      if (newCat instanceof Category)
+
+      if ((await newCat) instanceof Category)
         return { code: 200, message: `new category added` };
-      else return { code: 500, message: `category aready exists` };
+      else return { code: 501, message: `category aready exists` };
     } catch (error) {
       console.log(error);
 

@@ -81,10 +81,14 @@ export class QPart extends Model {
   @HasMany(() => RaretyRating)
   ratings: RaretyRating[];
 
-  @BelongsToMany(() => User, () => UserFavorite)
-  userFAvorites: User[];
+  @BelongsToMany(() => User, {
+    through: { model: () => UserFavorite, unique: false },
+  })
+  userFavorites: User[];
 
-  @BelongsToMany(() => User, () => UserInventory)
+  @BelongsToMany(() => User, {
+    through: { model: () => UserInventory, unique: false },
+  })
   userInventories: User[];
 
   @Column

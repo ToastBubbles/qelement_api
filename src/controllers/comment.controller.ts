@@ -30,6 +30,8 @@ export class CommentsController {
         content: trimAndReturn(comment.content, 1000),
         userId: comment.userId,
         qpartId: comment.qpartId,
+      }).catch((e) => {
+        return { code: 500, message: `generic error` };
       });
       if (newComment instanceof Comment) {
         return { code: 200, message: 'success' };

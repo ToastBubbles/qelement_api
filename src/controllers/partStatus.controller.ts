@@ -55,6 +55,8 @@ export class PartStatusesController {
         note: trimAndReturn(data.note),
         qpartId: data.qpartId,
         creatorId: data.creatorId,
+      }).catch((e) => {
+        return { code: 500, message: `generic error` };
       });
 
       if (newPart instanceof PartStatus)

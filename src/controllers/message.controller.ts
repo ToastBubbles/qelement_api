@@ -44,6 +44,8 @@ export class MessagesController {
         content: trimAndReturn(messageDTO.body),
         senderId: messageDTO.senderId,
         recipientId: messageDTO.recipientId,
+      }).catch((e) => {
+        return { code: 500, message: `generic error` };
       });
       if (newMessage instanceof Message)
         return { code: 200, message: 'success' };
