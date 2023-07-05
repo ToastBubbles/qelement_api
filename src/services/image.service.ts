@@ -2,6 +2,7 @@ import { Injectable, Inject, HttpException } from '@nestjs/common';
 import { Image } from '../models/image.entity';
 import { Op } from 'sequelize';
 
+
 @Injectable()
 export class ImagesService {
   constructor(
@@ -56,7 +57,6 @@ export class ImagesService {
     const result = await this.imagesRepository.findOne({
       where: {
         id: id,
-
       },
     });
     if (result) {
@@ -65,4 +65,6 @@ export class ImagesService {
     // return { message: 'No color found with the TLG id.' } as IQelementError;
     throw new HttpException('not found', 404);
   }
+
+
 }

@@ -18,6 +18,9 @@ export class Image extends Model {
   @Column
   path: string;
 
+  @Column
+  fileName: string;
+
   @Column({
     type: DataTypes.ENUM('part', 'sculpture', 'assembled', 'damaged', 'other'),
     defaultValue: 'part',

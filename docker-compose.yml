@@ -1,17 +1,50 @@
-version: '3'
-services::
-  postgres:
-    container_name: qelement_db
-    image: postgres:latest
+version: '3.8'
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev
+    working_dir: /app
+    networks:
+      - qelement
     ports:
-      - '5432:5432'
-      volumes:
-        - /var/folders/postgres:/data/postgres
-      env_file:
-        - docker.env
-      networks:
-        - postgres
+      - 3000:3000
+    depends_on:
+      - db
+      - minio
+    command: [sh, -c, 'npm run start:dev']
+    volumes:
+      - .:/app:delegated
+      - /app/node_modules
+  db:
+    image: postgres:12-alpine
+    environment:
+      - POSTGRES_PASSWORD=01170117
+      - POSTGRES_USERNAME=postgres
+      - POSTGRES_DB=postgres
+    networks:
+      - qelement
+    ports:
+      - 5432:5432
+  minio:
+    image: minio/minio
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: supersecret
+    networks:
+      - qelement
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+      - '37567:37567'
+    volumes:
+      - 'minio_data:/data'
+    command: server /data --console-address ":9001"
+
+volumes:
+  minio_data:
+    driver: local
 
 networks:
-  postgres:
-    driver: bridge
+  qelement:

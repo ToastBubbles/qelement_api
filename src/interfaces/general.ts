@@ -26,7 +26,7 @@ export interface IColorDTO {
   bo_id: number;
   type: string;
   note: string;
-  isOfficial: boolean
+  isOfficial: boolean;
 }
 export interface INotApporvedCounts {
   colors: number;
@@ -146,6 +146,18 @@ export interface ICommentCreationDTO {
   userId: number;
   content: string;
   qpartId: number;
+}
+export interface ImageSubmission {
+  qpartId: number;
+  userId: number;
+  type: string;
+}
+export interface MinioConfig {
+  endPoint: string;
+  port: number;
+  useSSL: boolean;
+  accessKey: string;
+  secretKey: string;
 }
 export interface IExtendedMessageDTO {
   id: number;

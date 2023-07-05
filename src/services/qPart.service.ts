@@ -9,6 +9,7 @@ import { RaretyRating } from 'src/models/raretyRating.entity';
 import { PartStatus } from 'src/models/partStatus.entity';
 import { Cron } from '@nestjs/schedule';
 import { Comment } from 'src/models/comment.entity';
+import { Image } from 'src/models/image.entity';
 
 @Injectable()
 export class QPartsService {
@@ -45,8 +46,6 @@ export class QPartsService {
     });
   }
   async findRecent(limit: number): Promise<QPart[]> {
-
-
     return this.qPartsRepository.findAll<QPart>({
       include: [
         { model: PartMold, include: [Part] },
@@ -54,6 +53,7 @@ export class QPartsService {
         { model: User, as: 'creator' },
         RaretyRating,
         PartStatus,
+        Image,
       ],
       limit,
       order: [['createdAt', 'DESC']],
@@ -74,6 +74,7 @@ export class QPartsService {
         { model: User, as: 'creator' },
         RaretyRating,
         PartStatus,
+        Image,
       ],
       where: {
         id: id,
@@ -124,6 +125,7 @@ export class QPartsService {
         { model: User, as: 'creator' },
         RaretyRating,
         PartStatus,
+        Image,
       ],
       where: {
         // moldId: moldId,
@@ -134,9 +136,7 @@ export class QPartsService {
       },
     });
 
-
     return results;
- 
   }
 
   async getRandom(): Promise<QPart> {
@@ -147,6 +147,7 @@ export class QPartsService {
         { model: User, as: 'creator' },
         RaretyRating,
         PartStatus,
+        Image,
       ],
       where: {
         approvalDate: {

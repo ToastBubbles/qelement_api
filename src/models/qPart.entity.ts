@@ -75,8 +75,8 @@ export class QPart extends Model {
   @HasMany(() => Comment)
   comments: Comment[];
 
-  @HasOne(() => Image)
-  image: Image;
+  @HasMany(() => Image)
+  images: Image[];
 
   @HasMany(() => RaretyRating)
   ratings: RaretyRating[];
