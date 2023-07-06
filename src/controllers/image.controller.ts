@@ -101,6 +101,23 @@ export class ImagesController {
     }
   }
 
+  @Post('/delete')
+  async deleteCategory(
+    @Body()
+    data: iIdOnly,
+  ): Promise<IAPIResponse> {
+    try {
+      let thisObj = await this.imagesService.findByIdAll(data.id);
+      if (thisObj) {
+        thisObj.destroy();
+        return { code: 200, message: `deleted` };
+      } else return { code: 500, message: `not found` };
+    } catch (error) {
+      console.log(error);
+      return { code: 500, message: `generic error` };
+    }
+  }
+
   @Get('/id/:id')
   async getImagesById(@Param('id') id: number): Promise<Image[]> {
     return this.imagesService.findAllById(id);

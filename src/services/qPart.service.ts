@@ -18,10 +18,10 @@ export class QPartsService {
     private qPartsRepository: typeof QPart,
   ) {}
 
-  @Cron('45 * * * * *')
-  async handleCron() {
-    //  test = await this.getRandom()
-  }
+  // @Cron('45 * * * * *')
+  // async handleCron() {
+  //   //  test = await this.getRandom()
+  // }
 
   async findAll(): Promise<QPart[]> {
     return this.qPartsRepository.findAll<QPart>({
@@ -54,6 +54,15 @@ export class QPartsService {
         RaretyRating,
         PartStatus,
         Image,
+        // {
+        //   model: Image,
+        //   as: 'images',
+        //   where: {
+        //     approvalDate: {
+        //       [Op.ne]: null,
+        //     },
+        //   },
+        // },
       ],
       limit,
       order: [['createdAt', 'DESC']],
@@ -74,7 +83,24 @@ export class QPartsService {
         { model: User, as: 'creator' },
         RaretyRating,
         PartStatus,
+        // {
+        //   model: Image,
+        //   as: 'images',
+        //   where: {
+        //     approvalDate: {
+        //       [Op.ne]: null,
+        //     },
+        //   },
+        // },
         Image,
+        // {
+        //   model: Image,
+        //   where: {
+        //     approvalDate: {
+        //       [Op.ne]: null,
+        //     },
+        //   },
+        // },
       ],
       where: {
         id: id,
@@ -83,11 +109,7 @@ export class QPartsService {
         },
       },
     });
-    // if (result) {
     return result;
-    // }
-    // return { message: 'No color found with the TLG id.' } as IQelementError;
-    // throw new HttpException('Color not found', 404);
   }
 
   async findByIdAll(id: number): Promise<QPart | null> {
@@ -125,16 +147,24 @@ export class QPartsService {
         { model: User, as: 'creator' },
         RaretyRating,
         PartStatus,
+        // {
         Image,
+        // required: true,
+        // where: {
+        //   approvalDate: {
+        //     [Op.ne]: null,
+        //   },
+        // },
+        // },
       ],
       where: {
-        // moldId: moldId,
         '$mold.parentPart.id$': partId,
         approvalDate: {
           [Op.ne]: null,
         },
       },
     });
+    // console.log(results);
 
     return results;
   }
@@ -148,6 +178,14 @@ export class QPartsService {
         RaretyRating,
         PartStatus,
         Image,
+        // {
+        //   model: Image,
+        //   where: {
+        //     approvalDate: {
+        //       [Op.ne]: null,
+        //     },
+        //   },
+        // },
       ],
       where: {
         approvalDate: {
