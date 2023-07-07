@@ -22,7 +22,13 @@ export class Image extends Model {
   fileName: string;
 
   @Column({
-    type: DataTypes.ENUM('part', 'sculpture', 'assembled', 'damaged', 'other'),
+    type: DataTypes.ENUM(
+      'part',
+      'sculpture',
+      'suplemental',
+      'damaged',
+      'other',
+    ),
     defaultValue: 'part',
   })
   type: string;

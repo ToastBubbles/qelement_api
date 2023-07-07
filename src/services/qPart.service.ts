@@ -53,13 +53,16 @@ export class QPartsService {
         { model: User, as: 'creator' },
         RaretyRating,
         PartStatus,
-        Image,
+        {
+          model: Image,
+          include: [{ model: User, as: 'uploader' }],
+        },
         // {
         //   model: Image,
-        //   as: 'images',
+        //   // as: 'images',
         //   where: {
         //     approvalDate: {
-        //       [Op.ne]: null,
+        //       [Op.not]: null,
         //     },
         //   },
         // },
@@ -92,7 +95,10 @@ export class QPartsService {
         //     },
         //   },
         // },
-        Image,
+        {
+          model: Image,
+          include: [{ model: User, as: 'uploader' }],
+        },
         // {
         //   model: Image,
         //   where: {
@@ -148,7 +154,10 @@ export class QPartsService {
         RaretyRating,
         PartStatus,
         // {
-        Image,
+        {
+          model: Image,
+          include: [{ model: User, as: 'uploader' }],
+        },
         // required: true,
         // where: {
         //   approvalDate: {
@@ -177,7 +186,10 @@ export class QPartsService {
         { model: User, as: 'creator' },
         RaretyRating,
         PartStatus,
-        Image,
+        {
+          model: Image,
+          include: [{ model: User, as: 'uploader' }],
+        },
         // {
         //   model: Image,
         //   where: {
