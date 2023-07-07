@@ -107,6 +107,10 @@ export interface IQPartDetails {
 export interface iIdOnly {
   id: number;
 }
+export interface iIdAndPrimary {
+  id: number;
+  isPrimary: boolean;
+}
 
 export interface IAPIResponse {
   code: number;

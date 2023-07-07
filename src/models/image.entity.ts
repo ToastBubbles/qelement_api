@@ -5,6 +5,7 @@ import {
   ForeignKey,
   BelongsTo,
   DeletedAt,
+  BeforeSave,
 } from 'sequelize-typescript';
 import { QPart } from './qPart.entity';
 import { User } from './user.entity';
@@ -33,7 +34,7 @@ export class Image extends Model {
   })
   type: string;
 
-  @Column
+  @Column({ defaultValue: false })
   isPrimary: boolean;
 
   @ForeignKey(() => User)

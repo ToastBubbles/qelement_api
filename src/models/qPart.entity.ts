@@ -11,6 +11,7 @@ import {
   DataType,
   CreatedAt,
   UpdatedAt,
+  BeforeSave,
 } from 'sequelize-typescript';
 import { Color } from './color.entity';
 import { Comment } from './comment.entity';

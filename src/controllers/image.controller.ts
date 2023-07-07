@@ -10,7 +10,12 @@ import {
 } from '@nestjs/common';
 import { Image } from 'src/models/image.entity';
 import { ImagesService } from '../services/image.service';
-import { IAPIResponse, ImageSubmission, iIdOnly } from 'src/interfaces/general';
+import {
+  IAPIResponse,
+  ImageSubmission,
+  iIdAndPrimary,
+  iIdOnly,
+} from 'src/interfaces/general';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { MinioService } from 'src/services/minio.service';
 
@@ -30,8 +35,29 @@ export class ImagesController {
   async getAllNotApprovedCategories(): Promise<Image[]> {
     return this.imagesService.findAllNotApproved();
   }
+  @Post('/markPrimary')
+  async markPrimary(@Body() data: iIdOnly): Promise<IAPIResponse> {
+    try {
+      let thisImage = await this.imagesService.findById(data.id);
 
-  //1688578083649-brown.jpg
+      if (thisImage.isPrimary) return { code: 501, message: 'Arleady Primary' };
+      if (!thisImage) return { code: 504, message: 'Image not found' };
+      const existingImages = await this.imagesService.findByQPartID(
+        thisImage.qpartId,
+      );
+      let existingPrimaryImage = existingImages.find(
+        (img) => img.isPrimary == true,
+      );
+      if (existingPrimaryImage != undefined) {
+        await existingPrimaryImage.update({ isPrimary: false });
+      }
+      await thisImage.update({ isPrimary: true });
+      return { code: 200, message: 'Image successfully set as primary' };
+    } catch (error) {
+      return { code: 500, message: 'Generic Error' };
+    }
+  }
+
   @Post('/upload')
   @UseInterceptors(FileInterceptor('image'))
   async uploadImage(
@@ -49,6 +75,7 @@ export class ImagesController {
         imageData.userId,
         imageData.type,
       );
+
       let newImage = Image.create({
         fileName: fileName,
         type: imageData.type,
@@ -85,15 +112,45 @@ export class ImagesController {
   @Post('/approve')
   async approveImage(
     @Body()
-    data: iIdOnly,
+    data: iIdAndPrimary,
   ): Promise<IAPIResponse> {
     try {
+      console.log('data:', data);
+
       let thisObj = await this.imagesService.findByIdAll(data.id);
       if (thisObj) {
-        thisObj.update({
-          approvalDate: new Date().toISOString().slice(0, 23).replace('T', ' '),
-        });
-        return { code: 200, message: `approved` };
+        if (!data.isPrimary) {
+          console.log('updating date only');
+
+          thisObj.update({
+            approvalDate: new Date()
+              .toISOString()
+              .slice(0, 23)
+              .replace('T', ' '),
+          });
+          return { code: 200, message: `approved` };
+        } else {
+          console.log('updating with primary');
+          const existingImages = await this.imagesService.findByQPartID(
+            thisObj.qpartId,
+          );
+          let existingPrimaryImage = existingImages.find(
+            (img) => img.isPrimary == true,
+          );
+          console.log('existing primary', existingPrimaryImage);
+
+          if (existingPrimaryImage != undefined) {
+            await existingPrimaryImage.update({ isPrimary: false });
+          }
+          thisObj.update({
+            isPrimary: true,
+            approvalDate: new Date()
+              .toISOString()
+              .slice(0, 23)
+              .replace('T', ' '),
+          });
+          return { code: 200, message: `approved and set as primary` };
+        }
       } else return { code: 500, message: `not found` };
     } catch (error) {
       console.log(error);

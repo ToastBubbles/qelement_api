@@ -23,6 +23,17 @@ export class ImagesService {
       },
     });
   }
+
+  async findByQPartID(qpartID: number): Promise<Image[]> {
+    return this.imagesRepository.findAll<Image>({
+      where: {
+        qpartId: qpartID,
+        approvalDate: {
+          [Op.ne]: null,
+        },
+      },
+    });
+  }
   async findAllNotApproved(): Promise<Image[]> {
     return this.imagesRepository.findAll<Image>({
       include: [
