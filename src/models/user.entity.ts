@@ -21,6 +21,7 @@ import { UserInventory } from './userInventory.entity';
 import { UserPreference } from './userPreference.entity';
 import { UserTitle } from './userTitle.entity';
 import { Title } from './title.entity';
+import { UserGoal } from './userGoal.entity';
 
 @Table({
   timestamps: true,
@@ -114,4 +115,12 @@ export class User extends Model {
     through: { model: () => UserInventory, unique: false },
   })
   inventory: QPart[];
+
+  // @BelongsToMany(() => UserGoal, {
+  //   through: { model: () => UserGoal, unique: false },
+  // })
+  // goals: UserGoal[];
+
+  @HasMany(() => UserGoal)
+  goals: UserGoal[];
 }

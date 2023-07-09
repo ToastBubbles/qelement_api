@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { UserInventory } from 'src/models/userInventory.entity';
 import { UserInventoriesService } from '../services/userInventory.service';
 import { IAPIResponse, ICollectionDTO } from 'src/interfaces/general';
@@ -13,6 +13,13 @@ export class UserInventoriesController {
   @Get()
   async getAllUserInventories(): Promise<UserInventory[]> {
     return this.userInventoriesService.findAll();
+  }
+
+  @Get('/id/:userid')
+  async getUserInventoryByUserId(
+    @Param('userid') userId: number,
+  ): Promise<UserInventory[]> {
+    return this.userInventoriesService.findAllByUserId(userId);
   }
 
   @Post('/add')

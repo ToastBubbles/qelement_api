@@ -189,3 +189,12 @@ export interface IWantedDTO {
   qpartId: number;
   userId: number;
 }
+export interface IGoalDTO {
+  userId: number;
+  partId: number;
+  moldId: number;
+  name: string;
+  solid: boolean;
+  trans: boolean;
+  other: boolean;
+}

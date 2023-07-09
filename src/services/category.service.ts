@@ -4,6 +4,7 @@ import { IQelementError } from 'src/interfaces/error';
 import { NotNull } from 'sequelize-typescript';
 import { Op } from 'sequelize';
 import { Part } from 'src/models/part.entity';
+import { PartMold } from 'src/models/partMold.entity';
 
 @Injectable()
 export class CategoriesService {
@@ -14,7 +15,7 @@ export class CategoriesService {
 
   async findAll(): Promise<Category[]> {
     return this.categoriesRepository.findAll<Category>({
-      include: [Part],
+      include: [{ model: Part, include: [PartMold] }],
       where: {
         approvalDate: {
           [Op.ne]: null,

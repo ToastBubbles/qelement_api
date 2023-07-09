@@ -48,15 +48,20 @@ export class QPartsController {
   }
 
   @Get('/qpotd')
-  async getQPartOfTheDay(): Promise<QPart> {
-    let partOfTheDay = await this.cacheManager.get<QPart>('PartOfTheDay');
-    if (partOfTheDay) {
-      return partOfTheDay;
-    }
+  async getQPartOfTheDay(): Promise<QPart | null> {
+    try {
+      let partOfTheDay = await this.cacheManager.get<QPart>('PartOfTheDay');
+      if (partOfTheDay) {
+        return partOfTheDay;
+      }
 
-    partOfTheDay = await this.qPartsService.getRandom();
-    this.cacheManager.set('PartOfTheDay', partOfTheDay, 1000 * 60 * 60 * 24);
-    return partOfTheDay as QPart;
+      partOfTheDay = await this.qPartsService.getRandom();
+      this.cacheManager.set('PartOfTheDay', partOfTheDay, 1000 * 60 * 60 * 24);
+      return partOfTheDay as QPart;
+    } catch (error) {
+      console.log(error);
+    }
+    return null;
   }
 
   @Get('/dto/:id')

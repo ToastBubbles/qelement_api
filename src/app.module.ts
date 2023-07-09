@@ -25,6 +25,7 @@ import { UserTitleModule } from './modules/userTitle.module';
 import { PartMoldModule } from './modules/partMold.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { CacheModule } from '@nestjs/cache-manager';
+import { UserGoalModule } from './modules/userGoal.module';
 
 @Module({
   imports: [
@@ -51,6 +52,7 @@ import { CacheModule } from '@nestjs/cache-manager';
     TitleModule,
     UserTitleModule,
     PartMoldModule,
+    UserGoalModule,
   ],
   controllers: [AppController, EverythingController],
   providers: [AppService],

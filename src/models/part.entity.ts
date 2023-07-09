@@ -6,10 +6,12 @@ import {
   BelongsTo,
   DeletedAt,
   HasMany,
+  BelongsToMany,
 } from 'sequelize-typescript';
 import { Category } from './category.entity';
 import { PartMold } from './partMold.entity';
 import { User } from './user.entity';
+import { UserGoal } from './userGoal.entity';
 
 @Table({
   timestamps: true,
@@ -40,6 +42,9 @@ export class Part extends Model {
 
   @BelongsTo(() => User)
   creator: User;
+
+  @HasMany(() => UserGoal)
+  goals: UserGoal[];
 
   @Column
   approvalDate: Date;

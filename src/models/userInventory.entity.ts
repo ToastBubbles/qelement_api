@@ -7,6 +7,7 @@ import {
   DeletedAt,
   AutoIncrement,
   PrimaryKey,
+  BelongsTo,
 } from 'sequelize-typescript';
 import { QPart } from './qPart.entity';
 import { User } from './user.entity';
@@ -37,9 +38,15 @@ export class UserInventory extends Model {
   @Column({ unique: false })
   qpartId: number;
 
+  @BelongsTo(() => QPart)
+  qpart: QPart;
+
   @ForeignKey(() => User)
   @Column({ unique: false })
   userId: number;
+
+  @BelongsTo(() => User)
+  user: User;
 
   @Column
   quantity: number;

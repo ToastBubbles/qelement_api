@@ -16,6 +16,7 @@ import { SimilarColor } from 'src/models/similarColor.entity';
 import { Title } from 'src/models/title.entity';
 import { UserTitle } from 'src/models/userTitle.entity';
 import { PartMold } from 'src/models/partMold.entity';
+import { UserGoal } from 'src/models/userGoal.entity';
 
 export const databaseProviders = [
   {
@@ -48,6 +49,7 @@ export const databaseProviders = [
         Title,
         UserTitle,
         PartMold,
+        UserGoal,
       ]);
 
       await sequelize.sync();
