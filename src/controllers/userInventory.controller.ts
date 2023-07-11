@@ -32,6 +32,7 @@ export class UserInventoriesController {
       let newCollectionItem = await UserInventory.create({
         forTrade: collectionDTO.forTrade,
         forSale: collectionDTO.forSale,
+        availDuplicates: collectionDTO.availDupes,
         qpartId: collectionDTO.qpartId,
         userId: collectionDTO.userId,
         quantity: collectionDTO.quantity,

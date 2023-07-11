@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { UserFavorite } from 'src/models/userFavorite.entity';
 import { UserFavoritesService } from '../services/userFavorite.service';
 import { IAPIResponse, IWantedDTO } from 'src/interfaces/general';
@@ -10,6 +10,13 @@ export class UserFavoritesController {
   @Get()
   async getAllUserFavorites(): Promise<UserFavorite[]> {
     return this.userFavoritesService.findAll();
+  }
+
+  @Get('/id/:userid')
+  async getUserFavoriteByUserId(
+    @Param('userid') userId: number,
+  ): Promise<UserFavorite[]> {
+    return this.userFavoritesService.findAllByUserId(userId);
   }
 
   @Post('/add')
@@ -50,4 +57,6 @@ export class UserFavoritesController {
       return { code: 500, message: error };
     }
   }
+
+  
 }

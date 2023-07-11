@@ -7,6 +7,7 @@ import {
   DeletedAt,
   AutoIncrement,
   PrimaryKey,
+  BelongsTo,
 } from 'sequelize-typescript';
 import { QPart } from './qPart.entity';
 import { User } from './user.entity';
@@ -29,11 +30,17 @@ export class UserFavorite extends Model {
   })
   type: string;
 
+  @ForeignKey(() => QPart)
+  @Column({ unique: false })
+  qpartId: number;
+
+  @BelongsTo(() => QPart)
+  qpart: QPart;
+
   @ForeignKey(() => User)
   @Column({ unique: false })
   userId: number;
 
-  @ForeignKey(() => QPart)
-  @Column({ unique: false })
-  qpartId: number;
+  @BelongsTo(() => User)
+  user: User;
 }

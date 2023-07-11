@@ -5,6 +5,7 @@ import { PartMold } from 'src/models/partMold.entity';
 import { Color } from 'src/models/color.entity';
 import { Part } from 'src/models/part.entity';
 import { User } from 'src/models/user.entity';
+import { Image } from 'src/models/image.entity';
 
 @Injectable()
 export class UserInventoriesService {
@@ -26,6 +27,7 @@ export class UserInventoriesService {
               duplicating: false,
             },
             Color,
+            Image,
           ],
           required: true,
           duplicating: false,

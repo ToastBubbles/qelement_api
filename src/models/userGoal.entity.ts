@@ -97,12 +97,13 @@ export class UserGoal extends Model {
 
   @BelongsTo(() => PartMold)
   partMold?: PartMold;
-  @Column
-  name: string;
+  
   @Column
   includeSolid: boolean;
   @Column
   includeTrans: boolean;
   @Column
   includeOther: boolean;
+  @Column
+  includeKnown: boolean;
 }

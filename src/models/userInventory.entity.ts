@@ -34,6 +34,11 @@ export class UserInventory extends Model {
   })
   forSale: boolean;
 
+  @Column({
+    defaultValue: false,
+  })
+  availDuplicates: boolean;
+
   @ForeignKey(() => QPart)
   @Column({ unique: false })
   qpartId: number;

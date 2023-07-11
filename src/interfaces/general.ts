@@ -178,6 +178,7 @@ export interface IExtendedMessageDTO {
 export interface ICollectionDTO {
   forTrade: boolean;
   forSale: boolean;
+  availDupes: boolean
   qpartId: number;
   userId: number;
   quantity: number;
@@ -197,4 +198,5 @@ export interface IGoalDTO {
   solid: boolean;
   trans: boolean;
   other: boolean;
+  known: boolean;
 }

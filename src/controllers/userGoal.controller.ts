@@ -29,6 +29,7 @@ export class UserGoalsController {
         includeSolid: goalDTO.solid,
         includeTrans: goalDTO.trans,
         includeOther: goalDTO.other,
+        includeKnown: goalDTO.known,
         name: trimAndReturn(goalDTO.name, 100),
         userId: goalDTO.userId,
         partId: goalDTO.partId,
