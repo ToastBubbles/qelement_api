@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Inject, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Inject,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
 import {
   IAPIResponse,
   IColorDTO,
@@ -6,6 +14,7 @@ import {
   IQPartDTO,
   IQPartDTOInclude,
   IQPartDetails,
+  IQPartVerifcation,
   iIdOnly,
   iQPartDTO,
 } from 'src/interfaces/general';
@@ -133,6 +142,19 @@ export class QPartsController {
   @Get('/matchesByPartId/:id')
   async findMatches(@Param('id') partId: number): Promise<QPart[] | null> {
     return await this.qPartsService.findMatchesByPartId(partId);
+  }
+
+  @Get('/checkIfExists')
+  async checkIfExists(@Query() data: IQPartVerifcation): Promise<IAPIResponse> {
+    try {
+      let qpart = await this.qPartsService.findIfExists(data);
+      if (qpart) {
+        return { code: 201, message: 'Already Exists!' };
+      }
+      return { code: 200, message: 'Good to go' };
+    } catch (error) {
+      return { code: 500, message: 'error' };
+    }
   }
 
   @Get('/notApproved')

@@ -6,6 +6,7 @@ import { Part } from 'src/models/part.entity';
 import { Color } from 'src/models/color.entity';
 import { Image } from 'src/models/image.entity';
 import { PartStatus } from 'src/models/partStatus.entity';
+import { RaretyRating } from 'src/models/raretyRating.entity';
 
 @Injectable()
 export class UserFavoritesService {
@@ -33,6 +34,7 @@ export class UserFavoritesService {
             Color,
             Image,
             PartStatus,
+            RaretyRating,
           ],
           required: true,
           duplicating: false,

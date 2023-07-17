@@ -174,11 +174,14 @@ export interface IExtendedMessageDTO {
   read: boolean;
   createdAt: string;
 }
-
+export interface IQPartVerifcation {
+  moldId: number;
+  colorId: number;
+}
 export interface ICollectionDTO {
   forTrade: boolean;
   forSale: boolean;
-  availDupes: boolean
+  availDupes: boolean;
   qpartId: number;
   userId: number;
   quantity: number;

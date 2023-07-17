@@ -10,6 +10,7 @@ import { PartStatus } from 'src/models/partStatus.entity';
 import { Cron } from '@nestjs/schedule';
 import { Comment } from 'src/models/comment.entity';
 import { Image } from 'src/models/image.entity';
+import { IQPartVerifcation } from 'src/interfaces/general';
 
 @Injectable()
 export class QPartsService {
@@ -76,6 +77,15 @@ export class QPartsService {
         },
       },
     });
+  }
+  async findIfExists(data: IQPartVerifcation): Promise<QPart | null> {
+    const result = await this.qPartsRepository.findOne({
+      where: {
+        moldId: data.moldId,
+        colorId: data.colorId,
+      },
+    });
+    return result;
   }
 
   async findById(id: number): Promise<QPart | null> {
