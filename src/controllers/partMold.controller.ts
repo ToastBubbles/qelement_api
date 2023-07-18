@@ -1,7 +1,7 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { PartMold } from 'src/models/partMold.entity';
 import { PartMoldsService } from '../services/partMold.service';
-import { IAPIResponse, iIdOnly } from 'src/interfaces/general';
+import { IAPIResponse, ISearchOnly, iIdOnly } from 'src/interfaces/general';
 
 @Controller('partMold')
 export class PartMoldsController {
@@ -15,6 +15,11 @@ export class PartMoldsController {
   @Get('/notApproved')
   async getAllNotApprovedCategories(): Promise<PartMold[]> {
     return this.partMoldsService.findAllNotApproved();
+  }
+
+  @Get('/search')
+  async getSearchResults(@Query() data: ISearchOnly): Promise<PartMold[] | null> {
+    return this.partMoldsService.findPartsBySearch(data.search);
   }
 
   @Post('/approve')

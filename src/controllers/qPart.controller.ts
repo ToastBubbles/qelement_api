@@ -15,6 +15,7 @@ import {
   IQPartDTOInclude,
   IQPartDetails,
   IQPartVerifcation,
+  ISearchOnly,
   iIdOnly,
   iQPartDTO,
 } from 'src/interfaces/general';
@@ -45,7 +46,10 @@ export class QPartsController {
   async getAllQParts(): Promise<QPart[]> {
     return this.qPartsService.findAll();
   }
-
+  @Get('/search')
+  async getSearchResults(@Query() data: ISearchOnly): Promise<QPart[] | null> {
+    return this.qPartsService.findPartsBySearch(data.search);
+  }
   @Get('/recent/:limit')
   async getRecentQParts(@Param('limit') limit: number = 10): Promise<QPart[]> {
     return this.qPartsService.findRecent(limit);

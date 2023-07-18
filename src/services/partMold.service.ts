@@ -1,6 +1,7 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { PartMold } from '../models/partMold.entity';
 import { Part } from 'src/models/part.entity';
+import { Op, literal } from 'sequelize';
 
 @Injectable()
 export class PartMoldsService {
@@ -20,6 +21,19 @@ export class PartMoldsService {
         approvalDate: null,
       },
     });
+  }
+  async findPartsBySearch(search: string): Promise<PartMold[] | null> {
+    const result = await this.partMoldsRepository.findAll({
+      include: [Part],
+      where: {
+        [Op.or]: [{ number: { [Op.iLike]: `%${search}%` } }],
+        approvalDate: {
+          [Op.ne]: null,
+        },
+      },
+    });
+
+    return result;
   }
 
   async findByIdAll(id: number): Promise<PartMold | null> {

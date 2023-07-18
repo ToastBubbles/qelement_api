@@ -1,8 +1,9 @@
-import { Controller, Get, Param, Post, Body } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Query } from '@nestjs/common';
 import {
   IAPIResponse,
   IPartDTO,
   IPartWithMoldDTO,
+  ISearchOnly,
   iIdOnly,
 } from 'src/interfaces/general';
 import { Category } from 'src/models/category.entity';
@@ -28,6 +29,11 @@ export class PartsController {
   @Get('/byCatId/:id')
   async getPartsByCatId(@Param('id') id: number): Promise<Part[] | null> {
     return this.partsService.findPartsByCatId(id);
+  }
+
+  @Get('/search')
+  async getSearchResults(@Query() data: ISearchOnly): Promise<Part[] | null> {
+    return this.partsService.findPartsBySearch(data.search);
   }
 
   @Get('/byNumber/:num')

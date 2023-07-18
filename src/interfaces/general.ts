@@ -178,6 +178,10 @@ export interface IQPartVerifcation {
   moldId: number;
   colorId: number;
 }
+
+export interface ISearchOnly {
+  search: string;
+}
 export interface ICollectionDTO {
   forTrade: boolean;
   forSale: boolean;

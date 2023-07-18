@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Part } from '../models/part.entity';
-import { Op } from 'sequelize';
+import { Op, literal } from 'sequelize';
 import { PartMold } from 'src/models/partMold.entity';
 import { QPart } from 'src/models/qPart.entity';
 import { Color } from 'src/models/color.entity';
@@ -61,6 +61,26 @@ export class PartsService {
     const result = await this.partsRepository.findOne({
       where: {
         id: id,
+        approvalDate: {
+          [Op.ne]: null,
+        },
+      },
+    });
+
+    return result;
+  }
+
+  async findPartsBySearch(search: string): Promise<Part[] | null> {
+    const searchTerm = search.replace(/\s/g, '');
+    const result = await this.partsRepository.findAll({
+      // include: [PartMold],
+      where: {
+        [Op.or]: [
+          // { name: { [Op.iLike]: `%${search}%` } },
+          literal(`REPLACE("name", ' ', '') ILIKE '%${searchTerm}%'`),
+
+          // { '$PartMold.number$': { [Op.iLike]: `%${search}%` } },
+        ],
         approvalDate: {
           [Op.ne]: null,
         },
