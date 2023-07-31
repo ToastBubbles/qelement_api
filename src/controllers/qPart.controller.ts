@@ -9,25 +9,14 @@ import {
 } from '@nestjs/common';
 import {
   IAPIResponse,
-  IColorDTO,
-  IPartDTO,
-  IQPartDTO,
-  IQPartDTOInclude,
-  IQPartDetails,
   IQPartVerifcation,
   ISearchOnly,
   iIdOnly,
   iQPartDTO,
 } from 'src/interfaces/general';
 import { QPart } from 'src/models/qPart.entity';
-import { RaretyRatingsService } from 'src/services/raretyRating.service';
 import { QPartsService } from '../services/qPart.service';
-import { log } from 'console';
-import { PartsService } from 'src/services/parts.service';
-import { ColorsService } from 'src/services/color.service';
-import assert from 'assert';
 import { trimAndReturn } from 'src/utils/utils';
-import { QPartOfTheDayService } from 'src/services/qPartOfTheDay.service';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 
@@ -35,9 +24,6 @@ import { Cache } from 'cache-manager';
 export class QPartsController {
   constructor(
     private readonly qPartsService: QPartsService,
-    private readonly ratingService: RaretyRatingsService,
-    private readonly partService: PartsService,
-    private readonly colorService: ColorsService,
     @Inject(CACHE_MANAGER)
     private cacheManager: Cache,
   ) {}
@@ -60,6 +46,13 @@ export class QPartsController {
     return this.qPartsService.findById(id);
   }
 
+  @Get('/colorMatches/:colorId')
+  async findMatchesByColorId(
+    @Param('colorId') colorId: number,
+  ): Promise<QPart[] | null> {
+    return this.qPartsService.findMatchesByColorId(colorId);
+  }
+
   @Get('/qpotd')
   async getQPartOfTheDay(): Promise<QPart | null> {
     try {
@@ -77,69 +70,10 @@ export class QPartsController {
     return null;
   }
 
-  @Get('/dto/:id')
-  async findByIdViaDTO(@Param('id') id: number): Promise<IQPartDTO | null> {
-    let thisQPart = await this.qPartsService.findById(id);
-    let qpartDTOOutput = {
-      id: thisQPart?.id,
-      moldId: thisQPart?.moldId,
-      type: thisQPart?.type,
-      colorId: thisQPart?.colorId,
-      creatorId: thisQPart?.creatorId,
-      rarety: await this.ratingService.getRatingTotal(id),
-    };
-
-    return qpartDTOOutput as IQPartDTO;
-  }
-
   @Get('/getDetails/:id')
-  async findDetails(
-    @Param('id') qpartId: number,
-  ): Promise<IQPartDetails | null> {
-    function instanceOfIColorDTO(object: any): object is IColorDTO {
-      return 'hex' in object;
-    }
-    function instanceOfIPartDTO(object: any): object is IPartDTO {
-      return 'CatId' in object;
-    }
+  async findDetails(@Param('id') qpartId: number): Promise<QPart | null> {
     let match = await this.qPartsService.findById(qpartId);
-
-    if (match) {
-      let color = await this.colorService.findById(match.colorId);
-      let part = await this.partService.findById(match.moldId);
-      if (instanceOfIColorDTO(color) && instanceOfIPartDTO(part)) {
-        let conversion: IQPartDetails = {
-          part: {
-            name: part?.name,
-            // secondaryNumber: part?.secondaryNumber,
-            CatId: part?.CatId,
-            note: part?.note,
-          },
-          color: {
-            bl_name: color?.bl_name,
-            tlg_name: color?.tlg_name,
-            bo_name: color?.bo_name,
-            hex: color?.hex,
-            bl_id: color?.bl_id,
-            tlg_id: color?.tlg_id,
-            bo_id: color?.bo_id,
-            type: color?.type,
-            note: color?.note,
-            isOfficial: color?.isOfficial,
-          },
-          qpart: {
-            moldId: match?.moldId,
-            colorId: match?.colorId,
-            type: match?.type,
-            creatorId: match?.creatorId,
-            elementId: match.elementId,
-            note: match.note,
-          },
-        };
-        return conversion;
-      }
-    }
-
+    if (match) return match;
     return null;
   }
 

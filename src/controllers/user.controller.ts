@@ -24,10 +24,14 @@ export class UsersController {
   @Get('/username/:username')
   async findOneByUsername(
     @Param('username') username: string,
-  ): Promise<User | IQelementError> {
-    let result = this.usersService.findOneByUsername(username);
+  ): Promise<User | IAPIResponse> {
+    try {
+      let result = this.usersService.findOneByUsername(username);
 
-    return result;
+      return result;
+    } catch (error) {
+      return { code: 500, message: `error` };
+    }
   }
 
   @Get('/id/:userid')

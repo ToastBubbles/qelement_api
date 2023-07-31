@@ -14,12 +14,12 @@ export class UsersService {
   async findAll(): Promise<User[]> {
     return this.usersRepository.findAll<User>();
   }
-  async findOneByUsername(username: string): Promise<User> {
+  async findOneByUsername(username: string): Promise<User | IAPIResponse> {
     let foundUser = await this.usersRepository.findOne({
       where: { name: username },
     });
     if (foundUser) return foundUser;
-    else throw new HttpException('User not found', 404);
+    else return { code: 404, message: `user not found` };
   }
   async findOneByUsernameInsensitive(username: string): Promise<IAPIResponse> {
     let foundUser = await this.usersRepository.findOne({

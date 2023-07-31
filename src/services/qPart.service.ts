@@ -118,6 +118,29 @@ export class QPartsService {
     return result;
   }
 
+  async findMatchesByColorId(colorId: number): Promise<QPart[] | null> {
+    const result = await this.qPartsRepository.findAll({
+      include: [
+        { model: PartMold, include: [Part] },
+        Color,
+        { model: User, as: 'creator' },
+        RaretyRating,
+        PartStatus,
+        {
+          model: Image,
+          include: [{ model: User, as: 'uploader' }],
+        },
+      ],
+      where: {
+        colorId: colorId,
+        approvalDate: {
+          [Op.ne]: null,
+        },
+      },
+    });
+    return result;
+  }
+
   async findById(id: number): Promise<QPart | null> {
     const result = await this.qPartsRepository.findOne({
       include: [
