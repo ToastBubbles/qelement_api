@@ -44,6 +44,7 @@ export class ColorsService {
   }
   async findById(id: number): Promise<Color> {
     const result = await this.colorsRepository.findOne({
+      include: [{ model: Color, as: 'similar' }],
       where: {
         id: id,
         approvalDate: {
@@ -68,6 +69,4 @@ export class ColorsService {
     }
     throw new HttpException('Color not found', 404);
   }
-
-
 }

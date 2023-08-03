@@ -55,20 +55,38 @@ export class SimilarColorsController {
   @Post()
   async addSimilar(
     @Body() { color_one, color_two }: ISimilarColorDTO,
-  ): Promise<string> {
-    let newMatch = new SimilarColor({
-      colorId1: color_one,
-      colorId2: color_two,
-    });
-    let invertMatch = new SimilarColor({
-      colorId1: color_two,
-      colorId2: color_one,
-    });
-    !(await this.similarColorsService.checkIfExists(newMatch)) &&
-      newMatch.save();
-    !(await this.similarColorsService.checkIfExists(invertMatch)) &&
-      invertMatch.save();
+  ): Promise<IAPIResponse> {
+    try {
+      if (color_one == color_two) return { message: 'same id', code: 503 };
+      let col2 = await this.colorsService.findById(color_two);
+      console.log(col2);
+      if (!!col2) return { message: "color doesn't exist", code: 502 };
 
-    return `color ${color_one} is similar to color ${color_two}`;
+      let newMatch = new SimilarColor({
+        colorId1: color_one,
+        colorId2: color_two,
+      });
+      let invertMatch = new SimilarColor({
+        colorId1: color_two,
+        colorId2: color_one,
+      });
+      let doesExist = await this.similarColorsService.checkIfExists(newMatch);
+      let invertedDoesExist = await this.similarColorsService.checkIfExists(
+        invertMatch,
+      );
+
+      if (doesExist || invertedDoesExist) {
+        return { message: 'already exists', code: 501 };
+      } else {
+        newMatch.save();
+        invertMatch.save();
+        return {
+          message: `color ${color_one} is similar to color ${color_two}`,
+          code: 200,
+        };
+      }
+    } catch (error) {
+      return { message: `failed`, code: 500 };
+    }
   }
 }

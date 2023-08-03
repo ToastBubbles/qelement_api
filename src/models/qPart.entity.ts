@@ -24,6 +24,7 @@ import { UserFavorite } from './userFavorite.entity';
 import { UserInventory } from './userInventory.entity';
 import { PartMold } from './partMold.entity';
 import { DataTypes } from 'sequelize';
+import { ElementID } from './elementID.entity';
 @Table({
   timestamps: true,
   paranoid: true,
@@ -45,9 +46,6 @@ export class QPart extends Model {
 
   @Column
   note: string;
-
-  @Column
-  elementId: string;
 
   @ForeignKey(() => PartMold)
   @Column
@@ -75,6 +73,9 @@ export class QPart extends Model {
 
   @HasMany(() => Comment)
   comments: Comment[];
+
+  @HasMany(() => ElementID)
+  elementIDs: ElementID[];
 
   @HasMany(() => Image)
   images: Image[];

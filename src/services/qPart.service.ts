@@ -11,6 +11,7 @@ import { Cron } from '@nestjs/schedule';
 import { Comment } from 'src/models/comment.entity';
 import { Image } from 'src/models/image.entity';
 import { IQPartVerifcation } from 'src/interfaces/general';
+import { ElementID } from 'src/models/elementID.entity';
 
 @Injectable()
 export class QPartsService {
@@ -37,6 +38,7 @@ export class QPartsService {
   async findAllNotApproved(): Promise<QPart[]> {
     return this.qPartsRepository.findAll<QPart>({
       include: [
+        ElementID,
         { model: PartMold, include: [Part] },
         Color,
         { model: User, as: 'creator' },
@@ -49,6 +51,7 @@ export class QPartsService {
   async findRecent(limit: number): Promise<QPart[]> {
     return this.qPartsRepository.findAll<QPart>({
       include: [
+        ElementID,
         { model: PartMold, include: [Part] },
         Color,
         { model: User, as: 'creator' },
@@ -92,6 +95,7 @@ export class QPartsService {
     const searchTerm = search.replace(/\s/g, '');
     const result = await this.qPartsRepository.findAll({
       include: [
+        ElementID,
         { model: PartMold, include: [Part] },
         Color,
         { model: User, as: 'creator' },
@@ -121,6 +125,7 @@ export class QPartsService {
   async findMatchesByColorId(colorId: number): Promise<QPart[] | null> {
     const result = await this.qPartsRepository.findAll({
       include: [
+        ElementID,
         { model: PartMold, include: [Part] },
         Color,
         { model: User, as: 'creator' },
@@ -144,6 +149,7 @@ export class QPartsService {
   async findById(id: number): Promise<QPart | null> {
     const result = await this.qPartsRepository.findOne({
       include: [
+        ElementID,
         { model: PartMold, include: [Part] },
         Color,
         { model: User, as: 'creator' },
@@ -194,6 +200,7 @@ export class QPartsService {
   async findMatchesByPartId(partId: number): Promise<QPart[] | null> {
     const results = await this.qPartsRepository.findAll({
       include: [
+        ElementID,
         {
           model: PartMold,
           include: [
@@ -244,6 +251,7 @@ export class QPartsService {
   async getRandom(): Promise<QPart> {
     const results = await this.qPartsRepository.findAll({
       include: [
+        ElementID,
         { model: PartMold, include: [Part] },
         Color,
         { model: User, as: 'creator' },

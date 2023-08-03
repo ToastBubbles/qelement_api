@@ -62,8 +62,15 @@ export class QPartsController {
       }
 
       partOfTheDay = await this.qPartsService.getRandom();
-      this.cacheManager.set('PartOfTheDay', partOfTheDay, 1000 * 60 * 60 * 24);
-      return partOfTheDay as QPart;
+      if (partOfTheDay) {
+        this.cacheManager.set(
+          'PartOfTheDay',
+          partOfTheDay,
+          1000 * 60 * 60 * 24,
+        );
+        return partOfTheDay as QPart;
+      }
+      return null;
     } catch (error) {
       console.log(error);
     }
@@ -129,7 +136,6 @@ export class QPartsController {
         moldId: data.moldId,
         colorId: data.colorId,
         type: trimAndReturn(data.type),
-        elementId: trimAndReturn(data.elementId),
         creatorId: data.creatorId == -1 ? 1 : data.creatorId,
         note: trimAndReturn(data.note),
       }).catch((e) => {

@@ -24,6 +24,8 @@ export class SimilarColor extends Model {
   @Column
   colorId1: number;
 
+  
+
   @ForeignKey(() => Color)
   @Column
   colorId2: number;

@@ -2,6 +2,7 @@ import { Injectable, Inject, HttpException } from '@nestjs/common';
 import { where } from 'sequelize';
 import { SimilarColor } from '../models/similarColor.entity';
 import { Op } from 'sequelize';
+import { Color } from 'src/models/color.entity';
 
 @Injectable()
 export class SimilarColorsService {
@@ -59,9 +60,6 @@ export class SimilarColorsService {
       where: {
         colorId1: match.colorId1,
         colorId2: match.colorId2,
-        approvalDate: {
-          [Op.ne]: null,
-        },
       },
     });
     // console.log('result:', result);

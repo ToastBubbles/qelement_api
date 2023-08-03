@@ -178,6 +178,12 @@ export interface IQPartVerifcation {
   moldId: number;
   colorId: number;
 }
+export interface IElementIDCreationDTO {
+  number: number;
+  creatorId: number;
+  qpartId: number;
+
+}
 
 export interface ISearchOnly {
   search: string;
