@@ -8,7 +8,10 @@ import {
 import { QPart } from './qPart.entity';
 import { User } from './user.entity';
 
-@Table
+@Table({
+  timestamps: true,
+  paranoid: true,
+})
 export class ElementID extends Model {
   @Column
   number: number;
@@ -26,4 +29,7 @@ export class ElementID extends Model {
 
   @BelongsTo(() => QPart)
   qpart: QPart;
+
+  @Column
+  approvalDate: Date;
 }

@@ -26,6 +26,9 @@ export class Part extends Model {
   @Column
   note: string;
 
+  @Column
+  blURL: string;
+
   @ForeignKey(() => Category)
   @Column
   CatId: number;

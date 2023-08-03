@@ -1,7 +1,11 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { ElementID } from 'src/models/elementID.entity';
 import { ElementIDsService } from '../services/elementID.service';
-import { IAPIResponse, IElementIDCreationDTO } from 'src/interfaces/general';
+import {
+  IAPIResponse,
+  IElementIDCreationDTO,
+  ISearchOnly,
+} from 'src/interfaces/general';
 
 @Controller('elementID')
 export class ElementIDsController {
@@ -10,6 +14,17 @@ export class ElementIDsController {
   @Get()
   async getAllElementIDs(): Promise<ElementID[]> {
     return this.elementIDsService.findAll();
+  }
+
+  @Get('/search')
+  async getSearchResults(
+    @Query() data: ISearchOnly,
+  ): Promise<ElementID[] | null> {
+    try {
+      return this.elementIDsService.findPartsBySearch(data.search);
+    } catch (error) {
+      return null;
+    }
   }
 
   @Post('/add')
@@ -22,7 +37,6 @@ export class ElementIDsController {
         number: elementID.number,
         creatorId: elementID.creatorId,
         qpartId: elementID.qpartId,
-   
       }).catch((e) => {
         return { code: 502, message: `generic error` };
       });

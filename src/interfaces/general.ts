@@ -139,6 +139,7 @@ export interface IPartWithMoldDTO {
   CatId: number;
   partNote: string;
   moldNote: string;
+  blURL: string;
 }
 export interface IMessageDTO {
   recipientId: number;
@@ -182,7 +183,6 @@ export interface IElementIDCreationDTO {
   number: number;
   creatorId: number;
   qpartId: number;
-
 }
 
 export interface ISearchOnly {

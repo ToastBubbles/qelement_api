@@ -97,6 +97,7 @@ export class PartsController {
           name: trimAndReturn(data.name, 100),
           CatId: data.CatId,
           note: trimAndReturn(data.partNote),
+          blURL: trimAndReturn(data.blURL, 20),
         }).catch((e) => {
           return { code: 500, message: `generic error` };
         });
