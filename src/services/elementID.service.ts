@@ -21,33 +21,36 @@ export class ElementIDsService {
 
   async findPartsBySearch(search: string): Promise<ElementID[] | null> {
     const searchTerm = Number(search.replace(/\s/g, ''));
-    const result = await this.elementIDsRepository.findAll({
-      include: [
-        {
-          model: QPart,
-          include: [
-            Color,
-            Image,
-            { model: PartMold, include: [Part] },
-            PartStatus,
-          ],
+    if (searchTerm) {
+      const result = await this.elementIDsRepository.findAll({
+        include: [
+          {
+            model: QPart,
+            include: [
+              Color,
+              Image,
+              { model: PartMold, include: [Part] },
+              PartStatus,
+            ],
+          },
+        ],
+        where: {
+          number: searchTerm,
+          // [Op.or]: [
+          //   // { name: { [Op.iLike]: `%${search}%` } },
+          //   literal(`REPLACE("number", ' ', '') ILIKE '%${searchTerm}%'`),
+
+          //   // { '$PartMold.number$': { [Op.iLike]: `%${search}%` } },
+          // ],
+
+          // approvalDate: {
+          //   [Op.ne]: null,
+          // },
         },
-      ],
-      where: {
-        number: searchTerm,
-        // [Op.or]: [
-        //   // { name: { [Op.iLike]: `%${search}%` } },
-        //   literal(`REPLACE("number", ' ', '') ILIKE '%${searchTerm}%'`),
+      });
 
-        //   // { '$PartMold.number$': { [Op.iLike]: `%${search}%` } },
-        // ],
-
-        // approvalDate: {
-        //   [Op.ne]: null,
-        // },
-      },
-    });
-
-    return result;
+      return result;
+    }
+    return null;
   }
 }
