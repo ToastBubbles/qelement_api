@@ -10,10 +10,14 @@ import {
 import { Color } from 'src/models/color.entity';
 import { ColorsService } from '../services/color.service';
 import { trimAndReturn } from 'src/utils/utils';
+import { UsersService } from 'src/services/user.service';
 
 @Controller('color')
 export class ColorsController {
-  constructor(private readonly colorsService: ColorsService) {}
+  constructor(
+    private readonly colorsService: ColorsService,
+    private readonly userService: UsersService,
+  ) {}
 
   @Public()
   @Get()
@@ -65,9 +69,15 @@ export class ColorsController {
       type,
       note,
       isOfficial,
+      creatorId,
     }: IColorDTO,
   ): Promise<string> {
     try {
+      let user = await this.userService.findOneById(creatorId);
+      let isAdmin = false;
+      if (user && user?.role == 'admin') {
+        isAdmin = true;
+      }
       let newColor = Color.create({
         bl_name: trimAndReturn(bl_name, 100),
         tlg_name: trimAndReturn(tlg_name, 100),
@@ -79,6 +89,9 @@ export class ColorsController {
         type: trimAndReturn(type),
         note: trimAndReturn(note),
         isOfficial: isOfficial,
+        approvalDate: isAdmin
+          ? new Date().toISOString().slice(0, 23).replace('T', ' ')
+          : null,
       }).catch((e) => {
         return { code: 500, message: `generic error` };
       });

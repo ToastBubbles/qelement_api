@@ -3,9 +3,10 @@ import { ColorsController } from '../controllers/color.controller';
 import { ColorsService } from '../services/color.service';
 import { colorsProviders } from '../providers/color.providers';
 import { DatabaseModule } from './database.module';
+import { UserModule } from './user.module';
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [DatabaseModule, UserModule],
   controllers: [ColorsController],
   providers: [ColorsService, ...colorsProviders],
   exports: [ColorsService],

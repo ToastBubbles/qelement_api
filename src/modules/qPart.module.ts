@@ -8,14 +8,16 @@ import { ColorModule } from './color.module';
 import { PartsModule } from './parts.module';
 import { qPartOfTheDayProviders } from 'src/providers/qPartOfTheDay.providers';
 import { CacheModule } from '@nestjs/cache-manager';
+import { UserModule } from './user.module';
 
 @Module({
   imports: [
-    DatabaseModule, 
-    RaretyRatingModule, 
-    ColorModule, 
+    DatabaseModule,
+    RaretyRatingModule,
+    ColorModule,
     PartsModule,
-    CacheModule.register()
+    UserModule,
+    CacheModule.register(),
   ],
   controllers: [QPartsController],
   providers: [QPartsService, ...qPartsProviders],

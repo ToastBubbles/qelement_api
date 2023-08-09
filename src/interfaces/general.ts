@@ -9,6 +9,7 @@ export const Public = () => SetMetadata(IS_PUBLIC_KEY, true);
 export interface ISimilarColorDTO {
   color_one: number;
   color_two: number;
+  creatorId: number;
 }
 
 export interface IMailbox {
@@ -27,6 +28,7 @@ export interface IColorDTO {
   type: string;
   note: string;
   isOfficial: boolean;
+  creatorId: number;
 }
 export interface INotApporvedCounts {
   colors: number;
@@ -98,6 +100,11 @@ export interface ILoginDTO {
 export interface iNameOnly {
   name: string;
 }
+
+export interface ICatDTO {
+  name: string;
+  creatorId: number;
+}
 export interface IQPartDetails {
   part: IPartDTO;
   color: IColorDTO;
@@ -140,6 +147,7 @@ export interface IPartWithMoldDTO {
   partNote: string;
   moldNote: string;
   blURL: string;
+  creatorId: number;
 }
 export interface IMessageDTO {
   recipientId: number;

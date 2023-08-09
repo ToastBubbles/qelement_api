@@ -10,20 +10,17 @@ import {
 } from '@nestjs/common';
 import { Image } from 'src/models/image.entity';
 import { ImagesService } from '../services/image.service';
-import {
-  IAPIResponse,
-  ImageSubmission,
-  iIdAndPrimary,
-  iIdOnly,
-} from 'src/interfaces/general';
+import { IAPIResponse, iIdAndPrimary, iIdOnly } from 'src/interfaces/general';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { MinioService } from 'src/services/minio.service';
+import { UsersService } from 'src/services/user.service';
 
 @Controller('image')
 export class ImagesController {
   constructor(
     private readonly imagesService: ImagesService,
     private readonly minioService: MinioService,
+    private readonly userService: UsersService,
   ) {}
 
   @Get()
@@ -64,30 +61,46 @@ export class ImagesController {
     @UploadedFile() image: Express.Multer.File,
     @Body() data: any,
   ): Promise<IAPIResponse> {
-    // console.log(file);
-    let imageData = JSON.parse(data?.imageData);
-    console.log(imageData, typeof imageData);
-    if (imageData.userId && imageData.qpartId) {
-      await this.minioService.createBucketIfNotExists();
-      const fileName = await this.minioService.uploadFile(
-        image,
-        imageData.qpartId,
-        imageData.userId,
-        imageData.type,
-      );
+    try {
+      let imageData = JSON.parse(data?.imageData);
+      console.log(imageData, typeof imageData);
+      if (imageData.userId && imageData.qpartId) {
+        let user = await this.userService.findOneById(imageData.userId);
+        let isAdmin = false;
+        if (user && user?.role == 'admin') {
+          isAdmin = true;
+        }
+        await this.minioService.createBucketIfNotExists();
+        const fileName = await this.minioService.uploadFile(
+          image,
+          imageData.qpartId,
+          imageData.userId,
+          imageData.type,
+        );
 
-      let newImage = Image.create({
-        fileName: fileName,
-        type: imageData.type,
-        userId: imageData.userId,
-        qpartId: imageData.qpartId,
-      }).catch((e) => {
-        return { code: 500, message: `generic error` };
-      });
-      if (newImage instanceof Image) return { code: 201, message: fileName };
-
+        let newImage = await Image.create({
+          fileName: fileName,
+          type: imageData.type,
+          userId: imageData.userId,
+          qpartId: imageData.qpartId,
+          approvalDate: isAdmin
+            ? new Date().toISOString().slice(0, 23).replace('T', ' ')
+            : null,
+        });
+        // .catch((e) => {
+        //   return { code: 500, message: `generic error` };
+        // });
+        if (newImage instanceof Image) {
+          if (isAdmin) return { code: 202, message: fileName };
+          return { code: 201, message: fileName };
+        }
+      }
       return { code: 500, message: 'failed1' };
-    } else return { code: 500, message: 'failed2' };
+    } catch (error) {
+      console.log(error);
+
+      return { code: 500, message: error };
+    }
   }
 
   @Get('/name/:fileName')
@@ -95,19 +108,6 @@ export class ImagesController {
     const fileUrl = await this.minioService.getFileUrl(fileName);
     return fileUrl;
   }
-
-  // @Delete('covers/:fileName')
-  // async deleteBookCover(@Param('fileName') fileName: string) {
-  //   await this.minioService.deleteFile(fileName)
-  //   return fileName
-  // }
-
-  // @Get()
-  // async getFiles(): Promise<string[]> {
-  //   // Example: List all files in the MinIO bucket
-  //   const files = await this.minioService.listObjects('your-bucket-name');
-  //   return files;
-  // }
 
   @Post('/approve')
   async approveImage(

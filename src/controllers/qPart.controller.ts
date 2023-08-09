@@ -19,11 +19,13 @@ import { QPartsService } from '../services/qPart.service';
 import { trimAndReturn } from 'src/utils/utils';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
+import { UsersService } from 'src/services/user.service';
 
 @Controller('qpart')
 export class QPartsController {
   constructor(
     private readonly qPartsService: QPartsService,
+    private readonly userService: UsersService,
     @Inject(CACHE_MANAGER)
     private cacheManager: Cache,
   ) {}
@@ -132,19 +134,29 @@ export class QPartsController {
     data: iQPartDTO,
   ): Promise<IAPIResponse> {
     try {
+      let user = await this.userService.findOneById(data.creatorId);
+      let isAdmin = false;
+      if (user && user?.role == 'admin') {
+        isAdmin = true;
+      }
       const newQPart = await QPart.create({
         moldId: data.moldId,
         colorId: data.colorId,
         type: trimAndReturn(data.type),
         creatorId: data.creatorId == -1 ? 1 : data.creatorId,
         note: trimAndReturn(data.note),
+        approvalDate: isAdmin
+          ? new Date().toISOString().slice(0, 23).replace('T', ' ')
+          : null,
       }).catch((e) => {
         return { code: 500, message: `generic error` };
       });
       console.log(newQPart);
 
-      if (newQPart instanceof QPart) return { code: 200, message: newQPart.id };
-      else return { code: 500, message: `part aready exists` };
+      if (newQPart instanceof QPart) {
+        if (isAdmin) return { code: 201, message: newQPart.id };
+        return { code: 200, message: newQPart.id };
+      } else return { code: 500, message: `part aready exists` };
     } catch (error) {
       console.log(error);
       return { code: 500, message: `generic error` };

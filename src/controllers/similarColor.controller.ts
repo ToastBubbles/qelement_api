@@ -9,11 +9,13 @@ import { Color } from 'src/models/color.entity';
 import { SimilarColor } from 'src/models/similarColor.entity';
 import { ColorsService } from 'src/services/color.service';
 import { SimilarColorsService } from '../services/similarColor.service';
+import { UsersService } from 'src/services/user.service';
 
 @Controller('similarColor')
 export class SimilarColorsController {
   constructor(
     private readonly similarColorsService: SimilarColorsService,
+    private readonly userService: UsersService,
     private readonly colorsService: ColorsService, // private readonly colorsService: ColorsService, //
   ) {}
 
@@ -54,21 +56,32 @@ export class SimilarColorsController {
 
   @Post()
   async addSimilar(
-    @Body() { color_one, color_two }: ISimilarColorDTO,
+    @Body() { color_one, color_two, creatorId }: ISimilarColorDTO,
   ): Promise<IAPIResponse> {
     try {
+      let user = await this.userService.findOneById(creatorId);
+      let isAdmin = false;
+      if (user && user?.role == 'admin') {
+        isAdmin = true;
+      }
       if (color_one == color_two) return { message: 'same id', code: 503 };
       let col2 = await this.colorsService.findById(color_two);
       console.log(col2);
-      if (!!col2) return { message: "color doesn't exist", code: 502 };
+      if (!col2) return { message: "color doesn't exist", code: 502 };
 
       let newMatch = new SimilarColor({
         colorId1: color_one,
         colorId2: color_two,
+        approvalDate: isAdmin
+          ? new Date().toISOString().slice(0, 23).replace('T', ' ')
+          : null,
       });
       let invertMatch = new SimilarColor({
         colorId1: color_two,
         colorId2: color_one,
+        approvalDate: isAdmin
+          ? new Date().toISOString().slice(0, 23).replace('T', ' ')
+          : null,
       });
       let doesExist = await this.similarColorsService.checkIfExists(newMatch);
       let invertedDoesExist = await this.similarColorsService.checkIfExists(

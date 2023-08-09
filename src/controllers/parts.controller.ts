@@ -1,25 +1,24 @@
 import { Controller, Get, Param, Post, Body, Query } from '@nestjs/common';
 import {
   IAPIResponse,
-  IPartDTO,
   IPartWithMoldDTO,
   ISearchOnly,
   iIdOnly,
 } from 'src/interfaces/general';
-import { Category } from 'src/models/category.entity';
 import { Part } from 'src/models/part.entity';
 import { PartsService } from '../services/parts.service';
-import { log } from 'console';
 import { trimAndReturn } from 'src/utils/utils';
 import { PartMoldsService } from 'src/services/partMold.service';
 import { PartMold } from 'src/models/partMold.entity';
+import { UsersService } from 'src/services/user.service';
 
 @Controller('parts')
 export class PartsController {
   constructor(
     private readonly partsService: PartsService,
-    private readonly partsMoldService: PartMoldsService,
-  ) {}
+    private readonly userService: UsersService,
+  ) // private readonly partsMoldService: PartMoldsService,
+  {}
 
   @Get()
   async getAllParts(): Promise<Part[]> {
@@ -91,6 +90,11 @@ export class PartsController {
     data: IPartWithMoldDTO,
   ): Promise<IAPIResponse> {
     try {
+      let user = await this.userService.findOneById(data.creatorId);
+      let isAdmin = false;
+      if (user && user?.role == 'admin') {
+        isAdmin = true;
+      }
       let id: number;
       if (data.id == -1) {
         let newPart = Part.create({
@@ -98,6 +102,9 @@ export class PartsController {
           CatId: data.CatId,
           note: trimAndReturn(data.partNote),
           blURL: trimAndReturn(data.blURL, 20),
+          approvalDate: isAdmin
+            ? new Date().toISOString().slice(0, 23).replace('T', ' ')
+            : null,
         }).catch((e) => {
           return { code: 500, message: `generic error` };
         });
@@ -109,6 +116,9 @@ export class PartsController {
         number: data.number,
         note: data.moldNote,
         parentPartId: id,
+        approvalDate: isAdmin
+          ? new Date().toISOString().slice(0, 23).replace('T', ' ')
+          : null,
       }).catch((e) => {
         return { code: 500, message: `generic error` };
       });

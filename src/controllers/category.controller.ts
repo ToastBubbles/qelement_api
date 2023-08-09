@@ -1,12 +1,21 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { IAPIResponse, iIdOnly, iNameOnly } from 'src/interfaces/general';
+import {
+  IAPIResponse,
+  ICatDTO,
+  iIdOnly,
+  iNameOnly,
+} from 'src/interfaces/general';
 import { Category } from 'src/models/category.entity';
 import { CategoriesService } from '../services/category.service';
 import { trimAndReturn } from 'src/utils/utils';
+import { UsersService } from 'src/services/user.service';
 
 @Controller('categories')
 export class CategoriesController {
-  constructor(private readonly categoriesService: CategoriesService) {}
+  constructor(
+    private readonly categoriesService: CategoriesService,
+    private readonly userService: UsersService,
+  ) {}
 
   @Get()
   async getAllCategories(): Promise<Category[]> {
@@ -63,11 +72,19 @@ export class CategoriesController {
   @Post()
   async addNewCategory(
     @Body()
-    data: iNameOnly,
+    data: ICatDTO,
   ): Promise<IAPIResponse> {
     try {
+      let user = await this.userService.findOneById(data.creatorId);
+      let isAdmin = false;
+      if (user && user?.role == 'admin') {
+        isAdmin = true;
+      }
       let newCat = Category.create({
         name: trimAndReturn(data.name, 50),
+        approvalDate: isAdmin
+          ? new Date().toISOString().slice(0, 23).replace('T', ' ')
+          : null,
       }).catch((e) => {
         return { code: 500, message: `generic error` };
       });
