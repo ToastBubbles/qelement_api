@@ -29,10 +29,10 @@ import { SecurityQuestion } from './securityQuestion.entity';
   paranoid: true,
 })
 export class User extends Model {
-  @Column
+  @Column({ unique: true })
   name: string;
 
-  @Column
+  @Column({ unique: true })
   email: string;
 
   @Column

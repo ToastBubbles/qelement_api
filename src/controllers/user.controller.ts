@@ -48,6 +48,14 @@ export class UsersController {
 
     return result;
   }
+  @Get('/getQuestions/:email')
+  async findOneByEmail(
+    @Param('email') email: string,
+  ): Promise<User | IQelementError> {
+    let result = this.usersService.findOneByEmail(email);
+
+    return result;
+  }
 
   @Get('/checkIfAdmin/:userid')
   async checkIfAdminById(@Param('userid') id: number): Promise<IAPIResponse> {
@@ -87,13 +95,13 @@ export class UsersController {
         const salt = await bcrypt.genSalt();
 
         const hash = await bcrypt.hash(userDTO.password, salt);
-        const hashA1 = await bcrypt.hash(userDTO.q1.answer, salt);
-        const hashA2 = await bcrypt.hash(userDTO.q2.answer, salt);
-        const hashA3 = await bcrypt.hash(userDTO.q3.answer, salt);
+        const hashA1 = await bcrypt.hash(userDTO.q1.answer.toLowerCase(), salt);
+        const hashA2 = await bcrypt.hash(userDTO.q2.answer.toLowerCase(), salt);
+        const hashA3 = await bcrypt.hash(userDTO.q3.answer.toLowerCase(), salt);
 
         const newUser = await User.create({
           name: userDTO.name,
-          email: userDTO.email,
+          email: userDTO.email.toLowerCase(),
           password: hash,
           role: userDTO.role,
         }).catch((e) => {
