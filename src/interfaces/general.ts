@@ -93,6 +93,20 @@ export interface IUserDTO {
   password: string;
   role: string;
 }
+
+export interface IUserWSecQDTO {
+  name: string;
+  email: string;
+  password: string;
+  role: string;
+  q1: ISecurityQuestionDTO;
+  q2: ISecurityQuestionDTO;
+  q3: ISecurityQuestionDTO;
+}
+export interface ISecurityQuestionDTO {
+  questionId: number;
+  answer: string;
+}
 export interface ILoginDTO {
   username: string;
   password: string;

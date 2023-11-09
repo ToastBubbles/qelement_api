@@ -75,7 +75,7 @@ export class ColorsController {
     try {
       let user = await this.userService.findOneById(creatorId);
       let isAdmin = false;
-      if (user && user?.role == 'admin') {
+      if (user && user?.role == 'admin' || user.role == 'trusted') {
         isAdmin = true;
       }
       let newColor = Color.create({

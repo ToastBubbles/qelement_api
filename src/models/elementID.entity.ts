@@ -13,7 +13,7 @@ import { User } from './user.entity';
   paranoid: true,
 })
 export class ElementID extends Model {
-  @Column
+  @Column({ unique: true })
   number: number;
 
   @ForeignKey(() => User)

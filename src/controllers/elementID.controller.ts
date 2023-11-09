@@ -6,10 +6,14 @@ import {
   IElementIDCreationDTO,
   ISearchOnly,
 } from 'src/interfaces/general';
+import { UsersService } from 'src/services/user.service';
 
 @Controller('elementID')
 export class ElementIDsController {
-  constructor(private readonly elementIDsService: ElementIDsService) {}
+  constructor(
+    private readonly elementIDsService: ElementIDsService,
+    private readonly userService: UsersService,
+  ) {}
 
   @Get()
   async getAllElementIDs(): Promise<ElementID[]> {
@@ -33,15 +37,27 @@ export class ElementIDsController {
     elementID: IElementIDCreationDTO,
   ): Promise<IAPIResponse> {
     try {
-      let newElementID = ElementID.create({
+      let user = await this.userService.findOneById(elementID.creatorId);
+      let isAdmin = false;
+      if ((user && user?.role == 'admin') || user.role == 'trusted') {
+        isAdmin = true;
+      }
+      let newElementID = await ElementID.create({
         number: elementID.number,
         creatorId: elementID.creatorId,
         qpartId: elementID.qpartId,
+        approvalDate: isAdmin
+          ? new Date().toISOString().slice(0, 23).replace('T', ' ')
+          : null,
       }).catch((e) => {
         return { code: 502, message: `generic error` };
       });
+      console.log(newElementID);
+      console.log(newElementID instanceof ElementID);
+
       if (newElementID instanceof ElementID) {
-        return { code: 200, message: 'success' };
+        if (isAdmin) return { code: 201, message: 'approved' };
+        else return { code: 200, message: 'submitted' };
       }
       return { code: 501, message: 'failed' };
     } catch (error) {

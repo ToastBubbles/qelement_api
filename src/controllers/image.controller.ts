@@ -67,7 +67,7 @@ export class ImagesController {
       if (imageData.userId && imageData.qpartId) {
         let user = await this.userService.findOneById(imageData.userId);
         let isAdmin = false;
-        if (user && user?.role == 'admin') {
+        if (user && user?.role == 'admin' || user.role == 'trusted') {
           isAdmin = true;
         }
         await this.minioService.createBucketIfNotExists();

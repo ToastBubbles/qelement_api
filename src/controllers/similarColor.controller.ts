@@ -61,7 +61,7 @@ export class SimilarColorsController {
     try {
       let user = await this.userService.findOneById(creatorId);
       let isAdmin = false;
-      if (user && user?.role == 'admin') {
+      if (user && user?.role == 'admin' || user.role == 'trusted') {
         isAdmin = true;
       }
       if (color_one == color_two) return { message: 'same id', code: 503 };

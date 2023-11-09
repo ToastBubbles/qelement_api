@@ -22,6 +22,7 @@ import { UserPreference } from './userPreference.entity';
 import { UserTitle } from './userTitle.entity';
 import { Title } from './title.entity';
 import { UserGoal } from './userGoal.entity';
+import { SecurityQuestion } from './securityQuestion.entity';
 
 @Table({
   timestamps: true,
@@ -123,4 +124,7 @@ export class User extends Model {
 
   @HasMany(() => UserGoal)
   goals: UserGoal[];
+
+  @HasMany(() => SecurityQuestion)
+  securityQuestions: SecurityQuestion[];
 }

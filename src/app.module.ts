@@ -27,6 +27,8 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { CacheModule } from '@nestjs/cache-manager';
 import { UserGoalModule } from './modules/userGoal.module';
 import { ElementIDModule } from './modules/elementID.module';
+import { SecurityQuestionModule } from './modules/securityQuestion.module';
+import { PredefinedSecurityQuestionModule } from './modules/predefinedSecurityQuestion.module';
 
 @Module({
   imports: [
@@ -55,6 +57,8 @@ import { ElementIDModule } from './modules/elementID.module';
     PartMoldModule,
     UserGoalModule,
     ElementIDModule,
+    SecurityQuestionModule,
+    PredefinedSecurityQuestionModule,
   ],
   controllers: [AppController, EverythingController],
   providers: [AppService],

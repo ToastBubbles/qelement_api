@@ -18,6 +18,8 @@ import { UserTitle } from 'src/models/userTitle.entity';
 import { PartMold } from 'src/models/partMold.entity';
 import { UserGoal } from 'src/models/userGoal.entity';
 import { ElementID } from 'src/models/elementID.entity';
+import { SecurityQuestion } from 'src/models/securityQuestion.entity';
+import { PredefinedSecurityQuestion } from 'src/models/predefinedSecurityQuestion.entity';
 
 export const databaseProviders = [
   {
@@ -52,6 +54,8 @@ export const databaseProviders = [
         PartMold,
         UserGoal,
         ElementID,
+        SecurityQuestion,
+        PredefinedSecurityQuestion,
       ]);
 
       await sequelize.sync();

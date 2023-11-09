@@ -136,7 +136,7 @@ export class QPartsController {
     try {
       let user = await this.userService.findOneById(data.creatorId);
       let isAdmin = false;
-      if (user && user?.role == 'admin') {
+      if (user && user?.role == 'admin' || user.role == 'trusted') {
         isAdmin = true;
       }
       const newQPart = await QPart.create({
