@@ -63,6 +63,7 @@ export class ColorsController {
       tlg_name,
       bo_name,
       hex,
+      swatchId,
       bl_id,
       tlg_id,
       bo_id,
@@ -75,7 +76,7 @@ export class ColorsController {
     try {
       let user = await this.userService.findOneById(creatorId);
       let isAdmin = false;
-      if (user && user?.role == 'admin' || user.role == 'trusted') {
+      if ((user && user?.role == 'admin') || user.role == 'trusted') {
         isAdmin = true;
       }
       let newColor = Color.create({
@@ -83,9 +84,10 @@ export class ColorsController {
         tlg_name: trimAndReturn(tlg_name, 100),
         bo_name: trimAndReturn(bo_name, 100),
         hex: trimAndReturn(hex, 6),
-        bl_id: bl_id == -1 ? null : bl_id,
-        tlg_id: tlg_id == -1 ? null : tlg_id,
-        bo_id: bo_id == -1 ? null : bo_id,
+        swatchId: swatchId < 0 ? null : swatchId,
+        bl_id: bl_id < 0 ? null : bl_id,
+        tlg_id: tlg_id < 0 ? null : tlg_id,
+        bo_id: bo_id < 0 ? null : bo_id,
         type: trimAndReturn(type),
         note: trimAndReturn(note),
         isOfficial: isOfficial,
@@ -109,60 +111,61 @@ export class ColorsController {
   async editColor(
     @Param('id') id: number,
     @Body()
-    {
-      bl_name,
-      tlg_name,
-      bo_name,
-      hex,
-      bl_id,
-      bo_id,
-      tlg_id,
-      type,
-      note,
-      isOfficial,
-    }: IColorDTO,
+    d: IColorDTO,
   ): Promise<IAPIResponse> {
+    console.log('here');
+
+    console.log(d);
+
     let hasChanged = false;
     let colorToChange = (await this.colorsService.findById(id)) as Color;
     if (colorToChange) {
-      if (bl_name !== 'unchanged' && bl_name != colorToChange.bl_name) {
-        colorToChange.bl_name = trimAndReturn(bl_name);
+      if (d.bl_name !== 'unchanged' && d.bl_name != colorToChange.bl_name) {
+        colorToChange.bl_name = trimAndReturn(d.bl_name);
         hasChanged = true;
       }
-      if (tlg_name !== 'unchanged' && tlg_name != colorToChange.tlg_name) {
-        colorToChange.tlg_name = trimAndReturn(tlg_name);
+      if (d.tlg_name !== 'unchanged' && d.tlg_name != colorToChange.tlg_name) {
+        colorToChange.tlg_name = trimAndReturn(d.tlg_name);
         hasChanged = true;
       }
-      if (bo_name !== 'unchanged' && bo_name != colorToChange.bo_name) {
-        colorToChange.bo_name = trimAndReturn(bo_name);
+      if (d.bo_name !== 'unchanged' && d.bo_name != colorToChange.bo_name) {
+        colorToChange.bo_name = trimAndReturn(d.bo_name);
         hasChanged = true;
       }
-      if (hex !== 'unchanged' && hex.length == 6 && hex != colorToChange.hex) {
-        colorToChange.hex = hex;
+      if (
+        d.hex !== 'unchanged' &&
+        d.hex.length == 6 &&
+        d.hex != colorToChange.hex
+      ) {
+        colorToChange.hex = d.hex;
         hasChanged = true;
       }
-      if (note !== 'unchanged' && note != colorToChange.note) {
-        colorToChange.note = trimAndReturn(note);
+      if (d.note !== 'unchanged' && d.note != colorToChange.note) {
+        colorToChange.note = trimAndReturn(d.note);
         hasChanged = true;
       }
-      if (type !== 'unchanged' && type != colorToChange.type) {
-        colorToChange.type = trimAndReturn(type);
+      if (d.type !== 'unchanged' && d.type != colorToChange.type) {
+        colorToChange.type = trimAndReturn(d.type);
         hasChanged = true;
       }
-      if (bl_id !== -1 && bl_id != colorToChange.bl_id) {
-        colorToChange.bl_id = bl_id;
+      if (d.bl_id !== -1 && d.bl_id != colorToChange.bl_id) {
+        colorToChange.bl_id = d.bl_id;
         hasChanged = true;
       }
-      if (bo_id !== -1 && bo_id != colorToChange.bo_id) {
-        colorToChange.bo_id = bo_id;
+      if (d.swatchId !== -1 && d.swatchId != colorToChange.swatchId) {
+        colorToChange.swatchId = d.swatchId;
         hasChanged = true;
       }
-      if (tlg_id !== -1 && tlg_id != colorToChange.tlg_id) {
-        colorToChange.tlg_id = tlg_id;
+      if (d.bo_id !== -1 && d.bo_id != colorToChange.bo_id) {
+        colorToChange.bo_id = d.bo_id;
         hasChanged = true;
       }
-      if (isOfficial != isOfficial) {
-        colorToChange.isOfficial = isOfficial;
+      if (d.tlg_id !== -1 && d.tlg_id != colorToChange.tlg_id) {
+        colorToChange.tlg_id = d.tlg_id;
+        hasChanged = true;
+      }
+      if (d.isOfficial != d.isOfficial) {
+        colorToChange.isOfficial = d.isOfficial;
         hasChanged = true;
       }
     }

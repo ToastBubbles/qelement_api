@@ -22,6 +22,7 @@ export interface IColorDTO {
   tlg_name: string;
   bo_name: string;
   hex: string;
+  swatchId: number;
   bl_id: number;
   tlg_id: number;
   bo_id: number;
@@ -93,7 +94,21 @@ export interface IUserDTO {
   password: string;
   role: string;
 }
-
+export interface ISuspendUser {
+  type: string;
+  untilDate: string;
+  reason: string;
+  userId: number;
+  adminId: number;
+}
+export interface IUserRecover {
+  newPassword: string;
+  email: string;
+  q1Id: number;
+  q2Id: number;
+  a1: string;
+  a2: string;
+}
 export interface IUserWSecQDTO {
   name: string;
   email: string;

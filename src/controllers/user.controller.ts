@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import {
   IAPIResponse,
+  ISuspendUser,
   IUserDTO,
   IUserWSecQDTO,
   Public,
@@ -70,6 +71,37 @@ export class UsersController {
         return { code: 403, message: `user is not admin` };
       }
     } else return { code: 404, message: `user not found` };
+  }
+
+  @Public()
+  @Post('/recover')
+  async RecoverUser(
+    @Body()
+    userDTO: IUserWSecQDTO,
+  ): Promise<IAPIResponse> {
+    try {
+      if (
+        userDTO.q1.questionId == null ||
+        userDTO.q2.questionId == null ||
+        userDTO.q3.questionId == null ||
+        userDTO.q1.answer.length <= 3 ||
+        userDTO.q2.answer.length <= 3 ||
+        userDTO.q3.answer.length <= 3
+      ) {
+        return { code: 505, message: `bad security questions` };
+      }
+      if (userDTO.name.length > 255 || userDTO.email.length > 255) {
+        return { code: 500, message: `text OOB` };
+      } else {
+        const salt = await bcrypt.genSalt();
+
+        const hash = await bcrypt.hash(userDTO.password, salt);
+      }
+      return { code: 503, message: `failed to create user` };
+    } catch (error) {
+      console.log(error);
+      return { code: 504, message: `failed due to error` };
+    }
   }
 
   @Public()
@@ -158,6 +190,51 @@ export class UsersController {
         // newUser.save();
       }
       return { code: 503, message: `failed to create user` };
+    } catch (error) {
+      console.log(error);
+      return { code: 504, message: `failed due to error` };
+    }
+  }
+
+  @Public()
+  @Post('/suspend')
+  async suspendUser(
+    @Body()
+    suspensionDTO: ISuspendUser,
+  ): Promise<IAPIResponse> {
+    try {
+      const admin = await this.usersService.findOneById(suspensionDTO.adminId);
+
+      if (admin.role) {
+        const user = await this.usersService.findOneById(suspensionDTO.userId);
+
+        if (user.role == 'admin') {
+          return { code: 405, message: 'cannot suspend an admin' };
+        }
+
+        if (suspensionDTO.type == 'ban') {
+          await user.update({
+            role: 'banned',
+            suspentionReason: suspensionDTO.reason,
+          });
+          return { code: 200, message: 'successfully banned' };
+        } else if (suspensionDTO.type == 'suspension') {
+          await user.update({
+            role: 'suspended',
+            suspendedDate: suspensionDTO.untilDate,
+            suspentionReason: suspensionDTO.reason,
+          });
+          return { code: 200, message: 'successfully banned' };
+        } else if (suspensionDTO.type == 'ban removal') {
+          await user.update({
+            role: 'user',
+          });
+          return { code: 200, message: 'successfully banned' };
+        }
+        return { code: 500, message: 'nothing changed' };
+      } else {
+        return { code: 404, message: 'Not presented with correct creds' };
+      }
     } catch (error) {
       console.log(error);
       return { code: 504, message: `failed due to error` };

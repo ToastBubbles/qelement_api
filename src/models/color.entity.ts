@@ -22,6 +22,8 @@ export class Color extends Model {
   @Column
   tlg_name: string;
   @Column
+  swatchId: number;
+  @Column
   bo_id: number;
   @Column
   bo_name: string;

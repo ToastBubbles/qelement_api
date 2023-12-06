@@ -36,6 +36,7 @@ export class EverythingController {
           tlg_name: color.LName,
           bo_name: color.OName,
           hex: color.color || '000000',
+          swatchId: color.swatchId || null,
           bl_id: Number(color.id) || null,
           tlg_id: Number(color.Lid) || null,
           bo_id: Number(color.Oid) || null,
