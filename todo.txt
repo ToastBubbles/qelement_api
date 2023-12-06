@@ -3,3 +3,5 @@ Finalize password reset
 refix message get recipient id for the 4th time
 
 ad bans and suspensions
+
+add confirmation to delete page
