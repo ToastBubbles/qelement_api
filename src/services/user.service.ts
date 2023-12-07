@@ -5,6 +5,7 @@ import { Op, Sequelize } from 'sequelize';
 import { IAPIResponse } from 'src/interfaces/general';
 import { SecurityQuestion } from 'src/models/securityQuestion.entity';
 import { PredefinedSecurityQuestion } from 'src/models/predefinedSecurityQuestion.entity';
+import { UserPreference } from 'src/models/userPreference.entity';
 
 @Injectable()
 export class UsersService {
@@ -19,6 +20,7 @@ export class UsersService {
   async findOneByUsername(username: string): Promise<User | IAPIResponse> {
     let foundUser = await this.usersRepository.findOne({
       where: { name: username },
+      include: [UserPreference],
     });
     if (foundUser) return foundUser;
     else return { code: 404, message: `user not found` };
@@ -31,6 +33,7 @@ export class UsersService {
           as: 'securityQuestions',
           include: [PredefinedSecurityQuestion],
         },
+        UserPreference,
       ],
       where: { email: email },
     });
@@ -44,6 +47,7 @@ export class UsersService {
           [Op.iLike]: username,
         },
       },
+      include: [UserPreference],
     });
     if (foundUser) return { code: 200, message: `username is being used` };
     else return { code: 404, message: `username not being used` };
@@ -51,6 +55,7 @@ export class UsersService {
   async findOneById(id: number): Promise<User> {
     let foundUser = await this.usersRepository.findOne({
       where: { id: id },
+      include: [UserPreference],
     });
     if (foundUser) return foundUser;
     else throw new HttpException('User not found', 404);

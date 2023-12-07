@@ -181,7 +181,7 @@ export class ColorsController {
         colorToChange.tlg_id = d.tlg_id;
         hasChanged = true;
       }
-      if (d.isOfficial != d.isOfficial) {
+      if (d.isOfficial != colorToChange.isOfficial) {
         colorToChange.isOfficial = d.isOfficial;
         hasChanged = true;
       }

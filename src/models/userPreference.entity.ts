@@ -44,7 +44,7 @@ export class UserPreference extends Model {
 
   @Column({
     type: DataTypes.ENUM('bl', 'tlg', 'bo', 'qe'),
-    defaultValue: 'bl',
+    defaultValue: 'tlg',
   })
   prefId: string;
 }

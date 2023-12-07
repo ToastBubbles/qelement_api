@@ -11,6 +11,7 @@ import { UsersService } from '../services/user.service';
 import * as bcrypt from 'bcrypt';
 import { IQelementError } from 'src/interfaces/error';
 import { SecurityQuestion } from 'src/models/securityQuestion.entity';
+import { UserPreference } from 'src/models/userPreference.entity';
 
 @Controller('user')
 export class UsersController {
@@ -171,6 +172,10 @@ export class UsersController {
           ) {
             questions = [q1, q2, q3];
             await newUser.$set('securityQuestions', questions);
+            const prefs = await UserPreference.create({
+              userId: newUser.id,
+            });
+            await newUser.$set('preferences', prefs);
             return { code: 200, message: `created!` };
           } else {
             return { code: 501, message: `generic error` };

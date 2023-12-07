@@ -16,7 +16,14 @@ export interface IMailbox {
   inbox: IExtendedMessageDTO[];
   outbox: IExtendedMessageDTO[];
 }
-
+export interface IUserPrefDTO {
+  lang: string;
+  isCollectionVisible: boolean;
+  isWantedVisible: boolean;
+  allowMessages: boolean;
+  prefName: string;
+  prefId: string;
+}
 export interface IColorDTO {
   bl_name: string;
   tlg_name: string;
