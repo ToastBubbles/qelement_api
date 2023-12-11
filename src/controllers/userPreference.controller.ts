@@ -25,27 +25,29 @@ export class UserPreferencesController {
       userId,
     );
     if (prefToChange) {
-      if (d.lang !== 'unchanged' && d.lang != prefToChange.lang) {
+      if (d.lang != prefToChange.lang) {
         prefToChange.lang = d.lang;
         hasChanged = true;
       }
-      if (d.isCollectionVisible !== prefToChange.isCollectionVisible) {
+      if (d.isCollectionVisible != prefToChange.isCollectionVisible) {
         prefToChange.isCollectionVisible = d.isCollectionVisible;
         hasChanged = true;
       }
-      if (d.isWantedVisible !== prefToChange.isWantedVisible) {
+      if (d.isWantedVisible != prefToChange.isWantedVisible) {
         prefToChange.isWantedVisible = d.isWantedVisible;
         hasChanged = true;
       }
-      if (d.allowMessages !== prefToChange.allowMessages) {
+      if (d.allowMessages != prefToChange.allowMessages) {
+        // prefToChange.update({ allowMessages: d.allowMessages });
         prefToChange.allowMessages = d.allowMessages;
+
         hasChanged = true;
       }
-      if (d.prefName !== 'unchanged' && d.prefName != prefToChange.prefName) {
+      if (d.prefName != prefToChange.prefName) {
         prefToChange.prefName = d.prefName;
         hasChanged = true;
       }
-      if (d.prefId !== 'unchanged' && d.prefId != prefToChange.prefId) {
+      if (d.prefId != prefToChange.prefId) {
         prefToChange.prefId = d.prefId;
         hasChanged = true;
       }

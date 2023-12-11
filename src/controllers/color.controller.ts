@@ -44,7 +44,7 @@ export class ColorsController {
     try {
       let thisObj = await this.colorsService.findByIdAll(data.id);
       if (thisObj) {
-        thisObj.update({
+        thisObjate({
           approvalDate: new Date().toISOString().slice(0, 23).replace('T', ' '),
         });
         return { code: 200, message: `approved` };
