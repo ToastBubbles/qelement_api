@@ -1,7 +1,12 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { PartStatus } from 'src/models/partStatus.entity';
 import { PartStatusesService } from '../services/partStatus.service';
-import { IAPIResponse, IPartStatusDTO, iIdOnly } from 'src/interfaces/general';
+import {
+  IAPIResponse,
+  IArrayOfIDs,
+  IPartStatusDTO,
+  iIdOnly,
+} from 'src/interfaces/general';
 import { trimAndReturn } from 'src/utils/utils';
 import { UsersService } from 'src/services/user.service';
 
@@ -54,7 +59,7 @@ export class PartStatusesController {
     try {
       let user = await this.userService.findOneById(data.creatorId);
       let isAdmin = false;
-      if (user && user?.role == 'admin' || user.role == 'trusted') {
+      if ((user && user?.role == 'admin') || user.role == 'trusted') {
         isAdmin = true;
       }
       let newPart = PartStatus.create({
@@ -77,6 +82,79 @@ export class PartStatusesController {
     } catch (error) {
       console.log(error);
       return { code: 500, message: `generic error` };
+    }
+  }
+
+  @Post('/mass')
+  async massAddKnownStatus(
+    @Body()
+    data: IArrayOfIDs,
+  ): Promise<IAPIResponse> {
+    try {
+      console.log('******In controller');
+
+      let user = await this.userService.findOneById(data.userId);
+      let isAdmin = false;
+      if ((user && user?.role == 'admin') || user.role == 'trusted') {
+        isAdmin = true;
+      }
+      const createdStatuses: PartStatus[] = [];
+
+      for (const id of data.ids) {
+        console.log('******Creating: ', id);
+        const newPartStatus = await this.createKnownPartStatus(
+          data.userId,
+          id,
+          isAdmin,
+        );
+
+        if (newPartStatus instanceof PartStatus) {
+          createdStatuses.push(newPartStatus);
+        } else {
+          return { code: 509, message: 'error' };
+        }
+      }
+
+      if (createdStatuses.length > 0) {
+        console.log('******Adding: ', createdStatuses.length);
+        if (isAdmin) {
+          return { code: 201, message: 'added, and approved' };
+        }
+        return { code: 200, message: 'submitted for approval' };
+      } else {
+        return {
+          code: 500,
+          message: 'All parts already exist or generic error',
+        };
+      }
+    } catch (error) {
+      console.log(error);
+      return { code: 500, message: `generic error` };
+    }
+  }
+
+  private async createKnownPartStatus(
+    userId: number,
+    id: number,
+    isAdmin: boolean,
+  ): Promise<PartStatus | null> {
+    try {
+      // Check if the part already exists or create a new one
+
+      // Create a new QPart
+      const newPartStatus = await PartStatus.create({
+        qpartId: id,
+        creatorId: userId == -1 ? 1 : userId,
+        status: 'known',
+        approvalDate: isAdmin
+          ? new Date().toISOString().slice(0, 23).replace('T', ' ')
+          : null,
+      });
+
+      return newPartStatus;
+    } catch (error) {
+      console.error(error);
+      return null;
     }
   }
 }

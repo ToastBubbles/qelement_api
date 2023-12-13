@@ -40,11 +40,11 @@ export class QPart extends Model {
       'other',
       'unknown',
     ),
-    defaultValue: 'unknown',
+    defaultValue: 'other',
   })
   type: string;
 
-  @Column
+  @Column({ defaultValue: '' })
   note: string;
 
   @ForeignKey(() => PartMold)

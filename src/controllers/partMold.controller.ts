@@ -18,8 +18,15 @@ export class PartMoldsController {
   }
 
   @Get('/search')
-  async getSearchResults(@Query() data: ISearchOnly): Promise<PartMold[] | null> {
+  async getSearchResults(
+    @Query() data: ISearchOnly,
+  ): Promise<PartMold[] | null> {
     return this.partMoldsService.findPartsBySearch(data.search);
+  }
+
+  @Get('/number')
+  async getByMoldNumber(@Query() data: ISearchOnly): Promise<PartMold | null> {
+    return this.partMoldsService.findPartByMoldNumber(data.search);
   }
 
   @Post('/approve')

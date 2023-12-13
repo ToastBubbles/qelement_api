@@ -34,10 +34,10 @@ export class PartStatus extends Model {
   })
   date: Date;
 
-  @Column
+  @Column({ defaultValue: '' })
   location: string;
 
-  @Column
+  @Column({ defaultValue: '' })
   note: string;
 
   @ForeignKey(() => QPart)

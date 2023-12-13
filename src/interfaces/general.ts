@@ -67,7 +67,15 @@ export interface IPartStatusDTO {
   qpartId: number;
   creatorId: number;
 }
-
+export interface IKnownRow {
+  colorId: number;
+  elementId: string;
+}
+export interface IMassKnown {
+  userId: number;
+  moldId: number;
+  parts: IKnownRow[];
+}
 export interface iQPartDTO {
   moldId: number;
   colorId: number;
@@ -154,7 +162,16 @@ export interface iIdAndPrimary {
   id: number;
   isPrimary: boolean;
 }
+export interface IArrayOfIDs {
+  userId: number;
+  ids: number[];
+}
 
+export interface IAPIResponseWithIds {
+  code: number;
+  message: string;
+  ids: number[] | null;
+}
 export interface IAPIResponse {
   code: number;
   message: string;

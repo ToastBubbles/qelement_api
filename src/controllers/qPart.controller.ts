@@ -9,6 +9,9 @@ import {
 } from '@nestjs/common';
 import {
   IAPIResponse,
+  IAPIResponseWithIds,
+  IKnownRow,
+  IMassKnown,
   IQPartVerifcation,
   ISearchOnly,
   iIdOnly,
@@ -136,7 +139,7 @@ export class QPartsController {
     try {
       let user = await this.userService.findOneById(data.creatorId);
       let isAdmin = false;
-      if (user && user?.role == 'admin' || user.role == 'trusted') {
+      if ((user && user?.role == 'admin') || user.role == 'trusted') {
         isAdmin = true;
       }
       const newQPart = await QPart.create({
@@ -160,6 +163,100 @@ export class QPartsController {
     } catch (error) {
       console.log(error);
       return { code: 500, message: `generic error` };
+    }
+  }
+
+  @Post('/mass')
+  async massAddKnown(
+    @Body()
+    data: IMassKnown,
+  ): Promise<IAPIResponseWithIds> {
+    try {
+      let user = await this.userService.findOneById(data.userId);
+      let isAdmin = false;
+      let didMiss = false;
+      if ((user && user?.role == 'admin') || user.role == 'trusted') {
+        isAdmin = true;
+      }
+
+      const createdParts: QPart[] = [];
+      const createdPartIds: number[] = [];
+
+      for (const part of data.parts) {
+        const newQPart = await this.createKnownPart(
+          part,
+          data.moldId,
+          data.userId,
+          isAdmin,
+        );
+
+        if (newQPart instanceof QPart) {
+          createdParts.push(newQPart);
+          createdPartIds.push(newQPart.id);
+        } else {
+          didMiss = true;
+          return { code: 509, message: 'error', ids: createdPartIds };
+        }
+      }
+
+      if (createdParts.length > 0) {
+        if (isAdmin) {
+          return {
+            code: 201,
+            message: 'added, and approved',
+            ids: createdPartIds,
+          };
+        }
+        return {
+          code: 200,
+          message: 'submitted for approval',
+          ids: createdPartIds,
+        };
+      } else {
+        return {
+          code: 500,
+          message: 'All parts already exist or generic error',
+          ids: null,
+        };
+      }
+    } catch (error) {
+      console.error(error);
+      return { code: 500, message: 'Generic error', ids: null };
+    }
+  }
+
+  private async createKnownPart(
+    part: IKnownRow,
+    moldId: number,
+    userId: number,
+    isAdmin: boolean,
+  ): Promise<QPart | null> {
+    try {
+      // Check if the part already exists or create a new one
+
+      const existingPart = await this.qPartsService.findIfExists({
+        colorId: part.colorId,
+        moldId: moldId,
+      });
+
+      if (existingPart) {
+        return null;
+      }
+
+      // Create a new QPart
+      const newQPart = await QPart.create({
+        moldId: moldId,
+        colorId: part.colorId,
+        creatorId: userId == -1 ? 1 : userId,
+        approvalDate: isAdmin
+          ? new Date().toISOString().slice(0, 23).replace('T', ' ')
+          : null,
+      });
+
+      return newQPart;
+    } catch (error) {
+      console.error(error);
+      return null;
     }
   }
 }
