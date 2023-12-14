@@ -25,6 +25,8 @@ import { UserInventory } from './userInventory.entity';
 import { PartMold } from './partMold.entity';
 import { DataTypes } from 'sequelize';
 import { ElementID } from './elementID.entity';
+import { Sculpture } from './sculpture.entity';
+import { SculptureInventory } from './sculptureInventory.entity';
 @Table({
   timestamps: true,
   paranoid: true,
@@ -92,6 +94,11 @@ export class QPart extends Model {
     through: { model: () => UserInventory, unique: false },
   })
   userInventories: User[];
+
+  @BelongsToMany(() => Sculpture, {
+    through: { model: () => SculptureInventory, unique: false },
+  })
+  sculptureInventories: Sculpture[];
 
   @Column
   approvalDate: Date;

@@ -29,6 +29,8 @@ import { UserGoalModule } from './modules/userGoal.module';
 import { ElementIDModule } from './modules/elementID.module';
 import { SecurityQuestionModule } from './modules/securityQuestion.module';
 import { PredefinedSecurityQuestionModule } from './modules/predefinedSecurityQuestion.module';
+import { SculptureInventoryModule } from './modules/sculptureInventory.module';
+import { SculptureColorModule } from './modules/sculptureColor.module';
 
 @Module({
   imports: [
@@ -59,6 +61,9 @@ import { PredefinedSecurityQuestionModule } from './modules/predefinedSecurityQu
     ElementIDModule,
     SecurityQuestionModule,
     PredefinedSecurityQuestionModule,
+    ScheduleModule,
+    SculptureInventoryModule,
+    SculptureColorModule
   ],
   controllers: [AppController, EverythingController],
   providers: [AppService],

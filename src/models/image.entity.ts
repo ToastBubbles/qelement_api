@@ -10,6 +10,7 @@ import {
 import { QPart } from './qPart.entity';
 import { User } from './user.entity';
 import { DataTypes } from 'sequelize';
+import { Sculpture } from './sculpture.entity';
 
 @Table({
   timestamps: true,
@@ -25,8 +26,8 @@ export class Image extends Model {
   @Column({
     type: DataTypes.ENUM(
       'part',
+      'supplemental',
       'sculpture',
-      'suplemental',
       'damaged',
       'other',
     ),
@@ -50,6 +51,13 @@ export class Image extends Model {
 
   @BelongsTo(() => QPart)
   qpart: QPart;
+
+  @ForeignKey(() => Sculpture)
+  @Column
+  sculptureId: number;
+
+  @BelongsTo(() => Sculpture)
+  sculpture: Sculpture;
 
   @Column
   approvalDate: Date;

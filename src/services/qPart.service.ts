@@ -78,6 +78,9 @@ export class QPartsService {
         approvalDate: {
           [Op.ne]: null,
         },
+        type: {
+          [Op.ne]: 'other',
+        },
       },
     });
   }

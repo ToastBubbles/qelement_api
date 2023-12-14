@@ -20,6 +20,9 @@ import { UserGoal } from 'src/models/userGoal.entity';
 import { ElementID } from 'src/models/elementID.entity';
 import { SecurityQuestion } from 'src/models/securityQuestion.entity';
 import { PredefinedSecurityQuestion } from 'src/models/predefinedSecurityQuestion.entity';
+import { Sculpture } from 'src/models/sculpture.entity';
+import { SculptureInventory } from 'src/models/sculptureInventory.entity';
+import { SculptureColor } from 'src/models/sculptureColor.entity';
 
 export const databaseProviders = [
   {
@@ -35,14 +38,15 @@ export const databaseProviders = [
         timezone: 'utc',
       });
       sequelize.addModels([
-        Part,
         Category,
+        Part,
+        PartMold,
         Color,
         QPart,
+        PartStatus,
         User,
         Image,
         RaretyRating,
-        PartStatus,
         Message,
         Comment,
         UserFavorite,
@@ -51,11 +55,13 @@ export const databaseProviders = [
         SimilarColor,
         Title,
         UserTitle,
-        PartMold,
         UserGoal,
         ElementID,
         SecurityQuestion,
         PredefinedSecurityQuestion,
+        Sculpture,
+        SculptureInventory,
+        SculptureColor,
       ]);
 
       await sequelize.sync();
