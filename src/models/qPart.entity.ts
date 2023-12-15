@@ -46,7 +46,7 @@ export class QPart extends Model {
   })
   type: string;
 
-  @Column({ defaultValue: '' })
+  @Column({ defaultValue: '', type: DataTypes.STRING(255) })
   note: string;
 
   @ForeignKey(() => PartMold)

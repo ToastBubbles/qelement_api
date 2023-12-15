@@ -19,7 +19,6 @@ import { UserPreferenceModule } from './modules/userPreference.module';
 import { EverythingController } from './controllers/everything.controller';
 import { SimilarColorModule } from './modules/similarColor.module';
 import { AuthModule } from './auth/auth.module';
-import { Title } from './models/title.entity';
 import { TitleModule } from './modules/title.module';
 import { UserTitleModule } from './modules/userTitle.module';
 import { PartMoldModule } from './modules/partMold.module';
@@ -31,6 +30,7 @@ import { SecurityQuestionModule } from './modules/securityQuestion.module';
 import { PredefinedSecurityQuestionModule } from './modules/predefinedSecurityQuestion.module';
 import { SculptureInventoryModule } from './modules/sculptureInventory.module';
 import { SculptureColorModule } from './modules/sculptureColor.module';
+import { SculptureModule } from './modules/sculpture.module';
 
 @Module({
   imports: [
@@ -61,9 +61,9 @@ import { SculptureColorModule } from './modules/sculptureColor.module';
     ElementIDModule,
     SecurityQuestionModule,
     PredefinedSecurityQuestionModule,
-    ScheduleModule,
+    SculptureModule,
     SculptureInventoryModule,
-    SculptureColorModule
+    SculptureColorModule,
   ],
   controllers: [AppController, EverythingController],
   providers: [AppService],

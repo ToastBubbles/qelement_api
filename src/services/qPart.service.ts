@@ -12,6 +12,7 @@ import { Comment } from 'src/models/comment.entity';
 import { Image } from 'src/models/image.entity';
 import { IQPartVerifcation } from 'src/interfaces/general';
 import { ElementID } from 'src/models/elementID.entity';
+import sequelize from 'sequelize';
 
 @Injectable()
 export class QPartsService {
@@ -61,26 +62,20 @@ export class QPartsService {
           model: Image,
           include: [{ model: User, as: 'uploader' }],
         },
-        // {
-        //   model: Image,
-        //   // as: 'images',
-        //   where: {
-        //     approvalDate: {
-        //       [Op.not]: null,
-        //     },
-        //   },
-        // },
       ],
       limit,
       order: [['createdAt', 'DESC']],
-
       where: {
-        approvalDate: {
-          [Op.ne]: null,
-        },
-        type: {
-          [Op.ne]: 'other',
-        },
+        [Op.and]: [
+          {
+            approvalDate: {
+              [Op.ne]: null,
+            },
+          },
+          sequelize.literal(
+            `(SELECT COUNT(*) FROM "PartStatuses" WHERE "QPart"."id" = "PartStatuses"."qpartId" AND "PartStatuses"."status" = 'known') = 0`,
+          ),
+        ],
       },
     });
   }
@@ -199,7 +194,25 @@ export class QPartsService {
 
     return result;
   }
+  async findByIdAllKnown(): Promise<QPart[] | null> {
+    const result = await this.qPartsRepository.findAll({
+      where: sequelize.literal(
+        `(SELECT COUNT(*) FROM "PartStatuses" WHERE "QPart"."id" = "PartStatuses"."qpartId" AND "PartStatuses"."status" = 'known') > 0`,
+      ),
+    });
 
+    return result;
+  }
+
+  async findByIdAllNotKnown(): Promise<QPart[] | null> {
+    const result = await this.qPartsRepository.findAll({
+      where: sequelize.literal(
+        `(SELECT COUNT(*) FROM "PartStatuses" WHERE "QPart"."id" = "PartStatuses"."qpartId" AND "PartStatuses"."status" = 'known') = 0`,
+      ),
+    });
+
+    return result;
+  }
   async findMatchesByPartId(partId: number): Promise<QPart[] | null> {
     const results = await this.qPartsRepository.findAll({
       include: [

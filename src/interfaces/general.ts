@@ -84,6 +84,16 @@ export interface iQPartDTO {
   creatorId: number;
   note: string;
 }
+export interface ICreateScupltureDTO {
+  name: string;
+  brickSystem: string;
+  location: string;
+  note: string;
+  yearMade: number;
+  yearRetired: number;
+  keywords: string;
+  creatorId: number;
+}
 export interface IQPartDTO {
   id: number;
   moldId: number;

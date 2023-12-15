@@ -6,12 +6,15 @@ import {
   BelongsToMany,
   DataType,
   HasMany,
+  ForeignKey,
+  BelongsTo,
 } from 'sequelize-typescript';
 import { QPart } from './qPart.entity';
 import { SculptureInventory } from './sculptureInventory.entity';
 import { Image } from './image.entity';
 import { Color } from './color.entity';
 import { SculptureColor } from './sculptureColor.entity';
+import { User } from './user.entity';
 
 @Table({
   timestamps: true,
@@ -27,7 +30,7 @@ export class Sculpture extends Model {
   })
   brickSystem: string;
 
-  @Column
+  @Column({ type: DataTypes.STRING(50) })
   location: string;
 
   @Column({
@@ -68,6 +71,13 @@ export class Sculpture extends Model {
   })
   yearRetired!: number | null; // Adjust the type to allow null
 
+  @ForeignKey(() => User)
+  @Column
+  creatorId: number;
+
+  @BelongsTo(() => User)
+  creator: User;
+
   @HasMany(() => Image)
   images: Image[];
 
@@ -75,6 +85,9 @@ export class Sculpture extends Model {
     type: DataTypes.STRING(255),
   })
   keywords: string;
+
+  @Column({ defaultValue: '', type: DataTypes.STRING(255) })
+  note: string;
 
   @BelongsToMany(() => QPart, {
     through: { model: () => SculptureInventory, unique: false },
