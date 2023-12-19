@@ -14,7 +14,6 @@ import { User } from './user.entity';
 
 @Table({
   timestamps: true,
-  paranoid: true,
   tableName: 'UserInventory',
   indexes: [{ fields: ['userId', 'qpartId', 'condition'], unique: true }],
 })

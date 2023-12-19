@@ -14,7 +14,7 @@ import { DataTypes } from 'sequelize';
 
 @Table({
   timestamps: true,
-  paranoid: true,
+
   //   indexes: [{ fields: ['id'], unique: true }],
 })
 export class UserGoal extends Model {

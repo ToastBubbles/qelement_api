@@ -14,8 +14,6 @@ import { User } from './user.entity';
 
 @Table({
   timestamps: true,
-  paranoid: true,
-
   indexes: [{ fields: ['userId', 'qpartId', 'type'], unique: true }],
 })
 export class UserFavorite extends Model {

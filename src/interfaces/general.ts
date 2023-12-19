@@ -84,6 +84,11 @@ export interface iQPartDTO {
   creatorId: number;
   note: string;
 }
+
+export interface IRemoveWanted {
+  wantedId: number;
+  userId: number;
+}
 export interface ICreateScupltureDTO {
   name: string;
   brickSystem: string;

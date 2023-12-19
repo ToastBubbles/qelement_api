@@ -1,7 +1,11 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { UserFavorite } from 'src/models/userFavorite.entity';
 import { UserFavoritesService } from '../services/userFavorite.service';
-import { IAPIResponse, IWantedDTO } from 'src/interfaces/general';
+import {
+  IAPIResponse,
+  IRemoveWanted,
+  IWantedDTO,
+} from 'src/interfaces/general';
 
 @Controller('userFavorite')
 export class UserFavoritesController {
@@ -58,5 +62,22 @@ export class UserFavoritesController {
     }
   }
 
-  
+  @Post('/remove')
+  async removeWantedItem(
+    @Body()
+    wantedDTO: IRemoveWanted,
+  ): Promise<IAPIResponse> {
+    try {
+      const itemToRemove = await this.userFavoritesService.findByIdAndUserId(
+        wantedDTO,
+      );
+      if (itemToRemove) {
+        itemToRemove.destroy();
+        return { code: 200, message: `deleted` };
+      } else return { code: 500, message: `not found` };
+    } catch (error) {
+      console.log(error);
+      return { code: 500, message: error };
+    }
+  }
 }
