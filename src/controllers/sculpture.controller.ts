@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { Sculpture } from 'src/models/sculpture.entity';
 import { SculpturesService } from '../services/sculpture.service';
 import { IAPIResponse, ICreateScupltureDTO } from 'src/interfaces/general';
@@ -15,6 +15,11 @@ export class SculpturesController {
   @Get()
   async getAllSculptures(): Promise<Sculpture[]> {
     return this.sculpturesService.findAll();
+  }
+
+  @Get('/byId/:id')
+  async getSculptureById(@Param('id') id: number): Promise<Sculpture | null> {
+    return this.sculpturesService.findById(id);
   }
 
   @Post('/add')

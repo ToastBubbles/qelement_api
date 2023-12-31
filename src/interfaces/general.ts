@@ -80,6 +80,7 @@ export interface iQPartDTO {
   moldId: number;
   colorId: number;
   elementId: string;
+  isMoldUnknown: boolean;
   type: string;
   creatorId: number;
   note: string;

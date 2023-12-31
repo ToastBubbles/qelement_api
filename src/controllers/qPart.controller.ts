@@ -147,6 +147,7 @@ export class QPartsController {
         colorId: data.colorId,
         type: trimAndReturn(data.type),
         creatorId: data.creatorId == -1 ? 1 : data.creatorId,
+        isMoldUnknown: data.isMoldUnknown,
         note: trimAndReturn(data.note),
         approvalDate: isAdmin
           ? new Date().toISOString().slice(0, 23).replace('T', ' ')
@@ -172,6 +173,8 @@ export class QPartsController {
     data: IMassKnown,
   ): Promise<IAPIResponseWithIds> {
     try {
+      if (data.moldId == -1)
+        return { code: 511, message: 'error, bad moldID', ids: null };
       let user = await this.userService.findOneById(data.userId);
       let isAdmin = false;
       let didMiss = false;

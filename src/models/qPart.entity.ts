@@ -56,6 +56,9 @@ export class QPart extends Model {
   @BelongsTo(() => PartMold)
   mold: PartMold;
 
+  @Column({ defaultValue: false })
+  isMoldUnknown: boolean;
+
   @ForeignKey(() => Color)
   @Column
   colorId: number;

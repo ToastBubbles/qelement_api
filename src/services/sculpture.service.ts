@@ -12,7 +12,7 @@ export class SculpturesService {
   async findAll(): Promise<Sculpture[]> {
     return this.sculpturesRepository.findAll<Sculpture>();
   }
-  async findOneById(id: number): Promise<Sculpture | null> {
+  async findById(id: number): Promise<Sculpture | null> {
     return this.sculpturesRepository.findOne<Sculpture>({ where: { id: id } });
   }
 }
