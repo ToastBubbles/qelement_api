@@ -10,7 +10,12 @@ import {
 } from '@nestjs/common';
 import { Image } from 'src/models/image.entity';
 import { ImagesService } from '../services/image.service';
-import { IAPIResponse, iIdAndPrimary, iIdOnly } from 'src/interfaces/general';
+import {
+  IAPIResponse,
+  iIdAndPrimary,
+  iIdAndType,
+  iIdOnly,
+} from 'src/interfaces/general';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { MinioService } from 'src/services/minio.service';
 import { UsersService } from 'src/services/user.service';
@@ -33,15 +38,24 @@ export class ImagesController {
     return this.imagesService.findAllNotApproved();
   }
   @Post('/markPrimary')
-  async markPrimary(@Body() data: iIdOnly): Promise<IAPIResponse> {
+  async markPrimary(@Body() data: iIdAndType): Promise<IAPIResponse> {
     try {
       let thisImage = await this.imagesService.findById(data.id);
 
       if (thisImage.isPrimary) return { code: 501, message: 'Arleady Primary' };
       if (!thisImage) return { code: 504, message: 'Image not found' };
-      const existingImages = await this.imagesService.findByQPartID(
-        thisImage.qpartId,
-      );
+      let existingImages: Image[] = [];
+      if (thisImage.qpartId) {
+        existingImages = await this.imagesService.findByQPartID(
+          thisImage.qpartId,
+        );
+      } else if (thisImage.sculptureId) {
+        existingImages = await this.imagesService.findBySculptureID(
+          thisImage.sculptureId,
+        );
+      } else {
+        return { code: 501, message: 'Generic Error' };
+      }
       let existingPrimaryImage = existingImages.find(
         (img) => img.isPrimary == true,
       );
@@ -64,16 +78,17 @@ export class ImagesController {
     try {
       let imageData = JSON.parse(data?.imageData);
       console.log(imageData, typeof imageData);
-      if (imageData.userId && imageData.qpartId) {
+      if (imageData.userId && (imageData.qpartId || imageData.sculptureId)) {
         let user = await this.userService.findOneById(imageData.userId);
         let isAdmin = false;
-        if (user && user?.role == 'admin' || user.role == 'trusted') {
+        if ((user && user?.role == 'admin') || user.role == 'trusted') {
           isAdmin = true;
         }
         await this.minioService.createBucketIfNotExists();
         const fileName = await this.minioService.uploadFile(
           image,
           imageData.qpartId,
+          imageData.sculptureId,
           imageData.userId,
           imageData.type,
         );
@@ -82,7 +97,10 @@ export class ImagesController {
           fileName: fileName,
           type: imageData.type,
           userId: imageData.userId,
-          qpartId: imageData.qpartId,
+          qpartId: imageData.qpartId ? imageData.qpartId : undefined,
+          sculptureId: imageData.sculptureId
+            ? imageData.sculptureId
+            : undefined,
           approvalDate: isAdmin
             ? new Date().toISOString().slice(0, 23).replace('T', ' ')
             : null,
@@ -95,7 +113,7 @@ export class ImagesController {
           return { code: 201, message: fileName };
         }
       }
-      return { code: 500, message: 'failed1' };
+      return { code: 2, message: 'failed1' };
     } catch (error) {
       console.log(error);
 
@@ -131,9 +149,19 @@ export class ImagesController {
           return { code: 200, message: `approved` };
         } else {
           console.log('updating with primary');
-          const existingImages = await this.imagesService.findByQPartID(
-            thisObj.qpartId,
-          );
+
+          let existingImages: Image[] = [];
+          if (thisObj.qpartId) {
+            existingImages = await this.imagesService.findByQPartID(
+              thisObj.qpartId,
+            );
+          } else if (thisObj.sculptureId) {
+            existingImages = await this.imagesService.findBySculptureID(
+              thisObj.sculptureId,
+            );
+          } else {
+            return { code: 501, message: 'Generic Error' };
+          }
           let existingPrimaryImage = existingImages.find(
             (img) => img.isPrimary == true,
           );

@@ -9,5 +9,6 @@ import { UserModule } from './user.module';
   imports: [DatabaseModule, UserModule],
   controllers: [SculpturesController],
   providers: [SculpturesService, ...sculpturesProviders],
+  exports: [SculpturesService],
 })
 export class SculptureModule {}

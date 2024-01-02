@@ -98,4 +98,7 @@ export class Sculpture extends Model {
     through: { model: () => SculptureColor, unique: false },
   })
   colors: Color[];
+
+  @Column
+  approvalDate: Date;
 }

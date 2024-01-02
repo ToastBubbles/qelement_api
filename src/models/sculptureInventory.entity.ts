@@ -29,6 +29,9 @@ export class SculptureInventory extends Model {
   @BelongsTo(() => Sculpture)
   sculpture: Sculpture;
 
-  @Column({ defaultValue: false })
-  verified: boolean;
+  @Column
+  approvalDate: Date;
+
+  // @Column({ defaultValue: false })
+  // verified: boolean;
 }

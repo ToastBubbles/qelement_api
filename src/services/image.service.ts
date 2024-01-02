@@ -34,6 +34,16 @@ export class ImagesService {
       },
     });
   }
+  async findBySculptureID(sculptureID: number): Promise<Image[]> {
+    return this.imagesRepository.findAll<Image>({
+      where: {
+        sculptureId: sculptureID,
+        approvalDate: {
+          [Op.ne]: null,
+        },
+      },
+    });
+  }
   async findAllNotApproved(): Promise<Image[]> {
     return this.imagesRepository.findAll<Image>({
       include: [

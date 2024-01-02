@@ -47,17 +47,17 @@ export class Image extends Model {
 
   @ForeignKey(() => QPart)
   @Column
-  qpartId: number;
+  qpartId?: number;
 
   @BelongsTo(() => QPart)
-  qpart: QPart;
+  qpart?: QPart;
 
   @ForeignKey(() => Sculpture)
   @Column
-  sculptureId: number;
+  sculptureId?: number;
 
   @BelongsTo(() => Sculpture)
-  sculpture: Sculpture;
+  sculpture?: Sculpture;
 
   @Column
   approvalDate: Date;

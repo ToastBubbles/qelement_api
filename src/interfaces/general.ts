@@ -174,6 +174,10 @@ export interface IQPartDetails {
 export interface iIdOnly {
   id: number;
 }
+export interface iIdAndType {
+  id: number;
+  type: string;
+}
 export interface iIdAndPrimary {
   id: number;
   isPrimary: boolean;

@@ -28,8 +28,9 @@ export class MinioService {
 
   async uploadFile(
     file: Express.Multer.File,
-    qpartId: number,
+    qpartId: number | null,
     userId: number,
+    sculptureId: number | null,
     type: string,
   ) {
     function getType(filename: string): string {
@@ -39,7 +40,11 @@ export class MinioService {
       }
       return filename.slice(dotIndex + 1);
     }
-    const fileName = `${Date.now()}-${qpartId}-${userId}-${type}.${getType(
+    let nameType = qpartId ? `q${qpartId}` : '';
+    nameType.length == 0 && sculptureId
+      ? (nameType = `s${sculptureId}`)
+      : 'error';
+    const fileName = `${Date.now()}-${nameType}-${userId}-${type}.${getType(
       file.originalname,
     )}`;
     await this.minioClient.putObject(
