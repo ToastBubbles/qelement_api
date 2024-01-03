@@ -29,7 +29,6 @@ import { ElementIDModule } from './modules/elementID.module';
 import { SecurityQuestionModule } from './modules/securityQuestion.module';
 import { PredefinedSecurityQuestionModule } from './modules/predefinedSecurityQuestion.module';
 import { SculptureInventoryModule } from './modules/sculptureInventory.module';
-import { SculptureColorModule } from './modules/sculptureColor.module';
 import { SculptureModule } from './modules/sculpture.module';
 
 @Module({

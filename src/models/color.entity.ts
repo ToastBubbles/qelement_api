@@ -12,7 +12,6 @@ import {
 import { SimilarColor } from './similarColor.entity';
 import { User } from './user.entity';
 import { Sculpture } from './sculpture.entity';
-import { SculptureColor } from './sculptureColor.entity';
 
 @Table({
   timestamps: true,
@@ -56,10 +55,10 @@ export class Color extends Model {
   @BelongsTo(() => User)
   creator: User;
 
-  @BelongsToMany(() => Sculpture, {
-    through: { model: () => SculptureColor, unique: false },
-  })
-  sculptureColors: Sculpture[];
+  // @BelongsToMany(() => Sculpture, {
+  //   through: { model: () => SculptureColor, unique: false },
+  // })
+  // sculptureColors: Sculpture[];
 
   // @HasMany(() => Color)
   // similarColors: Color[];
