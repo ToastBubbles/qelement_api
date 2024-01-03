@@ -47,6 +47,7 @@ export interface INotApporvedCounts {
   partStatuses: number;
   similarColors: number;
   images: number;
+  sculptures: number;
 }
 export interface IQPartDTOInclude {
   id: number;

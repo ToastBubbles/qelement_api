@@ -12,6 +12,7 @@ import { QPartsService } from 'src/services/qPart.service';
 import { PartStatusesService } from 'src/services/partStatus.service';
 import { SimilarColorsService } from 'src/services/similarColor.service';
 import { ImagesService } from 'src/services/image.service';
+import { SculpturesService } from 'src/services/sculpture.service';
 
 @Controller('extra')
 export class EverythingController {
@@ -24,6 +25,7 @@ export class EverythingController {
     private readonly partStatusService: PartStatusesService,
     private readonly similarColorsService: SimilarColorsService,
     private readonly imagesService: ImagesService,
+    private readonly sculpturesService: SculpturesService,
   ) {}
 
   @Public()
@@ -69,6 +71,7 @@ export class EverythingController {
       similarColors: (await this.similarColorsService.findAllNotApproved())
         .length,
       images: (await this.imagesService.findAllNotApproved()).length,
+      sculptures: (await this.sculpturesService.findAllNotApproved()).length,
     };
   }
 }

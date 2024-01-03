@@ -9,6 +9,8 @@ import { Image } from 'src/models/image.entity';
 import { Color } from 'src/models/color.entity';
 import { Comment } from 'src/models/comment.entity';
 import { User } from 'src/models/user.entity';
+import sequelize from 'sequelize';
+import { Op } from 'sequelize';
 
 @Injectable()
 export class SculpturesService {
@@ -33,6 +35,7 @@ export class SculpturesService {
             Color,
           ],
         },
+        User,
         {
           model: Image,
           include: [{ model: User, as: 'uploader' }],
@@ -43,5 +46,95 @@ export class SculpturesService {
         },
       ],
     });
+  }
+
+  async findRecent(limit: number): Promise<Sculpture[]> {
+    return this.sculpturesRepository.findAll<Sculpture>({
+      include: [
+        {
+          model: QPart,
+          include: [
+            { model: PartMold, include: [Part] },
+            PartStatus,
+            Image,
+            Color,
+          ],
+        },
+        User,
+        {
+          model: Image,
+          include: [{ model: User, as: 'uploader' }],
+        },
+        {
+          model: Comment,
+          include: [{ model: User, as: 'creator' }],
+        },
+      ],
+      limit,
+      order: [['createdAt', 'DESC']],
+      where: {
+        approvalDate: {
+          [Op.ne]: null,
+        },
+      },
+    });
+  }
+
+  async findAllNotApproved(): Promise<Sculpture[]> {
+    return this.sculpturesRepository.findAll<Sculpture>({
+      include: [
+        {
+          model: QPart,
+          include: [
+            { model: PartMold, include: [Part] },
+            PartStatus,
+            Image,
+            Color,
+          ],
+        },
+        User,
+        {
+          model: Image,
+          include: [{ model: User, as: 'uploader' }],
+        },
+        {
+          model: Comment,
+          include: [{ model: User, as: 'creator' }],
+        },
+      ],
+      where: {
+        approvalDate: null,
+      },
+    });
+  }
+
+  async findByIdAll(id: number): Promise<Sculpture | null> {
+    const result = await this.sculpturesRepository.findOne({
+      where: {
+        id: id,
+      },
+      include: [
+        {
+          model: QPart,
+          include: [
+            { model: PartMold, include: [Part] },
+            PartStatus,
+            Image,
+            Color,
+          ],
+        },
+        User,
+        {
+          model: Image,
+          include: [{ model: User, as: 'uploader' }],
+        },
+        {
+          model: Comment,
+          include: [{ model: User, as: 'creator' }],
+        },
+      ],
+    });
+
+    return result;
   }
 }

@@ -1,7 +1,11 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { Sculpture } from 'src/models/sculpture.entity';
 import { SculpturesService } from '../services/sculpture.service';
-import { IAPIResponse, ICreateScupltureDTO } from 'src/interfaces/general';
+import {
+  IAPIResponse,
+  ICreateScupltureDTO,
+  iIdOnly,
+} from 'src/interfaces/general';
 import { UsersService } from 'src/services/user.service';
 import { trimAndReturn } from 'src/utils/utils';
 
@@ -20,6 +24,37 @@ export class SculpturesController {
   @Get('/byId/:id')
   async getSculptureById(@Param('id') id: number): Promise<Sculpture | null> {
     return this.sculpturesService.findById(id);
+  }
+
+  @Get('/recent/:limit')
+  async getRecentSculptures(
+    @Param('limit') limit: number = 10,
+  ): Promise<Sculpture[]> {
+    return this.sculpturesService.findRecent(limit);
+  }
+
+  @Get('/notApproved')
+  async getAllNotApproved(): Promise<Sculpture[]> {
+    return this.sculpturesService.findAllNotApproved();
+  }
+
+  @Post('/approve')
+  async approveSculpture(
+    @Body()
+    data: iIdOnly,
+  ): Promise<IAPIResponse> {
+    try {
+      let thisObj = await this.sculpturesService.findByIdAll(data.id);
+      if (thisObj) {
+        thisObj.update({
+          approvalDate: new Date().toISOString().slice(0, 23).replace('T', ' '),
+        });
+        return { code: 200, message: `approved` };
+      } else return { code: 500, message: `not found` };
+    } catch (error) {
+      console.log(error);
+      return { code: 500, message: `generic error` };
+    }
   }
 
   @Post('/add')
@@ -65,6 +100,4 @@ export class SculpturesController {
       return { code: 500, message: `generic error` };
     }
   }
-
- 
 }
