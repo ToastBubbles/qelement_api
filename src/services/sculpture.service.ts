@@ -7,6 +7,8 @@ import { PartMold } from 'src/models/partMold.entity';
 import { PartStatus } from 'src/models/partStatus.entity';
 import { Image } from 'src/models/image.entity';
 import { Color } from 'src/models/color.entity';
+import { Comment } from 'src/models/comment.entity';
+import { User } from 'src/models/user.entity';
 
 @Injectable()
 export class SculpturesService {
@@ -30,7 +32,15 @@ export class SculpturesService {
             Image,
             Color,
           ],
-        },Image
+        },
+        {
+          model: Image,
+          include: [{ model: User, as: 'uploader' }],
+        },
+        {
+          model: Comment,
+          include: [{ model: User, as: 'creator' }],
+        },
       ],
     });
   }

@@ -3,7 +3,8 @@ import { UserFavorite } from 'src/models/userFavorite.entity';
 import { UserFavoritesService } from '../services/userFavorite.service';
 import {
   IAPIResponse,
-  IRemoveWanted,
+  IDeletionDTO,
+
   IWantedDTO,
 } from 'src/interfaces/general';
 
@@ -65,7 +66,7 @@ export class UserFavoritesController {
   @Post('/remove')
   async removeWantedItem(
     @Body()
-    wantedDTO: IRemoveWanted,
+    wantedDTO: IDeletionDTO,
   ): Promise<IAPIResponse> {
     try {
       const itemToRemove = await this.userFavoritesService.findByIdAndUserId(

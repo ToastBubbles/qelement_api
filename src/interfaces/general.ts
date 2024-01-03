@@ -85,11 +85,11 @@ export interface iQPartDTO {
   creatorId: number;
   note: string;
 }
-
-export interface IRemoveWanted {
-  wantedId: number;
+export interface IDeletionDTO {
+  itemToDeleteId: number;
   userId: number;
 }
+
 export interface ICreateScupltureDTO {
   name: string;
   brickSystem: string;
@@ -231,7 +231,8 @@ export interface IMessageDTO {
 export interface ICommentCreationDTO {
   userId: number;
   content: string;
-  qpartId: number;
+  qpartId?: number;
+  sculptureId?: number;
 }
 export interface ImageSubmission {
   qpartId: number;

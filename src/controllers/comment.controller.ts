@@ -6,14 +6,18 @@ import { CommentsService } from '../services/comment.service';
 import {
   IAPIResponse,
   ICommentCreationDTO,
-  IMessageDTO,
+  IDeletionDTO,
 } from 'src/interfaces/general';
 import { Message } from 'src/models/message.entity';
 import { trimAndReturn } from 'src/utils/utils';
+import { UsersService } from 'src/services/user.service';
 
 @Controller('comment')
 export class CommentsController {
-  constructor(private readonly commentsService: CommentsService) {}
+  constructor(
+    private readonly commentsService: CommentsService,
+    private readonly usersService: UsersService,
+  ) {}
 
   @Get()
   async getAllComments(): Promise<Comment[]> {
@@ -29,7 +33,8 @@ export class CommentsController {
       let newComment = Comment.create({
         content: trimAndReturn(comment.content, 1000),
         userId: comment.userId,
-        qpartId: comment.qpartId,
+        qpartId: comment.qpartId ? comment.qpartId : null,
+        sculptureId: comment.sculptureId ? comment.sculptureId : null,
       }).catch((e) => {
         return { code: 500, message: `generic error` };
       });
@@ -40,6 +45,31 @@ export class CommentsController {
     } catch (error) {
       console.log(error);
       return { code: 500, message: error };
+    }
+  }
+
+  @Post('/remove')
+  async removeComment(
+    @Body()
+    deletionDTO: IDeletionDTO,
+  ): Promise<IAPIResponse> {
+    try {
+      const itemToRemove = await this.commentsService.findById(
+        deletionDTO.itemToDeleteId,
+      );
+      const requester = await this.usersService.findOneById(deletionDTO.userId);
+      if (itemToRemove) {
+        if (
+          itemToRemove.userId == deletionDTO.userId ||
+          requester.role == 'admin'
+        ) {
+          itemToRemove.destroy();
+          return { code: 200, message: `deleted` };
+        } else return { code: 502, message: `Incorrect Privs` };
+      } else return { code: 500, message: `not found` };
+    } catch (error) {
+      console.log(error);
+      return { code: 501, message: error };
     }
   }
 }

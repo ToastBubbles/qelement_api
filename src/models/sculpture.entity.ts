@@ -12,9 +12,9 @@ import {
 import { QPart } from './qPart.entity';
 import { SculptureInventory } from './sculptureInventory.entity';
 import { Image } from './image.entity';
-import { Color } from './color.entity';
-import { SculptureColor } from './sculptureColor.entity';
+
 import { User } from './user.entity';
+import { Comment } from './comment.entity';
 
 @Table({
   timestamps: true,
@@ -94,10 +94,13 @@ export class Sculpture extends Model {
   })
   inventory: QPart[];
 
-  @BelongsToMany(() => Color, {
-    through: { model: () => SculptureColor, unique: false },
-  })
-  colors: Color[];
+  // @BelongsToMany(() => Color, {
+  //   through: { model: () => SculptureColor, unique: false },
+  // })
+  // colors: Color[];
+
+  @HasMany(() => Comment)
+  comments: Comment[];
 
   @Column
   approvalDate: Date;

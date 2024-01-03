@@ -9,6 +9,7 @@ import {
 import { QPart } from './qPart.entity';
 import { User } from './user.entity';
 import { DataTypes } from 'sequelize';
+import { Sculpture } from './sculpture.entity';
 
 @Table({
   timestamps: true,
@@ -26,11 +27,18 @@ export class Comment extends Model {
 
   @ForeignKey(() => QPart)
   @Column
-  qpartId: number;
+  qpartId?: number;
+
+  @BelongsTo(() => QPart)
+  qpart?: QPart;
+
+  @ForeignKey(() => Sculpture)
+  @Column
+  sculptureId?: number;
+
+  @BelongsTo(() => Sculpture)
+  sculpture?: Sculpture;
 
   @BelongsTo(() => User)
   creator: User;
-
-  @BelongsTo(() => QPart)
-  qpart: QPart;
 }

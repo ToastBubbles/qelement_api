@@ -22,7 +22,6 @@ import { SecurityQuestion } from 'src/models/securityQuestion.entity';
 import { PredefinedSecurityQuestion } from 'src/models/predefinedSecurityQuestion.entity';
 import { Sculpture } from 'src/models/sculpture.entity';
 import { SculptureInventory } from 'src/models/sculptureInventory.entity';
-import { SculptureColor } from 'src/models/sculptureColor.entity';
 
 export const databaseProviders = [
   {
@@ -61,7 +60,6 @@ export const databaseProviders = [
         PredefinedSecurityQuestion,
         Sculpture,
         SculptureInventory,
-        SculptureColor,
       ]);
 
       await sequelize.sync();

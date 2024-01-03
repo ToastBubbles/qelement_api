@@ -63,7 +63,6 @@ import { SculptureModule } from './modules/sculpture.module';
     PredefinedSecurityQuestionModule,
     SculptureModule,
     SculptureInventoryModule,
-    SculptureColorModule,
   ],
   controllers: [AppController, EverythingController],
   providers: [AppService],

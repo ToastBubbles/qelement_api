@@ -7,7 +7,7 @@ import { Color } from 'src/models/color.entity';
 import { Image } from 'src/models/image.entity';
 import { PartStatus } from 'src/models/partStatus.entity';
 import { RaretyRating } from 'src/models/raretyRating.entity';
-import { IRemoveWanted } from 'src/interfaces/general';
+import { IDeletionDTO } from 'src/interfaces/general';
 
 @Injectable()
 export class UserFavoritesService {
@@ -54,10 +54,10 @@ export class UserFavoritesService {
     });
   }
 
-  async findByIdAndUserId(data: IRemoveWanted): Promise<UserFavorite | null> {
+  async findByIdAndUserId(data: IDeletionDTO): Promise<UserFavorite | null> {
     return this.userFavoritesRepository.findOne<UserFavorite>({
       where: {
-        id: data.wantedId,
+        id: data.itemToDeleteId,
         userId: data.userId,
       },
     });
