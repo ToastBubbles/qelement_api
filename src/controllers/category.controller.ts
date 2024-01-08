@@ -60,7 +60,8 @@ export class CategoriesController {
     try {
       let thisObj = await this.categoriesService.findByIdAll(data.id);
       if (thisObj) {
-        thisObj.destroy();
+        // await thisObj.update({ name: thisObj.name + '[DELETED]' });
+        await thisObj.destroy();
         return { code: 200, message: `deleted` };
       } else return { code: 500, message: `not found` };
     } catch (error) {
@@ -77,25 +78,64 @@ export class CategoriesController {
     try {
       let user = await this.userService.findOneById(data.creatorId);
       let isAdmin = false;
-      if (user && user.role == 'admin' || user.role == 'trusted') {
+      if ((user && user.role == 'admin') || user.role == 'trusted') {
         isAdmin = true;
       }
-      let newCat = Category.create({
-        name: trimAndReturn(data.name, 50),
-        approvalDate: isAdmin
-          ? new Date().toISOString().slice(0, 23).replace('T', ' ')
-          : null,
-      }).catch((e) => {
-        return { code: 500, message: `generic error` };
-      });
+      let catNameCheck = await this.categoriesService.findByName(data.name);
+      if (catNameCheck) {
+        if (catNameCheck.deletedAt != null) {
+          await catNameCheck.update({
+            approvalDate: isAdmin
+              ? new Date().toISOString().slice(0, 23).replace('T', ' ')
+              : null,
+          });
+          await catNameCheck.restore();
+          if (isAdmin) {
+            return { code: 200, message: `new category added. prev deleted` };
+          } else {
+            return {
+              code: 201,
+              message: `new category submitted for approval. prev deleted`,
+            };
+          }
+        } else {
+          if (catNameCheck.approvalDate == null)
+            return {
+              code: 505,
+              message: `categorgy already pending approval!`,
+            };
+          return {
+            code: 506,
+            message: `categorgy already exists!`,
+          };
+        }
+      } else {
+        let newCat = Category.create({
+          name: trimAndReturn(data.name, 50),
+          approvalDate: isAdmin
+            ? new Date().toISOString().slice(0, 23).replace('T', ' ')
+            : null,
+        }).catch((e) => {
+          return { code: 500, message: `generic error` };
+        });
 
-      if ((await newCat) instanceof Category)
-        return { code: 200, message: `new category added` };
-      else return { code: 501, message: `category aready exists` };
+        if ((await newCat) instanceof Category) {
+          if (isAdmin) {
+            return { code: 200, message: `new category added` };
+          } else {
+            return {
+              code: 201,
+              message: `new category submitted for approval`,
+            };
+          }
+        }
+      }
+
+      return { code: 501, message: `error` };
     } catch (error) {
       console.log(error);
 
-      return { code: 500, message: `generic error` };
+      return { code: 504, message: `generic error` };
     }
   }
 }

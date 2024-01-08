@@ -48,6 +48,45 @@ export class SculpturesService {
     });
   }
 
+  async findSculpsBySearch(search: string): Promise<Sculpture[] | null> {
+    const searchTerm = search.replace(/\s/g, '');
+    const result = await this.sculpturesRepository.findAll({
+      include: [
+        {
+          model: QPart,
+          include: [
+            { model: PartMold, include: [Part] },
+            PartStatus,
+            Image,
+            Color,
+          ],
+        },
+        User,
+        {
+          model: Image,
+          include: [{ model: User, as: 'uploader' }],
+        },
+        {
+          model: Comment,
+          include: [{ model: User, as: 'creator' }],
+        },
+      ],
+      where: {
+        // [Op.or]: [
+        name: { [Op.iLike]: `%${search}%` },
+        // literal(`REPLACE("elementId", ' ', '') ILIKE '%${searchTerm}%'`),
+
+        // { '$PartMold.number$': { [Op.iLike]: `%${search}%` } },
+        // ],
+        approvalDate: {
+          [Op.ne]: null,
+        },
+      },
+    });
+
+    return result;
+  }
+
   async findRecent(limit: number): Promise<Sculpture[]> {
     return this.sculpturesRepository.findAll<Sculpture>({
       include: [

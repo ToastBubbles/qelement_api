@@ -1,9 +1,10 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { Sculpture } from 'src/models/sculpture.entity';
 import { SculpturesService } from '../services/sculpture.service';
 import {
   IAPIResponse,
   ICreateScupltureDTO,
+  ISearchOnly,
   iIdOnly,
 } from 'src/interfaces/general';
 import { UsersService } from 'src/services/user.service';
@@ -31,6 +32,13 @@ export class SculpturesController {
     @Param('limit') limit: number = 10,
   ): Promise<Sculpture[]> {
     return this.sculpturesService.findRecent(limit);
+  }
+
+  @Get('/search')
+  async getSearchResults(
+    @Query() data: ISearchOnly,
+  ): Promise<Sculpture[] | null> {
+    return this.sculpturesService.findSculpsBySearch(data.search);
   }
 
   @Get('/notApproved')

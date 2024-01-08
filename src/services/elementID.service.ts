@@ -16,7 +16,13 @@ export class ElementIDsService {
   ) {}
 
   async findAll(): Promise<ElementID[]> {
-    return this.elementIDsRepository.findAll<ElementID>();
+    return this.elementIDsRepository.findAll<ElementID>({
+      where: {
+        approvalDate: {
+          [Op.ne]: null,
+        },
+      },
+    });
   }
 
   async findPartsBySearch(search: string): Promise<ElementID[] | null> {
