@@ -16,9 +16,9 @@ import { UsersService } from 'src/services/user.service';
 export class PartsController {
   constructor(
     private readonly partsService: PartsService,
-    private readonly userService: UsersService,
-  ) // private readonly partsMoldService: PartMoldsService,
-  {}
+    private readonly userService: UsersService, // private readonly partsMoldService: PartMoldsService,
+    private readonly partMoldsService: PartMoldsService,
+  ) {}
 
   @Get()
   async getAllParts(): Promise<Part[]> {
@@ -71,6 +71,7 @@ export class PartsController {
   ): Promise<IAPIResponse> {
     try {
       let thisObj = await this.partsService.findByIdAll(data.id);
+
       if (thisObj) {
         thisObj.update({
           approvalDate: new Date().toISOString().slice(0, 23).replace('T', ' '),
@@ -82,7 +83,41 @@ export class PartsController {
       return { code: 500, message: `generic error` };
     }
   }
-  //findByIDWithQParts
+  @Post('/deny')
+  async denyPart(
+    @Body()
+    data: iIdOnly,
+  ): Promise<IAPIResponse> {
+    try {
+      let thisObj = await this.partsService.findByIdAll(data.id);
+
+      if (thisObj) {
+        let children = await this.partMoldsService.findPartMoldsByParentID(
+          data.id,
+        );
+        if (children && children.length > 0) {
+          let canDelete = true;
+          children.forEach((child) => {
+            if (child.approvalDate != null) {
+              canDelete = false;
+            }
+          });
+          if (!canDelete)
+            return {
+              code: 509,
+              message: `cannot delete children, requires indepth review`,
+            };
+          await Promise.all(children.map((child) => child.destroy()));
+        }
+
+        await thisObj.destroy();
+        return { code: 200, message: `deleted` };
+      } else return { code: 500, message: `not found` };
+    } catch (error) {
+      console.log(error);
+      return { code: 500, message: `generic error` };
+    }
+  }
 
   @Post()
   async addNewPart(
@@ -92,7 +127,7 @@ export class PartsController {
     try {
       let user = await this.userService.findOneById(data.creatorId);
       let isAdmin = false;
-      if (user && user?.role == 'admin' || user.role == 'trusted') {
+      if ((user && user?.role == 'admin') || user.role == 'trusted') {
         isAdmin = true;
       }
       let id: number;

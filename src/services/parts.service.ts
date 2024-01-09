@@ -6,6 +6,7 @@ import { QPart } from 'src/models/qPart.entity';
 import { Color } from 'src/models/color.entity';
 import { RaretyRating } from 'src/models/raretyRating.entity';
 import { User } from 'src/models/user.entity';
+import { Category } from 'src/models/category.entity';
 
 @Injectable()
 export class PartsService {
@@ -15,6 +16,7 @@ export class PartsService {
   ) {}
   async findAll(): Promise<Part[]> {
     return this.partsRepository.findAll<Part>({
+      include: [Category],
       where: {
         approvalDate: {
           [Op.ne]: null,
@@ -24,6 +26,7 @@ export class PartsService {
   }
   async findAllNotApproved(): Promise<Part[]> {
     return this.partsRepository.findAll<Part>({
+      include: [Category],
       where: {
         approvalDate: null,
       },
@@ -31,6 +34,7 @@ export class PartsService {
   }
   async findPartByNum(num: string): Promise<Part | null> {
     const result = await this.partsRepository.findOne({
+      include: [Category],
       where: {
         number: {
           [Op.iLike]: num,
@@ -46,6 +50,7 @@ export class PartsService {
   }
   async findById(id: number): Promise<Part | null> {
     const result = await this.partsRepository.findOne({
+      include: [Category],
       where: {
         id: id,
         approvalDate: {
@@ -59,6 +64,7 @@ export class PartsService {
 
   async findChildrenById(id: number): Promise<Part | null> {
     const result = await this.partsRepository.findOne({
+      include: [Category],
       where: {
         id: id,
         approvalDate: {
@@ -73,6 +79,7 @@ export class PartsService {
   async findPartsBySearch(search: string): Promise<Part[] | null> {
     const searchTerm = search.replace(/\s/g, '');
     const result = await this.partsRepository.findAll({
+      include: [Category],
       // include: [PartMold],
       where: {
         [Op.or]: [
@@ -92,7 +99,7 @@ export class PartsService {
 
   async findPartsByCatId(catId: number): Promise<Part[] | null> {
     const result = await this.partsRepository.findAll({
-      include: [PartMold],
+      include: [PartMold, Category],
       where: {
         CatId: catId,
         approvalDate: {
@@ -106,6 +113,7 @@ export class PartsService {
 
   async findByIdAll(id: number): Promise<Part | null> {
     const result = await this.partsRepository.findOne({
+      include: [Category],
       where: {
         id: id,
       },
@@ -117,6 +125,7 @@ export class PartsService {
   async findByIDWithQParts(partId: number): Promise<Part | null> {
     const results = await this.partsRepository.findOne({
       include: [
+        Category,
         {
           model: PartMold,
           include: [Color, { model: User, as: 'creator' }, RaretyRating],
