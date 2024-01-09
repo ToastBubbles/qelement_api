@@ -3,6 +3,7 @@ import { IQelementError } from 'src/interfaces/error';
 import { Color } from '../models/color.entity';
 import { NotNull } from 'sequelize-typescript';
 import { Op } from 'sequelize';
+import { User } from 'src/models/user.entity';
 
 @Injectable()
 export class ColorsService {
@@ -25,6 +26,7 @@ export class ColorsService {
       where: {
         approvalDate: null,
       },
+      include: [{ model: User, as: 'creator' }],
     });
   }
 

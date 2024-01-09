@@ -54,21 +54,24 @@ export class ColorsController {
       return { code: 500, message: `generic error` };
     }
   }
-  @Post('/delete')
-  async deleteColor(
-    @Body()
-    data: iIdOnly,
-  ): Promise<IAPIResponse> {
+  @Post('/deny')
+  async deleteColor(@Body() data: iIdOnly): Promise<IAPIResponse> {
     try {
-      let thisObj = await this.colorsService.findByIdAll(data.id);
+      // Find the color by ID
+      const thisObj = await this.colorsService.findByIdAll(data.id);
 
       if (thisObj) {
+        // Delete the color if found
         await thisObj.destroy();
         return { code: 200, message: `deleted` };
-      } else return { code: 500, message: `not found` };
+      } else {
+        // Return 404 if color not found
+        return { code: 404, message: `not found` };
+      }
     } catch (error) {
-      console.log(error);
-      return { code: 500, message: `generic error` };
+      // Return the error message for debugging
+      console.error(error);
+      return { code: 500, message: error.message || `generic error` };
     }
   }
 
@@ -107,12 +110,11 @@ export class ColorsController {
         bo_id: bo_id < 0 ? null : bo_id,
         type: trimAndReturn(type),
         note: trimAndReturn(note),
+        creatorId,
         isOfficial: isOfficial,
         approvalDate: isAdmin
           ? new Date().toISOString().slice(0, 23).replace('T', ' ')
           : null,
-      }).catch((e) => {
-        return { code: 500, message: `generic error` };
       });
 
       if (newColor instanceof Color) return `new color added`;

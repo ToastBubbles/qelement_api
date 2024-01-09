@@ -46,6 +46,16 @@ export class CategoriesService {
     // return { message: 'No color found with the TLG id.' } as IQelementError;
     throw new HttpException('Cat not found', 404);
   }
+
+  // Assuming your categoriesService has a method similar to this
+  async findSoftDeletedByName(name: string): Promise<Category | null> {
+    return Category.findOne({
+      where: {
+        name,
+      },
+      paranoid: false, // Disable paranoid mode to include soft-deleted records
+    });
+  }
   async findByName(name: string): Promise<Category | null> {
     const result = await this.categoriesRepository.findOne({
       where: {

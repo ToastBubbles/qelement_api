@@ -71,71 +71,65 @@ export class CategoriesController {
   }
 
   @Post()
-  async addNewCategory(
-    @Body()
-    data: ICatDTO,
-  ): Promise<IAPIResponse> {
+  async addNewCategory(@Body() data: ICatDTO): Promise<IAPIResponse> {
     try {
-      let user = await this.userService.findOneById(data.creatorId);
-      let isAdmin = false;
-      if ((user && user.role == 'admin') || user.role == 'trusted') {
-        isAdmin = true;
-      }
-      let catNameCheck = await this.categoriesService.findByName(data.name);
-      if (catNameCheck) {
-        if (catNameCheck.deletedAt != null) {
+      const user = await this.userService.findOneById(data.creatorId);
+      const isAdmin =
+        user && (user.role === 'admin' || user.role === 'trusted');
+
+      let catNameCheck = await this.categoriesService.findSoftDeletedByName(
+        data.name,
+      );
+
+      if (catNameCheck && catNameCheck.isSoftDeleted()) {
+        // Category with the same name exists and is soft-deleted
+        await catNameCheck.restore();
+
+        // Update approvalDate if the user is an admin
+        if (isAdmin) {
           await catNameCheck.update({
-            approvalDate: isAdmin
-              ? new Date().toISOString().slice(0, 23).replace('T', ' ')
-              : null,
+            approvalDate: new Date()
+              .toISOString()
+              .slice(0, 23)
+              .replace('T', ' '),
           });
-          await catNameCheck.restore();
-          if (isAdmin) {
-            return { code: 200, message: `new category added. prev deleted` };
-          } else {
-            return {
-              code: 201,
-              message: `new category submitted for approval. prev deleted`,
-            };
-          }
-        } else {
-          if (catNameCheck.approvalDate == null)
-            return {
-              code: 505,
-              message: `categorgy already pending approval!`,
-            };
-          return {
-            code: 506,
-            message: `categorgy already exists!`,
-          };
         }
-      } else {
-        let newCat = Category.create({
-          name: trimAndReturn(data.name, 50),
-          approvalDate: isAdmin
-            ? new Date().toISOString().slice(0, 23).replace('T', ' ')
-            : null,
-        }).catch((e) => {
-          return { code: 500, message: `generic error` };
-        });
 
-        if ((await newCat) instanceof Category) {
-          if (isAdmin) {
-            return { code: 200, message: `new category added` };
-          } else {
-            return {
+        return isAdmin
+          ? { code: 200, message: `New category added. Previously deleted.` }
+          : {
               code: 201,
-              message: `new category submitted for approval`,
+              message: `New category submitted for approval. Previously deleted.`,
             };
-          }
+      }
+
+      // The category is not soft-deleted, check if it exists
+      const existingCategory = await this.categoriesService.findByName(
+        data.name,
+      );
+
+      if (existingCategory) {
+        if (existingCategory.approvalDate === null) {
+          return { code: 505, message: `Category already pending approval!` };
+        } else {
+          return { code: 506, message: `Category already exists!` };
         }
       }
 
-      return { code: 501, message: `error` };
+      // Create a new category
+      const newCat = await Category.create({
+        name: trimAndReturn(data.name, 50),
+        approvalDate: isAdmin
+          ? new Date().toISOString().slice(0, 23).replace('T', ' ')
+          : null,
+      });
+
+      return isAdmin
+        ? { code: 200, message: `New category added.` }
+        : { code: 201, message: `New category submitted for approval.` };
     } catch (error) {
       console.log(error);
-
-      return { code: 504, message: `generic error` };
+      return { code: 504, message: `Generic error` };
     }
   }
 }
