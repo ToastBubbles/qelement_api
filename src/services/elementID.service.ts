@@ -25,6 +25,44 @@ export class ElementIDsService {
     });
   }
 
+  async findAllNotApproved(): Promise<ElementID[]> {
+    return this.elementIDsRepository.findAll<ElementID>({
+      include: [
+        {
+          model: QPart,
+          include: [
+            Color,
+            Image,
+            { model: PartMold, include: [Part] },
+            PartStatus,
+            {
+              model: ElementID,
+              where: {
+                approvalDate: {
+                  [Op.ne]: null,
+                },
+              },
+              required: false,
+            },
+          ],
+        },
+      ],
+      where: {
+        approvalDate: null,
+      },
+    });
+  }
+
+  async findByIdAll(id: number): Promise<ElementID | null> {
+    const result = await this.elementIDsRepository.findOne({
+      where: {
+        id: id,
+      },
+    });
+
+    return result;
+  }
+
   async findPartsBySearch(search: string): Promise<ElementID[] | null> {
     const searchTerm = Number(search.replace(/\s/g, ''));
     if (searchTerm) {

@@ -5,6 +5,7 @@ import {
   IAPIResponse,
   IElementIDCreationDTO,
   ISearchOnly,
+  iIdOnly,
 } from 'src/interfaces/general';
 import { UsersService } from 'src/services/user.service';
 
@@ -18,6 +19,46 @@ export class ElementIDsController {
   @Get()
   async getAllElementIDs(): Promise<ElementID[]> {
     return this.elementIDsService.findAll();
+  }
+
+  @Get('/notApproved')
+  async getAllNotApprovedEIDs(): Promise<ElementID[]> {
+    return this.elementIDsService.findAllNotApproved();
+  }
+
+  @Post('/approve')
+  async approveEID(
+    @Body()
+    data: iIdOnly,
+  ): Promise<IAPIResponse> {
+    try {
+      let thisObj = await this.elementIDsService.findByIdAll(data.id);
+      if (thisObj) {
+        thisObj.update({
+          approvalDate: new Date().toISOString().slice(0, 23).replace('T', ' '),
+        });
+        return { code: 200, message: `approved` };
+      } else return { code: 500, message: `not found` };
+    } catch (error) {
+      console.log(error);
+      return { code: 500, message: `generic error` };
+    }
+  }
+  @Post('/deny')
+  async denyEID(
+    @Body()
+    data: iIdOnly,
+  ): Promise<IAPIResponse> {
+    try {
+      let thisObj = await this.elementIDsService.findByIdAll(data.id);
+      if (thisObj) {
+        await thisObj.destroy();
+        return { code: 200, message: `deleted` };
+      } else return { code: 500, message: `not found` };
+    } catch (error) {
+      console.log(error);
+      return { code: 500, message: `generic error` };
+    }
   }
 
   @Get('/search')
