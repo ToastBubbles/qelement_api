@@ -3,6 +3,7 @@ import { where } from 'sequelize';
 import { SimilarColor } from '../models/similarColor.entity';
 import { Op } from 'sequelize';
 import { Color } from 'src/models/color.entity';
+import { User } from 'src/models/user.entity';
 
 @Injectable()
 export class SimilarColorsService {
@@ -26,6 +27,11 @@ export class SimilarColorsService {
       where: {
         approvalDate: null,
       },
+      include: [
+        { model: Color, as: 'color1' },
+        { model: Color, as: 'color2' },
+        User,
+      ],
     });
   }
 
@@ -52,20 +58,21 @@ export class SimilarColorsService {
     // return this.similarColorsRepository.findAll<SimilarColor>();
   }
 
-  async checkIfExists(match: SimilarColor): Promise<boolean> {
-    //returns true  if match exists
-    // console.log('got here');
+  async checkIfExists(
+    match: SimilarColor,
+    includeSoftDeleted: boolean = false,
+  ): Promise<SimilarColor | null> {
+    const whereCondition: any = {
+      colorId1: match.colorId1,
+      colorId2: match.colorId2,
+    };
 
     const result = await this.similarColorsRepository.findOne({
-      where: {
-        colorId1: match.colorId1,
-        colorId2: match.colorId2,
-      },
+      where: whereCondition,
+      paranoid: !includeSoftDeleted,
     });
-    // console.log('result:', result);
 
-    if (result) return true;
-    return false;
+    return result; 
   }
 
   async findById(id: number): Promise<SimilarColor> {

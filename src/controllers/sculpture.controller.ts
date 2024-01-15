@@ -3,6 +3,7 @@ import { Sculpture } from 'src/models/sculpture.entity';
 import { SculpturesService } from '../services/sculpture.service';
 import {
   IAPIResponse,
+  IArrayOfSculptureInvIds,
   ICreateScupltureDTO,
   ISearchOnly,
   iIdOnly,
@@ -24,7 +25,14 @@ export class SculpturesController {
 
   @Get('/byId/:id')
   async getSculptureById(@Param('id') id: number): Promise<Sculpture | null> {
-    return this.sculpturesService.findById(id);
+    return this.sculpturesService.findById(id, false);
+  }
+
+  @Get('/byIdWithPendingParts/:id')
+  async getSculptureByIdAllParts(
+    @Param('id') id: number,
+  ): Promise<Sculpture | null> {
+    return this.sculpturesService.findById(id, true);
   }
 
   @Get('/recent/:limit')
@@ -46,6 +54,11 @@ export class SculpturesController {
     return this.sculpturesService.findAllNotApproved();
   }
 
+  @Get('/notApprovedInventory')
+  async getAllNotApprovedInventory(): Promise<Sculpture[]> {
+    return this.sculpturesService.findAllWithNotApprovedInventory();
+  }
+
   @Post('/approve')
   async approveSculpture(
     @Body()
@@ -58,6 +71,26 @@ export class SculpturesController {
           approvalDate: new Date().toISOString().slice(0, 23).replace('T', ' '),
         });
         return { code: 200, message: `approved` };
+      } else return { code: 500, message: `not found` };
+    } catch (error) {
+      console.log(error);
+      return { code: 500, message: `generic error` };
+    }
+  }
+
+  
+
+  @Post('/deny')
+  async denySculpture(
+    @Body()
+    data: iIdOnly,
+  ): Promise<IAPIResponse> {
+    try {
+      let thisObj = await this.sculpturesService.findByIdAll(data.id);
+
+      if (thisObj) {
+        await thisObj.destroy();
+        return { code: 200, message: `deleted` };
       } else return { code: 500, message: `not found` };
     } catch (error) {
       console.log(error);

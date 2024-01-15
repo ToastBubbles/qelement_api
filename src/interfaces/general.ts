@@ -48,7 +48,21 @@ export interface INotApporvedCounts {
   similarColors: number;
   images: number;
   sculptures: number;
+  sculptureInventories: number;
   elementIDs: number;
+}
+
+export interface ISculptureWithArrayOfIdsDTO {
+  sculptureId: number;
+  qpartIds: number[];
+}
+
+export interface IArrayOfSculptureInvIds {
+  data: ISculptureWithArrayOfIdsDTO[];
+}
+export interface ISimColorIdWithInversionId {
+  id: number;
+  inversionId: number;
 }
 export interface IQPartDTOInclude {
   id: number;

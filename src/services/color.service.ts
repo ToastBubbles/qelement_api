@@ -46,7 +46,20 @@ export class ColorsService {
   }
   async findById(id: number): Promise<Color> {
     const result = await this.colorsRepository.findOne({
-      include: [{ model: Color, as: 'similar' }],
+      include: [
+        {
+          model: Color,
+          as: 'similar',
+          // where: { approvalDate: { [Op.ne]: null } },
+          through: {
+            attributes: ['approvalDate'],
+            where: {
+              approvalDate: { [Op.ne]: null },
+            },
+          },
+          required: false,
+        },
+      ],
       where: {
         id: id,
         approvalDate: {

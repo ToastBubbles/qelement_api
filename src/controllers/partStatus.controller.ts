@@ -51,6 +51,24 @@ export class PartStatusesController {
     }
   }
 
+  @Post('/deny')
+  async denyPartMold(
+    @Body()
+    data: iIdOnly,
+  ): Promise<IAPIResponse> {
+    try {
+      let thisObj = await this.partStatusesService.findByIdAll(data.id);
+
+      if (thisObj) {
+        await thisObj.destroy();
+        return { code: 200, message: `deleted` };
+      } else return { code: 500, message: `not found` };
+    } catch (error) {
+      console.log(error);
+      return { code: 500, message: `generic error` };
+    }
+  }
+
   @Post()
   async addNewPart(
     @Body()

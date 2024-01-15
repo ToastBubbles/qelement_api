@@ -11,7 +11,6 @@ import { Sculpture } from './sculpture.entity';
 @Table({
   timestamps: true,
   paranoid: true,
-  tableName: 'SculptureInventory',
   indexes: [{ fields: ['sculptureId', 'qpartId'], unique: true }],
 })
 export class SculptureInventory extends Model {
@@ -31,7 +30,4 @@ export class SculptureInventory extends Model {
 
   @Column
   approvalDate: Date;
-
-  // @Column({ defaultValue: false })
-  // verified: boolean;
 }

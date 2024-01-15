@@ -94,11 +94,6 @@ export class Sculpture extends Model {
   })
   inventory: QPart[];
 
-  // @BelongsToMany(() => Color, {
-  //   through: { model: () => SculptureColor, unique: false },
-  // })
-  // colors: Color[];
-
   @HasMany(() => Comment)
   comments: Comment[];
 

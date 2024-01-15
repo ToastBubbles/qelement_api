@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Sculpture } from '../models/sculpture.entity';
-import { where } from 'sequelize';
+import { Sequelize, where } from 'sequelize';
 import { QPart } from 'src/models/qPart.entity';
 import { Part } from 'src/models/part.entity';
 import { PartMold } from 'src/models/partMold.entity';
@@ -11,6 +11,7 @@ import { Comment } from 'src/models/comment.entity';
 import { User } from 'src/models/user.entity';
 import sequelize from 'sequelize';
 import { Op } from 'sequelize';
+import { SculptureInventory } from 'src/models/sculptureInventory.entity';
 
 @Injectable()
 export class SculpturesService {
@@ -22,12 +23,27 @@ export class SculpturesService {
   async findAll(): Promise<Sculpture[]> {
     return this.sculpturesRepository.findAll<Sculpture>();
   }
-  async findById(id: number): Promise<Sculpture | null> {
+  async findById(
+    id: number,
+    includePending: boolean,
+  ): Promise<Sculpture | null> {
+    const throughCondition = includePending
+      ? {}
+      : {
+          attributes: ['approvalDate'],
+          where: {
+            approvalDate: {
+              [Op.ne]: null,
+            },
+          },
+        };
     return this.sculpturesRepository.findOne<Sculpture>({
       where: { id: id },
       include: [
         {
           model: QPart,
+          as: 'inventory',
+          through: throughCondition,
           include: [
             { model: PartMold, include: [Part] },
             PartStatus,
@@ -35,6 +51,7 @@ export class SculpturesService {
             Color,
           ],
         },
+
         User,
         {
           model: Image,
@@ -46,6 +63,32 @@ export class SculpturesService {
         },
       ],
     });
+    // return this.sculpturesRepository.findOne<Sculpture>({
+    //   where: { id: id },
+    //   include: [
+    //     {
+    //       model: QPart,
+    //       as: 'inventory',
+    //       include: [
+    //         { model: PartMold, include: [Part] },
+    //         PartStatus,
+    //         Image,
+    //         Color,
+    //       ],
+    //       // where: { isApproved: true },
+    //       required: false,
+    //     },
+    //     User,
+    //     {
+    //       model: Image,
+    //       include: [{ model: User, as: 'uploader' }],
+    //     },
+    //     {
+    //       model: Comment,
+    //       include: [{ model: User, as: 'creator' }],
+    //     },
+    //   ],
+    // });
   }
 
   async findSculpsBySearch(search: string): Promise<Sculpture[] | null> {
@@ -146,6 +189,54 @@ export class SculpturesService {
       },
     });
   }
+
+  async findAllWithNotApprovedInventory(): Promise<Sculpture[]> {
+    return this.sculpturesRepository.findAll<Sculpture>({
+      include: [
+        {
+          model: QPart,
+          as: 'inventory',
+          through: {
+            attributes: ['approvalDate'],
+            where: {
+              approvalDate: null,
+            },
+          },
+          include: [
+            { model: PartMold, include: [Part] },
+            PartStatus,
+            Image,
+            Color,
+          ],
+          required: true,
+        },
+        User,
+        {
+          model: Image,
+          include: [{ model: User, as: 'uploader' }],
+        },
+        {
+          model: Comment,
+          include: [{ model: User, as: 'creator' }],
+        },
+      ],
+      // where: Sequelize.literal(
+      //   '"inventory->SculptureInventory"."approvalDate" IS NULL',
+      // ),
+      // {
+      //   '$inventory.SculptureInventory.approvalDate$': {
+      //     [Op.or]: {
+      //       [Op.is]: null,
+      //       [Op.eq]: Sequelize.literal(
+      //         '"inventory->SculptureInventory"."approvalDate"',
+      //       ),
+      //     },
+      //   },
+      // },
+    });
+  }
+
+ 
 
   async findByIdAll(id: number): Promise<Sculpture | null> {
     const result = await this.sculpturesRepository.findOne({

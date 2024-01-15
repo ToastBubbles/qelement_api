@@ -14,6 +14,7 @@ import { SimilarColorsService } from 'src/services/similarColor.service';
 import { ImagesService } from 'src/services/image.service';
 import { SculpturesService } from 'src/services/sculpture.service';
 import { ElementIDsService } from 'src/services/elementID.service';
+import { SculptureInventoriesService } from 'src/services/sculptureInventory.service';
 
 @Controller('extra')
 export class EverythingController {
@@ -27,6 +28,7 @@ export class EverythingController {
     private readonly similarColorsService: SimilarColorsService,
     private readonly imagesService: ImagesService,
     private readonly sculpturesService: SculpturesService,
+    private readonly sculptureInventoriesService: SculptureInventoriesService,
     private readonly elementIDsService: ElementIDsService,
   ) {}
 
@@ -74,6 +76,9 @@ export class EverythingController {
         .length,
       images: (await this.imagesService.findAllNotApproved()).length,
       sculptures: (await this.sculpturesService.findAllNotApproved()).length,
+      sculptureInventories: (
+        await this.sculptureInventoriesService.findAllNotApproved()
+      ).length,
       elementIDs: (await this.elementIDsService.findAllNotApproved()).length,
     };
   }

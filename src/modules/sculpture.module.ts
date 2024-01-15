@@ -4,6 +4,7 @@ import { SculpturesService } from '../services/sculpture.service';
 import { sculpturesProviders } from '../providers/sculpture.providers';
 import { DatabaseModule } from './database.module';
 import { UserModule } from './user.module';
+import { SculptureInventoryModule } from './sculptureInventory.module';
 
 @Module({
   imports: [DatabaseModule, UserModule],

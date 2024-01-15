@@ -23,12 +23,14 @@ import { trimAndReturn } from 'src/utils/utils';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { UsersService } from 'src/services/user.service';
+import { PartStatusesService } from 'src/services/partStatus.service';
 
 @Controller('qpart')
 export class QPartsController {
   constructor(
     private readonly qPartsService: QPartsService,
     private readonly userService: UsersService,
+    private readonly partStatusesService: PartStatusesService,
     @Inject(CACHE_MANAGER)
     private cacheManager: Cache,
   ) {}
@@ -124,6 +126,42 @@ export class QPartsController {
           approvalDate: new Date().toISOString().slice(0, 23).replace('T', ' '),
         });
         return { code: 200, message: `approved` };
+      } else return { code: 500, message: `not found` };
+    } catch (error) {
+      console.log(error);
+      return { code: 500, message: `generic error` };
+    }
+  }
+
+  @Post('/deny')
+  async denyQPart(
+    @Body()
+    data: iIdOnly,
+  ): Promise<IAPIResponse> {
+    try {
+      let thisObj = await this.qPartsService.findByIdAll(data.id);
+
+      if (thisObj) {
+        let children = await this.partStatusesService.findPartMoldsByQPartID(
+          data.id,
+        );
+        if (children && children.length > 0) {
+          // let canDelete = true;
+          // children.forEach((child) => {
+          //   if (child.approvalDate != null) {
+          //     canDelete = false;
+          //   }
+          // });
+          // if (!canDelete)
+          //   return {
+          //     code: 509,
+          //     message: `cannot delete children, requires indepth review`,
+          //   };
+          await Promise.all(children.map((child) => child.destroy()));
+        }
+
+        await thisObj.destroy();
+        return { code: 200, message: `deleted` };
       } else return { code: 500, message: `not found` };
     } catch (error) {
       console.log(error);

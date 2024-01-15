@@ -10,5 +10,6 @@ import { SculptureModule } from './sculpture.module';
   imports: [DatabaseModule, UserModule, SculptureModule],
   controllers: [SculptureInventoriesController],
   providers: [SculptureInventoriesService, ...sculptureInventoriesProviders],
+  exports: [SculptureInventoriesService],
 })
 export class SculptureInventoryModule {}

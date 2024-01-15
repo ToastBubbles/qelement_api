@@ -73,7 +73,15 @@ export class QPartsService {
         Color,
         { model: User, as: 'creator' },
         RaretyRating,
-        PartStatus,
+        {
+          model: PartStatus,
+          where: {
+            approvalDate: {
+              [Op.ne]: null,
+            },
+          },
+          required: false,
+        },
         {
           model: Image,
           include: [{ model: User, as: 'uploader' }],
@@ -122,7 +130,15 @@ export class QPartsService {
         Color,
         { model: User, as: 'creator' },
         RaretyRating,
-        PartStatus,
+        {
+          model: PartStatus,
+          where: {
+            approvalDate: {
+              [Op.ne]: null,
+            },
+          },
+          required: false,
+        },
         {
           model: Image,
           include: [{ model: User, as: 'uploader' }],
@@ -160,7 +176,15 @@ export class QPartsService {
         Color,
         { model: User, as: 'creator' },
         RaretyRating,
-        PartStatus,
+        {
+          model: PartStatus,
+          where: {
+            approvalDate: {
+              [Op.ne]: null,
+            },
+          },
+          required: false,
+        },
         {
           model: Image,
           include: [{ model: User, as: 'uploader' }],
@@ -192,7 +216,15 @@ export class QPartsService {
         Color,
         { model: User, as: 'creator' },
         RaretyRating,
-        PartStatus,
+        {
+          model: PartStatus,
+          where: {
+            approvalDate: {
+              [Op.ne]: null,
+            },
+          },
+          required: false,
+        },
         // {
         //   model: Image,
         //   as: 'images',
@@ -286,7 +318,15 @@ export class QPartsService {
         Color,
         { model: User, as: 'creator' },
         RaretyRating,
-        PartStatus,
+        {
+          model: PartStatus,
+          where: {
+            approvalDate: {
+              [Op.ne]: null,
+            },
+          },
+          required: false,
+        },
         // {
         {
           model: Image,
@@ -328,7 +368,15 @@ export class QPartsService {
         Color,
         { model: User, as: 'creator' },
         RaretyRating,
-        PartStatus,
+        {
+          model: PartStatus,
+          where: {
+            approvalDate: {
+              [Op.ne]: null,
+            },
+          },
+          required: false,
+        },
         {
           model: Image,
           include: [{ model: User, as: 'uploader' }],
