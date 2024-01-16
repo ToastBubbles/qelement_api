@@ -16,19 +16,17 @@ export class ElementID extends Model {
   @Column({ unique: true })
   number: number;
 
-  @ForeignKey(() => User)
-  @Column
-  userId: number;
-
   @ForeignKey(() => QPart)
   @Column
   qpartId: number;
-
-  @BelongsTo(() => User)
-  creator: User;
-
   @BelongsTo(() => QPart)
   qpart: QPart;
+
+  @ForeignKey(() => User)
+  @Column
+  creatorId: number;
+  @BelongsTo(() => User)
+  creator: User;
 
   @Column
   approvalDate: Date;

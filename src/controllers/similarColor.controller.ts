@@ -134,11 +134,23 @@ export class SimilarColorsController {
           invertedDoesExist.deletedAt != null
         ) {
           doesExist.restore();
-          if (doesExist.approvalDate != null)
-            doesExist.update({ approvalDate: null });
+          if (doesExist.approvalDate != null) {
+            doesExist.update({
+              approvalDate: isAdmin
+                ? new Date().toISOString().slice(0, 23).replace('T', ' ')
+                : null,
+            });
+            doesExist.save();
+          }
           invertedDoesExist.restore();
-          if (invertedDoesExist.approvalDate != null)
-            invertedDoesExist.update({ approvalDate: null });
+          if (invertedDoesExist.approvalDate != null) {
+            invertedDoesExist.update({
+              approvalDate: isAdmin
+                ? new Date().toISOString().slice(0, 23).replace('T', ' ')
+                : null,
+            });
+            invertMatch.save();
+          }
 
           doesExist.save();
           invertedDoesExist.save();

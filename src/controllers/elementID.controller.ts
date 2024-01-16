@@ -83,6 +83,25 @@ export class ElementIDsController {
       if ((user && user?.role == 'admin') || user.role == 'trusted') {
         isAdmin = true;
       }
+      let softDeletedEID = await this.elementIDsService.findSoftDeletedByNumber(
+        elementID.number,
+      );
+      if (softDeletedEID && softDeletedEID.isSoftDeleted()) {
+        softDeletedEID.restore();
+        softDeletedEID.update({
+          approvalDate: isAdmin
+            ? new Date().toISOString().slice(0, 23).replace('T', ' ')
+            : null,
+          qpartId: elementID.qpartId,
+          creatorId: elementID.creatorId,
+        });
+        softDeletedEID.save();
+        if (isAdmin) return { code: 206, message: `Element ID restored` };
+        return {
+          code: 205,
+          message: `Element ID restored with null approval date`,
+        };
+      }
       let newElementID = await ElementID.create({
         number: elementID.number,
         creatorId: elementID.creatorId,

@@ -7,6 +7,7 @@ import { PartMold } from 'src/models/partMold.entity';
 import { Part } from 'src/models/part.entity';
 import { Op, literal } from 'sequelize';
 import { PartStatus } from 'src/models/partStatus.entity';
+import { User } from 'src/models/user.entity';
 
 @Injectable()
 export class ElementIDsService {
@@ -22,6 +23,14 @@ export class ElementIDsService {
           [Op.ne]: null,
         },
       },
+    });
+  }
+  async findSoftDeletedByNumber(number: number): Promise<ElementID | null> {
+    return this.elementIDsRepository.findOne({
+      where: {
+        number,
+      },
+      paranoid: false,
     });
   }
 
@@ -44,6 +53,7 @@ export class ElementIDsService {
               },
               required: false,
             },
+            User,
           ],
         },
       ],
