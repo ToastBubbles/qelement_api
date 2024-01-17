@@ -2,6 +2,7 @@ import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import {
   IAPIResponse,
   ICatDTO,
+  ICatEditDTO,
   iIdOnly,
   iNameOnly,
 } from 'src/interfaces/general';
@@ -44,6 +45,7 @@ export class CategoriesController {
         thisObj.update({
           approvalDate: new Date().toISOString().slice(0, 23).replace('T', ' '),
         });
+        thisObj.save();
         return { code: 200, message: `approved` };
       } else return { code: 500, message: `not found` };
     } catch (error) {
@@ -62,7 +64,29 @@ export class CategoriesController {
       if (thisObj) {
         // await thisObj.update({ name: thisObj.name + '[DELETED]' });
         await thisObj.destroy();
+        thisObj.save();
         return { code: 200, message: `deleted` };
+      } else return { code: 500, message: `not found` };
+    } catch (error) {
+      console.log(error);
+      return { code: 500, message: `generic error` };
+    }
+  }
+
+  @Post('/edit')
+  async editCategory(
+    @Body()
+    data: ICatEditDTO,
+  ): Promise<IAPIResponse> {
+    try {
+      let thisObj = await this.categoriesService.findByIdAll(data.id);
+      if (thisObj) {
+        // await thisObj.update({ name: thisObj.name + '[DELETED]' });
+        await thisObj.update({
+          name: data.newName,
+        });
+        thisObj.save();
+        return { code: 200, message: `updated` };
       } else return { code: 500, message: `not found` };
     } catch (error) {
       console.log(error);

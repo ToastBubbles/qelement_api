@@ -282,7 +282,11 @@ export interface IElementIDCreationDTO {
   creatorId: number;
   qpartId: number;
 }
-
+export interface ICatEditDTO {
+  id: number;
+  newName: string;
+  creatorId: number;
+}
 export interface ISearchOnly {
   search: string;
 }

@@ -53,9 +53,9 @@ export class ElementIDsService {
               },
               required: false,
             },
-            User,
           ],
         },
+        User,
       ],
       where: {
         approvalDate: null,
