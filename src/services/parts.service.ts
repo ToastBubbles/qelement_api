@@ -79,12 +79,12 @@ export class PartsService {
   async findPartsBySearch(search: string): Promise<Part[] | null> {
     const searchTerm = search.replace(/\s/g, '');
     const result = await this.partsRepository.findAll({
-      include: [Category],
+      include: [Category, PartMold],
       // include: [PartMold],
       where: {
         [Op.or]: [
           // { name: { [Op.iLike]: `%${search}%` } },
-          literal(`REPLACE("name", ' ', '') ILIKE '%${searchTerm}%'`),
+          literal(`REPLACE("Part"."name", ' ', '') ILIKE '%${searchTerm}%'`),
 
           // { '$PartMold.number$': { [Op.iLike]: `%${search}%` } },
         ],

@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, UseGuards } from '@nestjs/common';
 import { INotApporvedCounts, Public } from 'src/interfaces/general';
 
 import { Color } from 'src/models/color.entity';
@@ -15,6 +15,7 @@ import { ImagesService } from 'src/services/image.service';
 import { SculpturesService } from 'src/services/sculpture.service';
 import { ElementIDsService } from 'src/services/elementID.service';
 import { SculptureInventoriesService } from 'src/services/sculptureInventory.service';
+import { AdminMiddleware } from 'src/auth/admin.middleware';
 
 @Controller('extra')
 export class EverythingController {
@@ -31,6 +32,8 @@ export class EverythingController {
     private readonly sculptureInventoriesService: SculptureInventoriesService,
     private readonly elementIDsService: ElementIDsService,
   ) {}
+
+ 
 
   @Public()
   @Get('/addAllColors')

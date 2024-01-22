@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
@@ -30,12 +30,15 @@ import { SecurityQuestionModule } from './modules/securityQuestion.module';
 import { PredefinedSecurityQuestionModule } from './modules/predefinedSecurityQuestion.module';
 import { SculptureInventoryModule } from './modules/sculptureInventory.module';
 import { SculptureModule } from './modules/sculpture.module';
+import { AdminMiddleware } from './auth/admin.middleware';
+import { CategoriesController } from './controllers/category.controller';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       load: [configuration],
     }),
+
     ScheduleModule.forRoot(),
     CacheModule.register(),
     PartsModule,
@@ -66,4 +69,8 @@ import { SculptureModule } from './modules/sculpture.module';
   controllers: [AppController, EverythingController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AdminMiddleware).forRoutes(CategoriesController);
+  }
+}

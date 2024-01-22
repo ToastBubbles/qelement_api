@@ -20,7 +20,7 @@ export class AuthController {
   @Public()
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  async signIn(@Body() { username, password}: ILoginDTO) {
+  async signIn(@Body() { username, password }: ILoginDTO) {
     return this.authService.signIn(username, password);
   }
 

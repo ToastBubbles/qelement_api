@@ -21,8 +21,28 @@ export class SculpturesService {
   ) {}
 
   async findAll(): Promise<Sculpture[]> {
-    return this.sculpturesRepository.findAll<Sculpture>();
+    return this.sculpturesRepository.findAll<Sculpture>({
+      include: [
+        {
+          model: QPart,
+          include: [
+            { model: PartMold, include: [Part] },
+            // PartStatus,
+            // Image,
+            Color,
+          ],
+        },
+        User,
+        Image,
+      ],
+      where: {
+        approvalDate: {
+          [Op.ne]: null,
+        },
+      },
+    });
   }
+
   async findById(
     id: number,
     includePending: boolean,
@@ -97,26 +117,19 @@ export class SculpturesService {
       include: [
         {
           model: QPart,
-          include: [
-            { model: PartMold, include: [Part] },
-            PartStatus,
-            Image,
-            Color,
-          ],
+          // include: [
+          //   { model: PartMold, include: [Part] },
+          //   PartStatus,
+          //   Image,
+          //   Color,
+          // ],
         },
         User,
-        {
-          model: Image,
-          include: [{ model: User, as: 'uploader' }],
-        },
-        {
-          model: Comment,
-          include: [{ model: User, as: 'creator' }],
-        },
+        Image,
       ],
       where: {
         // [Op.or]: [
-        name: { [Op.iLike]: `%${search}%` },
+        name: { [Op.iLike]: `%${searchTerm}%` },
         // literal(`REPLACE("elementId", ' ', '') ILIKE '%${searchTerm}%'`),
 
         // { '$PartMold.number$': { [Op.iLike]: `%${search}%` } },
@@ -235,8 +248,6 @@ export class SculpturesService {
       // },
     });
   }
-
- 
 
   async findByIdAll(id: number): Promise<Sculpture | null> {
     const result = await this.sculpturesRepository.findOne({

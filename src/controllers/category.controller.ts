@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import {
   IAPIResponse,
   ICatDTO,
@@ -10,6 +10,7 @@ import { Category } from 'src/models/category.entity';
 import { CategoriesService } from '../services/category.service';
 import { trimAndReturn } from 'src/utils/utils';
 import { UsersService } from 'src/services/user.service';
+import { AdminMiddleware } from 'src/auth/admin.middleware';
 
 @Controller('categories')
 export class CategoriesController {
@@ -71,6 +72,12 @@ export class CategoriesController {
       console.log(error);
       return { code: 500, message: `generic error` };
     }
+  }
+
+  @Get('/adminTest')
+  @UseGuards(AdminMiddleware)
+  adminTest(): string {
+    return 'Got here';
   }
 
   @Post('/edit')
