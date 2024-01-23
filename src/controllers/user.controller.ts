@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import {
   IAPIResponse,
+  IChangeUserRole,
   ISuspendUser,
   IUserDTO,
   IUserWSecQDTO,
@@ -210,7 +211,7 @@ export class UsersController {
     try {
       const admin = await this.usersService.findOneById(suspensionDTO.adminId);
 
-      if (admin.role) {
+      if (admin) {
         const user = await this.usersService.findOneById(suspensionDTO.userId);
 
         if (user.role == 'admin') {
@@ -237,6 +238,38 @@ export class UsersController {
           return { code: 200, message: 'successfully banned' };
         }
         return { code: 500, message: 'nothing changed' };
+      } else {
+        return { code: 404, message: 'Not presented with correct creds' };
+      }
+    } catch (error) {
+      console.log(error);
+      return { code: 504, message: `failed due to error` };
+    }
+  }
+
+  @Public()
+  @Post('/newRole')
+  async changeUserRole(
+    @Body()
+    roleChangeDTO: IChangeUserRole,
+  ): Promise<IAPIResponse> {
+    try {
+      console.log(roleChangeDTO);
+
+      const admin = await this.usersService.findOneById(roleChangeDTO.adminId);
+
+      if (admin) {
+        const user = await this.usersService.findOneById(roleChangeDTO.userId);
+
+        if (user.role == roleChangeDTO.newRole) {
+          return { code: 405, message: 'new role is same as old role' };
+        }
+
+        user.update({
+          role: roleChangeDTO.newRole,
+        });
+        user.save();
+        return { code: 200, message: 'Role updated!' };
       } else {
         return { code: 404, message: 'Not presented with correct creds' };
       }

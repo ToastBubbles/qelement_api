@@ -41,6 +41,7 @@ import { ColorsController } from './controllers/color.controller';
 import { ElementIDsController } from './controllers/elementID.controller';
 import { CommentsController } from './controllers/comment.controller';
 
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -150,5 +151,11 @@ export class AppModule implements NestModule {
         { path: 'userTitle/(.*)', method: RequestMethod.ALL },
       )
       .forRoutes({ path: '*', method: RequestMethod.ALL });
+
+    // consumer
+    //   .apply(AdminMiddleware)
+    //   .forRoutes(
+    //     { path: 'categories/apporve', method: RequestMethod.POST },
+    //   );
   }
 }

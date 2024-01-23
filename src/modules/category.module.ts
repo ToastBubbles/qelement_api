@@ -10,12 +10,7 @@ import { JwtService } from '@nestjs/jwt';
 @Module({
   imports: [DatabaseModule, UserModule],
   controllers: [CategoriesController],
-  providers: [
-    AdminMiddleware,
-    CategoriesService,
-    JwtService,
-    ...cartegoriesProviders,
-  ],
+  providers: [CategoriesService, ...cartegoriesProviders],
   exports: [CategoriesService],
 })
 export class CategoriesModule {}

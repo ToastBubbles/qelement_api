@@ -4,7 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/services/user.service';
 
 @Injectable()
-export class AdminMiddleware implements NestMiddleware {
+export class TrustedMiddleware implements NestMiddleware {
   constructor(
     private readonly jwtService: JwtService,
     private readonly usersService: UsersService,
@@ -20,17 +20,23 @@ export class AdminMiddleware implements NestMiddleware {
 
     try {
       const decodedToken = this.jwtService.verify(token);
- 
+
       let userData = await this.usersService.findOneById(decodedToken.id);
 
       // Check if the decoded token has admin privileges
-      if (decodedToken && userData.role === 'admin') {
+      if (
+        decodedToken &&
+        (userData.role === 'trusted' || userData.role === 'admin')
+      ) {
         req.user = decodedToken; // Attach user information to the request
         return next(); // Continue to the next middleware or route handler
       } else {
         return res
           .status(403)
-          .json({ message: 'Forbidden: Admin privileges required' });
+          .json({
+            message:
+              'Forbidden: Trusted User privileges or higher are required',
+          });
       }
     } catch (error) {
       //   console.log(error);

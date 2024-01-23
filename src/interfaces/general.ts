@@ -24,6 +24,11 @@ export interface IUserPrefDTO {
   prefName: string;
   prefId: string;
 }
+export interface IChangeUserRole {
+  userId: number;
+  newRole: string;
+  adminId: number;
+}
 export interface IColorDTO {
   bl_name: string;
   tlg_name: string;
