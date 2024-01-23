@@ -74,12 +74,6 @@ export class CategoriesController {
     }
   }
 
-  @Get('/adminTest')
-  @UseGuards(AdminMiddleware)
-  adminTest(): string {
-    return 'Got here';
-  }
-
   @Post('/edit')
   async editCategory(
     @Body()
@@ -101,7 +95,7 @@ export class CategoriesController {
     }
   }
 
-  @Post()
+  @Post('/add')
   async addNewCategory(@Body() data: ICatDTO): Promise<IAPIResponse> {
     try {
       const user = await this.userService.findOneById(data.creatorId);

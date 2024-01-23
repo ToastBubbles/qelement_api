@@ -69,8 +69,8 @@ export class PartStatusesController {
     }
   }
 
-  @Post()
-  async addNewPart(
+  @Post('/add')
+  async addNewPartStatus(
     @Body()
     data: IPartStatusDTO,
   ): Promise<IAPIResponse> {
@@ -109,7 +109,7 @@ export class PartStatusesController {
     data: IArrayOfIDs,
   ): Promise<IAPIResponse> {
     try {
-      console.log('******In controller');
+     
 
       let user = await this.userService.findOneById(data.userId);
       let isAdmin = false;

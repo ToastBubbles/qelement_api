@@ -75,7 +75,7 @@ export class ColorsController {
     }
   }
 
-  @Post()
+  @Post('/add')
   async addNewColor(
     @Body()
     {

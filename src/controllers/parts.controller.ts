@@ -119,7 +119,7 @@ export class PartsController {
     }
   }
 
-  @Post()
+  @Post('/add')
   async addNewPart(
     @Body()
     data: IPartWithMoldDTO,

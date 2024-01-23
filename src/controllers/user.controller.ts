@@ -106,7 +106,7 @@ export class UsersController {
   }
 
   @Public()
-  @Post()
+  @Post('/register')
   async registerNewUser(
     @Body()
     userDTO: IUserWSecQDTO,

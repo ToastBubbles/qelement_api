@@ -87,7 +87,7 @@ export class SimilarColorsController {
     }
   }
 
-  @Post()
+  @Post('/add')
   async addSimilar(
     @Body() { color_one, color_two, creatorId }: ISimilarColorDTO,
   ): Promise<IAPIResponse> {

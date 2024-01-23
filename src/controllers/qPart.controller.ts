@@ -169,7 +169,7 @@ export class QPartsController {
     }
   }
 
-  @Post()
+  @Post('/add')
   async addNewPart(
     @Body()
     data: iQPartDTO,
