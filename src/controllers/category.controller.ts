@@ -55,8 +55,8 @@ export class CategoriesController {
     }
   }
 
-  @Post('/delete')
-  async deleteCategory(
+  @Post('/deny')
+  async denyCategory(
     @Body()
     data: iIdOnly,
   ): Promise<IAPIResponse> {

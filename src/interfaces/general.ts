@@ -6,6 +6,11 @@ import { User } from 'src/models/user.entity';
 
 export const IS_PUBLIC_KEY = 'isPublic';
 export const Public = () => SetMetadata(IS_PUBLIC_KEY, true);
+
+export const purpleColor = '\x1b[35m';
+export const greenColor = '\x1b[32m'; // Green color
+export const resetColor = '\x1b[0m'; // Reset color
+
 export interface ISimilarColorDTO {
   color_one: number;
   color_two: number;

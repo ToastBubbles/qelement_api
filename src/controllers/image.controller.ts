@@ -186,8 +186,8 @@ export class ImagesController {
     }
   }
 
-  @Post('/delete')
-  async deleteCategory(
+  @Post('/deny')
+  async denyImage(
     @Body()
     data: iIdOnly,
   ): Promise<IAPIResponse> {

@@ -55,7 +55,7 @@ export class ColorsController {
     }
   }
   @Post('/deny')
-  async deleteColor(@Body() data: iIdOnly): Promise<IAPIResponse> {
+  async denyColor(@Body() data: iIdOnly): Promise<IAPIResponse> {
     try {
       // Find the color by ID
       const thisObj = await this.colorsService.findByIdAll(data.id);
@@ -126,7 +126,7 @@ export class ColorsController {
     }
   }
 
-  @Post('/id/:id')
+  @Post('/edit/:id')
   async editColor(
     @Param('id') id: number,
     @Body()

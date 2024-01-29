@@ -13,6 +13,7 @@ import { Image } from 'src/models/image.entity';
 import { IQPartVerifcation } from 'src/interfaces/general';
 import { ElementID } from 'src/models/elementID.entity';
 import sequelize from 'sequelize';
+import { Sculpture } from 'src/models/sculpture.entity';
 
 @Injectable()
 export class QPartsService {
@@ -225,6 +226,7 @@ export class QPartsService {
           },
           required: false,
         },
+
         // {
         //   model: Image,
         //   as: 'images',
@@ -309,6 +311,26 @@ export class QPartsService {
           ],
           required: true,
           duplicating: false,
+        },
+        {
+          model: Sculpture,
+          where: {
+            approvalDate: {
+              [Op.ne]: null,
+            },
+          },
+          required: false,
+          include: [
+            {
+              model: Image,
+              where: {
+                approvalDate: {
+                  [Op.ne]: null,
+                },
+              },
+              required: false,
+            },
+          ],
         },
         {
           model: Comment,

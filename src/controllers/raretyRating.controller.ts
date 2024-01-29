@@ -11,7 +11,7 @@ export class RaretyRatingsController {
   async getAllRaretyRatings(): Promise<RaretyRating[]> {
     return this.raretyRatingsService.findAll();
   }
-  @Get('/:userId/:qpartId')
+  @Get('/getMyRating/:userId/:qpartId')
   async getUserRatingOfQPart(
     @Param('userId') userId: number,
     @Param('qpartId') qpartId: number,
@@ -23,7 +23,7 @@ export class RaretyRatingsController {
     return rating?.rating;
   }
 
-  @Post()
+  @Post('/addRating')
   async addUserRatingOfQPart(
     @Body()
     ratingDTO: IRatingDTO,

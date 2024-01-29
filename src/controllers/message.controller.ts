@@ -13,17 +13,13 @@ import { trimAndReturn } from 'src/utils/utils';
 export class MessagesController {
   constructor(private readonly messagesService: MessagesService) {}
 
-  @Get()
-  async getAllMessages(): Promise<Message[]> {
-    return this.messagesService.findAll();
-  }
 
-  @Get('/:id')
+  @Get('/getOneById/:id')
   async getMessageById(@Param('id') id: number): Promise<IExtendedMessageDTO> {
     return this.messagesService.findByIdAsDTO(id);
   }
 
-  @Get('/getAllById/:id')
+  @Get('/getAllByUserId/:id')
   async getAllMessagesByUserID(@Param('id') id: number): Promise<IMailbox> {
     return this.messagesService.findAllByUserID(id);
   }
@@ -33,7 +29,7 @@ export class MessagesController {
     return this.messagesService.findUnreadCountByUserID(id);
   }
 
-  @Post()
+  @Post('/send')
   async sendMessage(
     @Body()
     messageDTO: IMessageDTO,
