@@ -6,6 +6,14 @@ import { IAPIResponse } from 'src/interfaces/general';
 import { SecurityQuestion } from 'src/models/securityQuestion.entity';
 import { PredefinedSecurityQuestion } from 'src/models/predefinedSecurityQuestion.entity';
 import { UserPreference } from 'src/models/userPreference.entity';
+import { QPart } from 'src/models/qPart.entity';
+import { Color } from 'src/models/color.entity';
+import { Image } from 'src/models/image.entity';
+import { ElementID } from 'src/models/elementID.entity';
+import { PartMold } from 'src/models/partMold.entity';
+import { Part } from 'src/models/part.entity';
+import { RaretyRating } from 'src/models/raretyRating.entity';
+import { PartStatus } from 'src/models/partStatus.entity';
 
 @Injectable()
 export class UsersService {
@@ -18,12 +26,97 @@ export class UsersService {
     return this.usersRepository.findAll<User>();
   }
   async findOneByUsername(username: string): Promise<User | IAPIResponse> {
-    let foundUser = await this.usersRepository.findOne({
-      where: { name: username },
-      include: [UserPreference],
-    });
-    if (foundUser) return foundUser;
-    else return { code: 404, message: `user not found` };
+    try {
+      let foundUser = await this.usersRepository.findOne({
+        where: { name: username },
+        include: [UserPreference],
+      });
+      if (!foundUser) return { code: 404, message: `user not found` };
+
+      // Check user's preferences
+      const isCollectionVisible = foundUser.preferences?.isCollectionVisible;
+      const isWantedVisible = foundUser.preferences?.isWantedVisible;
+      // Include if true
+      if (isCollectionVisible) {
+        // Explicitly specify the return type as an array of QPart instances
+        const inventory = await foundUser.$get('inventory', {
+          include: [
+            {
+              model: ElementID,
+              where: {
+                approvalDate: {
+                  [Op.ne]: null,
+                },
+              },
+              required: false,
+            },
+            { model: PartMold, include: [Part] },
+            Color,
+            { model: User, as: 'creator' },
+            RaretyRating,
+            {
+              model: PartStatus,
+              where: {
+                approvalDate: {
+                  [Op.ne]: null,
+                },
+              },
+              required: false,
+            },
+            {
+              model: Image,
+              include: [{ model: User, as: 'uploader' }],
+            },
+          ],
+        });
+        foundUser.setDataValue('inventory', inventory);
+      } else {
+        // If not visible, remove inventory from the result
+        foundUser.setDataValue('inventory', undefined);
+      }
+      if (isWantedVisible) {
+        // Explicitly specify the return type as an array of QPart instances
+        const favoriteQParts = await foundUser.$get('favoriteQParts', {
+          include: [
+            {
+              model: ElementID,
+              where: {
+                approvalDate: {
+                  [Op.ne]: null,
+                },
+              },
+              required: false,
+            },
+            { model: PartMold, include: [Part] },
+            Color,
+            { model: User, as: 'creator' },
+            RaretyRating,
+            {
+              model: PartStatus,
+              where: {
+                approvalDate: {
+                  [Op.ne]: null,
+                },
+              },
+              required: false,
+            },
+            {
+              model: Image,
+              include: [{ model: User, as: 'uploader' }],
+            },
+          ],
+        });
+        foundUser.setDataValue('favoriteQParts', favoriteQParts);
+      } else {
+        // If not visible, remove favoriteQParts from the result
+        foundUser.setDataValue('favoriteQParts', undefined);
+      }
+
+      return foundUser;
+    } catch (error) {
+      console.error('Error finding user:', error);
+      return { code: 500, message: `Internal server error` };
+    }
   }
   async findOneByEmail(email: string): Promise<User | IAPIResponse> {
     let foundUser = await this.usersRepository.findOne({

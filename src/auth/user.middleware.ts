@@ -2,7 +2,7 @@ import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/services/user.service';
-import {  purpleColor, resetColor } from 'src/interfaces/general';
+import { greenColor, purpleColor, resetColor } from 'src/interfaces/general';
 
 @Injectable()
 export class UserMiddleware implements NestMiddleware {
@@ -12,6 +12,8 @@ export class UserMiddleware implements NestMiddleware {
   ) {}
 
   async use(req: any, res: Response, next: NextFunction) {
+    console.log(`${purpleColor}in da user mw${resetColor}`);
+
     const token = req.headers.authorization?.split(' ')[1];
 
     if (!token) {
@@ -23,6 +25,13 @@ export class UserMiddleware implements NestMiddleware {
 
       let userData = await this.usersService.findOneById(decodedToken.id);
 
+      if (!userData) {
+        return res.status(403).json({
+          message: 'Forbidden: User not found',
+        });
+      }
+      console.log('User data:', userData);
+
       // Check if the decoded token has admin privileges
       if (
         decodedToken &&
@@ -33,7 +42,6 @@ export class UserMiddleware implements NestMiddleware {
         console.log(
           `${purpleColor}########################################################${resetColor}`,
         );
-
         console.log(
           `${purpleColor}Allowing passage for ${decodedToken.username} through ${req.originalUrl} at user level${resetColor}`,
         );
@@ -42,6 +50,7 @@ export class UserMiddleware implements NestMiddleware {
         );
 
         req.user = decodedToken; // Attach user information to the request
+
         return next(); // Continue to the next middleware or route handler
       } else {
         return res.status(403).json({

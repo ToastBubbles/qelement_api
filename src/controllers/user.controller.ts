@@ -113,6 +113,11 @@ export class UsersController {
     userDTO: IUserWSecQDTO,
   ): Promise<IAPIResponse> {
     try {
+      const isValidUsername = (input: string): boolean => {
+        return /^[a-zA-Z0-9._]+$/.test(input);
+      };
+      const username = userDTO.name.trim();
+
       if (
         userDTO.q1.questionId == null ||
         userDTO.q2.questionId == null ||
@@ -123,6 +128,8 @@ export class UsersController {
       ) {
         return { code: 505, message: `bad security questions` };
       }
+      if (!isValidUsername(username))
+        return { code: 503, message: 'username must only contain a-z A-Z 0-9' };
       if (userDTO.name.length > 255 || userDTO.email.length > 255) {
         return { code: 500, message: `text OOB` };
       } else {
@@ -134,10 +141,10 @@ export class UsersController {
         const hashA3 = await bcrypt.hash(userDTO.q3.answer.toLowerCase(), salt);
 
         const newUser = await User.create({
-          name: userDTO.name,
-          email: userDTO.email.toLowerCase(),
+          name: username,
+          email: userDTO.email.trim().toLowerCase(),
           password: hash,
-          role: userDTO.role,
+          role: 'user',
         }).catch((e) => {
           return { code: 501, message: `generic error` };
         });

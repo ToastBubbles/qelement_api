@@ -23,7 +23,11 @@ export class TrustedMiddleware implements NestMiddleware {
       const decodedToken = this.jwtService.verify(token);
 
       let userData = await this.usersService.findOneById(decodedToken.id);
-
+      if (!userData) {
+        return res.status(403).json({
+          message: 'Forbidden: User not found',
+        });
+      }
       // Check if the decoded token has admin privileges
       if (
         decodedToken &&
