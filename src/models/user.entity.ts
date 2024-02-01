@@ -9,6 +9,7 @@ import {
   ForeignKey,
   DeletedAt,
   Unique,
+  BelongsTo,
 } from 'sequelize-typescript';
 import { Comment } from './comment.entity';
 import { Image } from './image.entity';
@@ -23,6 +24,7 @@ import { UserTitle } from './userTitle.entity';
 import { Title } from './title.entity';
 import { UserGoal } from './userGoal.entity';
 import { SecurityQuestion } from './securityQuestion.entity';
+import { Color } from './color.entity';
 
 @Table({
   timestamps: true,
@@ -104,26 +106,25 @@ export class User extends Model {
   @HasOne(() => UserPreference)
   preferences: UserPreference;
 
-  // @BelongsToMany(() => QPart, () => UserFavorite)
-  // @BelongsToMany(() => QPart, {through: 'userFavorites'})
   @BelongsToMany(() => QPart, {
     through: { model: () => UserFavorite, unique: false },
   })
   favoriteQParts: QPart[];
 
-  // @BelongsToMany(() => QPart, () => UserInventory)
   @BelongsToMany(() => QPart, {
     through: { model: () => UserInventory, unique: false },
   })
   inventory: QPart[];
 
-  // @BelongsToMany(() => UserGoal, {
-  //   through: { model: () => UserGoal, unique: false },
-  // })
-  // goals: UserGoal[];
-
   @HasMany(() => UserGoal)
   goals: UserGoal[];
+
+  @ForeignKey(() => Color)
+  @Column
+  favoriteColorId?: number;
+
+  @BelongsTo(() => Color)
+  favoriteColor?: Color;
 
   @HasMany(() => SecurityQuestion)
   securityQuestions: SecurityQuestion[];

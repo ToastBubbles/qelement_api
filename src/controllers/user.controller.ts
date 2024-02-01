@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Req } from '@nestjs/common';
 import {
   IAPIResponse,
   IChangeUserRole,
@@ -6,6 +6,7 @@ import {
   IUserDTO,
   IUserWSecQDTO,
   Public,
+  iIdOnly,
 } from 'src/interfaces/general';
 import { User } from 'src/models/user.entity';
 import { UsersService } from '../services/user.service';
@@ -13,6 +14,8 @@ import * as bcrypt from 'bcrypt';
 import { IQelementError } from 'src/interfaces/error';
 import { SecurityQuestion } from 'src/models/securityQuestion.entity';
 import { UserPreference } from 'src/models/userPreference.entity';
+import { ColorsService } from 'src/services/color.service';
+import { Color } from 'src/models/color.entity';
 
 @Controller('user')
 export class UsersController {
@@ -107,6 +110,35 @@ export class UsersController {
   }
 
   @Public()
+  @Post('/favoriteColor')
+  async UpdateFavoriteColor(
+    @Body()
+    { id }: iIdOnly,
+    @Req() req: any,
+  ): Promise<IAPIResponse> {
+    try {
+      const userId = req.user.id;
+
+      if (!userId) return { code: 403, message: `user ID not validated` };
+
+      const user = await this.usersService.findOneById(userId);
+      if (!user) return { code: 504, message: `could not find user` };
+      const color = await Color.findByPk(id);
+      if (!color) return { code: 505, message: `could not find color` };
+
+      await user.update({
+        favoriteColorId: id,
+      });
+      await user.save();
+
+      return { code: 200, message: `favorite color updated!` };
+    } catch (error) {
+      console.log(error);
+      return { code: 504, message: `failed due to error` };
+    }
+  }
+
+  @Public()
   @Post('/register')
   async registerNewUser(
     @Body()
@@ -140,11 +172,18 @@ export class UsersController {
         const hashA2 = await bcrypt.hash(userDTO.q2.answer.toLowerCase(), salt);
         const hashA3 = await bcrypt.hash(userDTO.q3.answer.toLowerCase(), salt);
 
+        let badColor: boolean = false;
+        if (userDTO.favoriteColorId) {
+          const color = await Color.findByPk(userDTO.favoriteColorId);
+          if (!color) badColor = true;
+        }
+
         const newUser = await User.create({
           name: username,
           email: userDTO.email.trim().toLowerCase(),
           password: hash,
           role: 'user',
+          favoriteColorId: !badColor ? userDTO.favoriteColorId : null,
         }).catch((e) => {
           return { code: 501, message: `generic error` };
         });

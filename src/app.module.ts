@@ -156,6 +156,7 @@ export class AppModule implements NestModule {
       { path: 'similarColor/add', method: RequestMethod.POST },
       { path: 'user/getQuestions/:email', method: RequestMethod.GET },
       { path: 'user/checkIfAdmin/:userid', method: RequestMethod.GET },
+      { path: 'user/favoriteColor', method: RequestMethod.POST },
       { path: 'userFavorite/id/:userid', method: RequestMethod.GET },
       { path: 'userFavorite/add', method: RequestMethod.POST },
       { path: 'userFavorite/remove', method: RequestMethod.POST },

@@ -171,6 +171,7 @@ export interface IUserWSecQDTO {
   email: string;
   password: string;
   role: string;
+  favoriteColorId?: number;
   q1: ISecurityQuestionDTO;
   q2: ISecurityQuestionDTO;
   q3: ISecurityQuestionDTO;

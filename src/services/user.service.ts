@@ -29,7 +29,7 @@ export class UsersService {
     try {
       let foundUser = await this.usersRepository.findOne({
         where: { name: username },
-        include: [UserPreference],
+        include: [UserPreference, Color],
       });
       if (!foundUser) return { code: 404, message: `user not found` };
 
