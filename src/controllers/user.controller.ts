@@ -27,18 +27,31 @@ export class UsersController {
   }
 
   @Get('/checkInsensitive/:username')
-  async findOneByUsernameInsensitive(
+  async findUserByUsernameInsensitive(
     @Param('username') username: string,
   ): Promise<IAPIResponse> {
     return this.usersService.findOneByUsernameInsensitive(username);
   }
 
   @Get('/username/:username')
-  async findOneByUsername(
+  async findUserByUsername(
     @Param('username') username: string,
   ): Promise<User | IAPIResponse> {
     try {
-      let result = this.usersService.findOneByUsername(username);
+      let result = this.usersService.findOneByUsername(username.trim());
+
+      return result;
+    } catch (error) {
+      return { code: 500, message: `error` };
+    }
+  }
+
+  @Get('/email/:email')
+  async findUserByEmail(
+    @Param('email') email: string,
+  ): Promise<User | IAPIResponse> {
+    try {
+      let result = this.usersService.findOneByEmail(email.trim(), false);
 
       return result;
     } catch (error) {
@@ -55,10 +68,10 @@ export class UsersController {
     return result;
   }
   @Get('/getQuestions/:email')
-  async findOneByEmail(
+  async findUserByEmailWithSecurityQuestions(
     @Param('email') email: string,
   ): Promise<User | IQelementError> {
-    let result = this.usersService.findOneByEmail(email);
+    let result = this.usersService.findOneByEmail(email, true);
 
     return result;
   }

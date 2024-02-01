@@ -89,6 +89,7 @@ export class AppModule implements NestModule {
         { path: 'extra/addAllColors', method: RequestMethod.GET },
         { path: 'user/suspend', method: RequestMethod.POST },
         { path: 'user/newRole', method: RequestMethod.POST },
+        { path: 'title/add', method: RequestMethod.POST },
       );
 
     consumer.apply(TrustedMiddleware).forRoutes(
@@ -154,6 +155,7 @@ export class AppModule implements NestModule {
       { path: 'sculpture/add', method: RequestMethod.POST },
       { path: 'sculptureInventory/addParts/:id', method: RequestMethod.POST },
       { path: 'similarColor/add', method: RequestMethod.POST },
+      { path: 'user/email/:email', method: RequestMethod.GET },
       { path: 'user/getQuestions/:email', method: RequestMethod.GET },
       { path: 'user/checkIfAdmin/:userid', method: RequestMethod.GET },
       { path: 'user/favoriteColor', method: RequestMethod.POST },

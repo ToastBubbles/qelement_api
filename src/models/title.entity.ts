@@ -13,6 +13,9 @@ export class Title extends Model {
   @Column
   title: string;
 
+  @Column
+  cssClasses: string;
+
   @BelongsToMany(() => User, () => UserTitle)
   users: User[];
 }

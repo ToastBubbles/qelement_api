@@ -192,6 +192,10 @@ export interface ICatDTO {
   name: string;
   creatorId: number;
 }
+export interface ITitle {
+  title: string;
+  cssClasses: string;
+}
 export interface IQPartDetails {
   part: IPartDTO;
   color: IColorDTO;

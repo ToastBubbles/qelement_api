@@ -118,18 +118,29 @@ export class UsersService {
       return { code: 500, message: `Internal server error` };
     }
   }
-  async findOneByEmail(email: string): Promise<User | IAPIResponse> {
+  async findOneByEmail(
+    email: string,
+    includeSecurityQuestions: boolean = false,
+  ): Promise<User | IAPIResponse> {
     let foundUser = await this.usersRepository.findOne({
-      include: [
-        {
-          model: SecurityQuestion,
-          as: 'securityQuestions',
-          include: [PredefinedSecurityQuestion],
-        },
-        UserPreference,
-      ],
+      include: [UserPreference],
       where: { email: email },
     });
+
+    if (foundUser && includeSecurityQuestions) {
+      // Explicitly specify the return type as an array of QPart instances
+      const securityQuestions = await foundUser.$get('securityQuestions', {
+        include: [
+          {
+            model: SecurityQuestion,
+            as: 'securityQuestions',
+            include: [PredefinedSecurityQuestion],
+          },
+        ],
+      });
+      foundUser.setDataValue('securityQuestions', securityQuestions);
+    }
+
     if (foundUser) return foundUser;
     else return { code: 404, message: `user not found` };
   }
