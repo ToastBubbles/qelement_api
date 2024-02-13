@@ -146,6 +146,7 @@ export interface IRatingDTO {
   creatorId: number;
 }
 export interface IUserDTO {
+  id: number;
   name: string;
   email: string;
   password: string;
@@ -192,14 +193,32 @@ export interface ICatDTO {
   name: string;
   creatorId: number;
 }
-export interface ITitle {
-  title: string;
-  cssClasses: string;
-}
+
 export interface IQPartDetails {
   part: IPartDTO;
   color: IColorDTO;
   qpart: iQPartDTO;
+}
+
+export interface IUserTitle {
+  userId: number;
+  titleId: number;
+}
+export interface ITitle {
+  title: string;
+  cssClasses: string;
+}
+
+export interface ITitleDTO extends ITitle {
+  id: number;
+}
+export interface ITitlesToAddToUsers {
+  user: IUserDTO;
+  title: ITitleDTO;
+}
+
+export interface IUserTitlePackedDTO {
+  array: ITitlesToAddToUsers[];
 }
 
 export interface iIdOnly {

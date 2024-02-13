@@ -123,6 +123,40 @@ export class UsersController {
   }
 
   @Public()
+  @Post('/changeTitle')
+  async UpdateUserTitle(
+    @Body()
+    { id }: iIdOnly,
+    @Req() req: any,
+  ): Promise<IAPIResponse> {
+    try {
+      if (id <= 0) return { code: 509, message: `bad ID` };
+      const userId = req.user.id;
+      if (!userId) return { code: 403, message: `user ID not validated` };
+      const user = await this.usersService.findOneById(userId);
+      if (!user) return { code: 504, message: `could not find user` };
+      const color = await Color.findByPk(id);
+      if (!color) return { code: 505, message: `could not find color` };
+
+      if (!user.titles.find((x) => x.id == id))
+        return {
+          code: 508,
+          message: `invalid selection, user does not own this title!`,
+        };
+
+      await user.update({
+        selectedTitleId: id,
+      });
+      await user.save();
+
+      return { code: 200, message: `title updated!` };
+    } catch (error) {
+      console.log(error);
+      return { code: 504, message: `failed due to error` };
+    }
+  }
+
+  @Public()
   @Post('/favoriteColor')
   async UpdateFavoriteColor(
     @Body()

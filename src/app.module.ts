@@ -90,6 +90,7 @@ export class AppModule implements NestModule {
         { path: 'user/suspend', method: RequestMethod.POST },
         { path: 'user/newRole', method: RequestMethod.POST },
         { path: 'title/add', method: RequestMethod.POST },
+        { path: 'userTitle/add', method: RequestMethod.POST },
       );
 
     consumer.apply(TrustedMiddleware).forRoutes(
@@ -158,6 +159,7 @@ export class AppModule implements NestModule {
       { path: 'user/email/:email', method: RequestMethod.GET },
       { path: 'user/getQuestions/:email', method: RequestMethod.GET },
       { path: 'user/checkIfAdmin/:userid', method: RequestMethod.GET },
+      { path: 'user/changeTitle', method: RequestMethod.POST },
       { path: 'user/favoriteColor', method: RequestMethod.POST },
       { path: 'userFavorite/id/:userid', method: RequestMethod.GET },
       { path: 'userFavorite/add', method: RequestMethod.POST },

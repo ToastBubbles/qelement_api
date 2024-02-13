@@ -14,6 +14,7 @@ import { PartMold } from 'src/models/partMold.entity';
 import { Part } from 'src/models/part.entity';
 import { RaretyRating } from 'src/models/raretyRating.entity';
 import { PartStatus } from 'src/models/partStatus.entity';
+import { Title } from 'src/models/title.entity';
 
 @Injectable()
 export class UsersService {
@@ -159,7 +160,7 @@ export class UsersService {
   async findOneById(id: number): Promise<User> {
     let foundUser = await this.usersRepository.findOne({
       where: { id: id },
-      include: [UserPreference, Color],
+      include: [UserPreference, Color, Title],
     });
     if (foundUser) return foundUser;
     else throw new HttpException('User not found', 404);
