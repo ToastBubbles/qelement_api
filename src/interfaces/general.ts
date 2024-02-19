@@ -224,12 +224,14 @@ export interface IUserTitlePackedDTO {
 export interface iIdOnly {
   id: number;
 }
-export interface iIdAndType {
-  id: number;
+
+export interface IIdAndNumber extends iIdOnly {
+  number: number;
+}
+export interface iIdAndType extends iIdOnly {
   type: string;
 }
-export interface iIdAndPrimary {
-  id: number;
+export interface iIdAndPrimary extends iIdOnly {
   isPrimary: boolean;
 }
 export interface IArrayOfIDs {

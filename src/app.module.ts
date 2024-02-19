@@ -101,6 +101,7 @@ export class AppModule implements NestModule {
       { path: 'color/deny', method: RequestMethod.POST },
       { path: 'color/edit/:id', method: RequestMethod.POST },
       { path: 'elementID/approve', method: RequestMethod.POST },
+      { path: 'elementID/edit', method: RequestMethod.POST },
       { path: 'elementID/deny', method: RequestMethod.POST },
       { path: 'extra/getNotApprovedCounts', method: RequestMethod.GET },
       { path: 'image/markPrimary', method: RequestMethod.POST },

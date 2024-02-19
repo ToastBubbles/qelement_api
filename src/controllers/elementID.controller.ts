@@ -1,13 +1,15 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Req } from '@nestjs/common';
 import { ElementID } from 'src/models/elementID.entity';
 import { ElementIDsService } from '../services/elementID.service';
 import {
   IAPIResponse,
   IElementIDCreationDTO,
+  IIdAndNumber,
   ISearchOnly,
   iIdOnly,
 } from 'src/interfaces/general';
 import { UsersService } from 'src/services/user.service';
+import { User } from 'src/models/user.entity';
 
 @Controller('elementID')
 export class ElementIDsController {
@@ -52,7 +54,7 @@ export class ElementIDsController {
     try {
       let thisObj = await this.elementIDsService.findByIdAll(data.id);
       if (thisObj) {
-        await thisObj.destroy();
+        await thisObj.destroy({ force: true });
         return { code: 200, message: `deleted` };
       } else return { code: 500, message: `not found` };
     } catch (error) {
@@ -120,6 +122,48 @@ export class ElementIDsController {
         else return { code: 200, message: 'submitted' };
       }
       return { code: 501, message: 'failed' };
+    } catch (error) {
+      console.log(error);
+      return { code: 500, message: error };
+    }
+  }
+
+  @Post('/edit')
+  async editElementID(
+    @Body()
+    data: IIdAndNumber,
+    @Req() req: any,
+  ): Promise<IAPIResponse> {
+    try {
+      const userId = req.user.id;
+      const user = await User.findByPk(userId);
+      if (!user) return { code: 504, message: 'User not found' };
+      if (user.role !== 'admin')
+        return { code: 506, message: 'User is not admin' };
+
+      let existingEIDwithNewNumber =
+        await this.elementIDsService.findSoftDeletedByNumber(data.number);
+      if (existingEIDwithNewNumber) {
+        if (existingEIDwithNewNumber.isSoftDeleted()) {
+          await existingEIDwithNewNumber.destroy({ force: true });
+        } else {
+          return {
+            code: 505,
+            message: `Element ID conflicts with another ID`,
+          };
+        }
+      }
+      let thisEID = await this.elementIDsService.findByIdAll(data.id);
+      if (thisEID) {
+        await thisEID.update({
+          number: data.number,
+        });
+
+        await thisEID.save();
+
+        return { code: 200, message: 'Updated' };
+      }
+      return { code: 501, message: 'Failed to find by Id' };
     } catch (error) {
       console.log(error);
       return { code: 500, message: error };
