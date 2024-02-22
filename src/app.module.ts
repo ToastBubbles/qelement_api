@@ -139,6 +139,7 @@ export class AppModule implements NestModule {
       { path: 'comment/edit', method: RequestMethod.POST },
       { path: 'elementID/add', method: RequestMethod.POST },
       { path: 'image/upload', method: RequestMethod.POST },
+      { path: 'image/uploadPFP', method: RequestMethod.POST },
       { path: 'message/getOneById/:id', method: RequestMethod.GET },
       { path: 'message/getAllById/:id', method: RequestMethod.GET },
       { path: 'message/getUnreadCountById/:id', method: RequestMethod.GET },

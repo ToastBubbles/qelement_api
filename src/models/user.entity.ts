@@ -128,4 +128,10 @@ export class User extends Model {
 
   @HasMany(() => SecurityQuestion)
   securityQuestions: SecurityQuestion[];
+
+  @HasOne(() => Image)
+  profilePicture: Image;
+
+  @ForeignKey(() => Image)
+  profilePictureId: number;
 }

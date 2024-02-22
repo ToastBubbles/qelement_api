@@ -30,6 +30,7 @@ export class Image extends Model {
       'sculpture',
       'damaged',
       'other',
+      'pfp',
     ),
     defaultValue: 'part',
   })

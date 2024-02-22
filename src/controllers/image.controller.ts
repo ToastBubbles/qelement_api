@@ -97,8 +97,8 @@ export class ImagesController {
         const fileName = await this.minioService.uploadFile(
           image,
           imageData.qpartId,
-          imageData.sculptureId,
           imageData.userId,
+          imageData.sculptureId,
           imageData.type,
         );
 
@@ -118,6 +118,61 @@ export class ImagesController {
         //   return { code: 500, message: `generic error` };
         // });
         if (newImage instanceof Image) {
+          if (isAdmin) return { code: 202, message: fileName };
+          return { code: 201, message: fileName };
+        }
+      }
+      return { code: 2, message: 'failed1' };
+    } catch (error) {
+      console.log(error);
+
+      return { code: 500, message: error };
+    }
+  }
+
+  @Post('/uploadPFP')
+  @UseInterceptors(FileInterceptor('image'))
+  async uploadProfilePicture(
+    @UploadedFile() image: Express.Multer.File,
+    @Body() data: any,
+  ): Promise<IAPIResponse> {
+    try {
+      let imageData = JSON.parse(data?.imageData);
+
+      if (imageData.id > 0) {
+        let user = await this.userService.findOneById(imageData.id);
+        let isAdmin = false;
+        if ((user && user?.role == 'admin') || user.role == 'trusted') {
+          isAdmin = true;
+        }
+        await this.minioService.createBucketIfNotExists();
+        const fileName = await this.minioService.uploadFile(
+          image,
+          null,
+          imageData.id,
+          null,
+          'pfp',
+        );
+
+        let newImage = await Image.create({
+          fileName: fileName,
+          type: 'pfp',
+          userId: imageData.id,
+          qpartId: undefined,
+          sculptureId: undefined,
+          approvalDate: isAdmin
+            ? new Date().toISOString().slice(0, 23).replace('T', ' ')
+            : null,
+        });
+
+        // .catch((e) => {
+        //   return { code: 500, message: `generic error` };
+        // });
+        if (newImage instanceof Image) {
+          await user.update({
+            profilePictureId: newImage.id,
+          });
+          await user.save();
           if (isAdmin) return { code: 202, message: fileName };
           return { code: 201, message: fileName };
         }
