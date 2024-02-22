@@ -25,6 +25,9 @@ export class Comment extends Model {
   @Column
   userId: number;
 
+  @Column({ defaultValue: false })
+  edited: boolean;
+
   @ForeignKey(() => QPart)
   @Column
   qpartId?: number;

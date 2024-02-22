@@ -58,7 +58,7 @@ export class ImagesService {
       },
     });
   }
-  async findAllById(id: number): Promise<Image[]> {
+  async findAllByQPartId(id: number): Promise<Image[]> {
     return this.imagesRepository.findAll<Image>({
       where: {
         qpartId: id,

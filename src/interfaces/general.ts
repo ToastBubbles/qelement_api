@@ -228,8 +228,8 @@ export interface iIdOnly {
 export interface IIdAndNumber extends iIdOnly {
   number: number;
 }
-export interface iIdAndType extends iIdOnly {
-  type: string;
+export interface IIdAndString extends iIdOnly {
+  string: string;
 }
 export interface iIdAndPrimary extends iIdOnly {
   isPrimary: boolean;
