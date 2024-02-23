@@ -145,6 +145,7 @@ export class ImagesController {
         if ((user && user?.role == 'admin') || user.role == 'trusted') {
           isAdmin = true;
         }
+
         await this.minioService.createBucketIfNotExists();
         const fileName = await this.minioService.uploadFile(
           image,
@@ -169,6 +170,13 @@ export class ImagesController {
         //   return { code: 500, message: `generic error` };
         // });
         if (newImage instanceof Image) {
+          if (user.profilePictureId != null) {
+            let currentPFP = await this.imagesService.findByIdAll(
+              user.profilePictureId,
+            );
+
+            if (currentPFP) await currentPFP.destroy();
+          }
           await user.update({
             profilePictureId: newImage.id,
           });

@@ -160,7 +160,17 @@ export class UsersService {
   async findOneById(id: number): Promise<User> {
     let foundUser = await this.usersRepository.findOne({
       where: { id: id },
-      include: [UserPreference, Color, Title, {model: Image, as: "profilePicture"}],
+      include: [
+        UserPreference,
+        Color,
+        Title,
+        {
+          model: Image,
+          as: 'profilePicture',
+          where: { type: 'pfp' }, 
+          required: false,
+        },
+      ],
     });
     if (foundUser) return foundUser;
     else throw new HttpException('User not found', 404);

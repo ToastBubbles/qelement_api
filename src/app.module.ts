@@ -44,6 +44,8 @@ import { TrustedMiddleware } from './auth/trusted.middleware';
 import { UserMiddleware } from './auth/user.middleware';
 import { LoggerMiddleware } from './auth/logger.middleware';
 
+import { NotificationModule } from './modules/notification.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -76,6 +78,8 @@ import { LoggerMiddleware } from './auth/logger.middleware';
     PredefinedSecurityQuestionModule,
     SculptureModule,
     SculptureInventoryModule,
+
+    NotificationModule,
   ],
   controllers: [AppController, EverythingController],
   providers: [AppService],
@@ -86,7 +90,7 @@ export class AppModule implements NestModule {
     consumer
       .apply(AdminMiddleware)
       .forRoutes(
-        { path: 'extra/addAllColors', method: RequestMethod.GET },
+        { path: 'extra/addAllColors', method: RequestMethod.POST },
         { path: 'user/suspend', method: RequestMethod.POST },
         { path: 'user/newRole', method: RequestMethod.POST },
         { path: 'title/add', method: RequestMethod.POST },

@@ -133,5 +133,6 @@ export class User extends Model {
   profilePicture: Image;
 
   @ForeignKey(() => Image)
+  @Column
   profilePictureId: number;
 }
