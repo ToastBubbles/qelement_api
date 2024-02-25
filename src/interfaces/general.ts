@@ -250,8 +250,15 @@ export interface IAPIResponse {
 }
 export interface IPartDTO {
   name: string;
-  CatId: number;
+  catId: number;
   note: string;
+}
+
+export interface IPartEdits {
+  id: number;
+  name: string;
+  catId: number;
+  blURL: string;
 }
 
 export interface IPartMoldDTO {
@@ -268,7 +275,7 @@ export interface IPartWithMoldDTO {
   id: number;
   name: string;
   number: string;
-  CatId: number;
+  catId: number;
   partNote: string;
   moldNote: string;
   blURL: string;

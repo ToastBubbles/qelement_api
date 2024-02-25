@@ -116,6 +116,7 @@ export class AppModule implements NestModule {
       { path: 'partMold/deny', method: RequestMethod.POST },
       { path: 'parts/approve', method: RequestMethod.POST },
       { path: 'parts/deny', method: RequestMethod.POST },
+      { path: 'parts/edit', method: RequestMethod.POST },
       { path: 'partStatus/approve', method: RequestMethod.POST },
       { path: 'partStatus/deny', method: RequestMethod.POST },
       { path: 'qPart/approve', method: RequestMethod.POST },

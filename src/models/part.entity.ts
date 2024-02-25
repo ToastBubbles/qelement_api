@@ -31,10 +31,10 @@ export class Part extends Model {
 
   @ForeignKey(() => Category)
   @Column
-  CatId: number;
+  catId: number;
 
   @BelongsTo(() => Category)
-  Category: Category;
+  category: Category;
 
   @HasMany(() => PartMold)
   molds: PartMold[];

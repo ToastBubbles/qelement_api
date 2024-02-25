@@ -101,7 +101,7 @@ export class PartsService {
     const result = await this.partsRepository.findAll({
       include: [PartMold, Category],
       where: {
-        CatId: catId,
+        catId: catId,
         approvalDate: {
           [Op.ne]: null,
         },

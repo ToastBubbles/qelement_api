@@ -1,6 +1,7 @@
-import { Controller, Get, Param, Post, Body, Query } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Query, Req } from '@nestjs/common';
 import {
   IAPIResponse,
+  IPartEdits,
   IPartWithMoldDTO,
   ISearchOnly,
   iIdOnly,
@@ -11,6 +12,7 @@ import { trimAndReturn } from 'src/utils/utils';
 import { PartMoldsService } from 'src/services/partMold.service';
 import { PartMold } from 'src/models/partMold.entity';
 import { UsersService } from 'src/services/user.service';
+import { User } from 'src/models/user.entity';
 
 @Controller('parts')
 export class PartsController {
@@ -134,9 +136,10 @@ export class PartsController {
       if (data.id == -1) {
         let newPart = Part.create({
           name: trimAndReturn(data.name, 100),
-          CatId: data.CatId,
+          catId: data.catId,
           note: trimAndReturn(data.partNote),
           blURL: trimAndReturn(data.blURL, 20),
+          creatorId: data.creatorId,
           approvalDate: isAdmin
             ? new Date().toISOString().slice(0, 23).replace('T', ' ')
             : null,
@@ -164,6 +167,47 @@ export class PartsController {
     } catch (error) {
       console.log(error);
       return { code: 500, message: `generic error` };
+    }
+  }
+
+  @Post('/edit')
+  async editPart(
+    @Body()
+    data: IPartEdits,
+    @Req() req: any,
+  ): Promise<IAPIResponse> {
+    try {
+      const userId = req.user.id;
+      const user = await User.findByPk(userId);
+      if (!user) return { code: 504, message: 'User not found' };
+      if (user.role !== 'trusted' && user.role !== 'admin')
+        return { code: 403, message: 'User not authorized' };
+
+
+      if (data.id > 0) {
+        let thisPart = await this.partsService.findById(data.id);
+
+        if (!thisPart) return { code: 404, message: 'Part not found' };
+
+        if (data.blURL !== '') {
+          thisPart.blURL = data.blURL;
+        }
+        if (data.name !== '') {
+          thisPart.name = data.name;
+        }
+        if (data.catId !== -1) {
+          thisPart.catId = data.catId;
+        }
+
+        await thisPart.save();
+
+        return { code: 200, message: 'Changes saved!' };
+      }
+
+      return { code: 500, message: `Part not added` };
+    } catch (error) {
+      console.log(error);
+      return { code: 500, message: `Generic error` };
     }
   }
 }

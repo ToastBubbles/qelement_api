@@ -14,6 +14,7 @@ import { IQPartVerifcation } from 'src/interfaces/general';
 import { ElementID } from 'src/models/elementID.entity';
 import sequelize from 'sequelize';
 import { Sculpture } from 'src/models/sculpture.entity';
+import { Category } from 'src/models/category.entity';
 
 @Injectable()
 export class QPartsService {
@@ -304,7 +305,7 @@ export class QPartsService {
           include: [
             {
               model: Part,
-
+              include: [Category],
               required: true,
               duplicating: false,
             },
