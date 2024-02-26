@@ -8,6 +8,7 @@ import {
   HasMany,
   ForeignKey,
   BelongsTo,
+  AfterDestroy,
 } from 'sequelize-typescript';
 import { QPart } from './qPart.entity';
 import { SculptureInventory } from './sculptureInventory.entity';
@@ -99,4 +100,24 @@ export class Sculpture extends Model {
 
   @Column
   approvalDate: Date;
+
+  @AfterDestroy
+  static async deleteAssociatedModels(instance: QPart) {
+    await SculptureInventory.destroy({
+      where: {
+        sculptureId: instance.id,
+      },
+    });
+
+    await Comment.destroy({
+      where: {
+        sculptureId: instance.id,
+      },
+    });
+    await Image.destroy({
+      where: {
+        sculptureId: instance.id,
+      },
+    });
+  }
 }

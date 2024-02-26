@@ -1,4 +1,11 @@
-import { Table, Column, Model, HasOne, ForeignKey, DeletedAt } from 'sequelize-typescript';
+import {
+  Table,
+  Column,
+  Model,
+  HasOne,
+  ForeignKey,
+  DeletedAt,
+} from 'sequelize-typescript';
 import { User } from './user.entity';
 
 @Table({
@@ -29,4 +36,9 @@ export class Message extends Model {
   @HasOne(() => User)
   sender: User;
 
+  @Column
+  deletedBySender: boolean;
+  
+  @Column
+  deletedByRecipient: boolean;
 }

@@ -215,6 +215,15 @@ export class QPartsController {
 
         if (!thisPart) return { code: 404, message: 'Part not found' };
 
+        let checkMold = data.moldId == -1 ? thisPart.moldId : data.moldId;
+        let checkColor = data.colorId == -1 ? thisPart.colorId : data.colorId;
+        let qpartVerification = await this.qPartsService.findIfExists({
+          moldId: checkMold,
+          colorId: checkColor,
+        });
+        if (qpartVerification) {
+          return { code: 507, message: 'Already Exists!' };
+        }
         if (data.type.trim() !== '') {
           thisPart.type = validateQPartType(data.type);
         }

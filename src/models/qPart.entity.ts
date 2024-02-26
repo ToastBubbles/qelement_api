@@ -115,54 +115,52 @@ export class QPart extends Model {
 
   @AfterDestroy
   static async deleteAssociatedModels(instance: QPart) {
-    // Delete associated ElementIDs for the destroyed QPart
     await ElementID.destroy({
       where: {
-        qpartId: instance.id, // Assuming there's a qpartId foreign key in the ElementID model
+        qpartId: instance.id, 
       },
     });
 
-    // Delete associated Comments for the destroyed QPart
     await Comment.destroy({
       where: {
-        qpartId: instance.id, // Assuming there's a qpartId foreign key in the Comment model
+        qpartId: instance.id, 
       },
     });
-    // Delete associated Comments for the destroyed QPart
+   
     await UserInventory.destroy({
       where: {
-        qpartId: instance.id, // Assuming there's a qpartId foreign key in the Comment model
+        qpartId: instance.id, 
       },
     });
-    // Delete associated Comments for the destroyed QPart
+   
     await UserFavorite.destroy({
       where: {
-        qpartId: instance.id, // Assuming there's a qpartId foreign key in the Comment model
+        qpartId: instance.id, 
       },
     });
-    // Delete associated Comments for the destroyed QPart
+   
     await SculptureInventory.destroy({
       where: {
-        qpartId: instance.id, // Assuming there's a qpartId foreign key in the Comment model
+        qpartId: instance.id, 
       },
     });
 
-    // Delete associated Comments for the destroyed QPart
+   
     await RaretyRating.destroy({
       where: {
-        qpartId: instance.id, // Assuming there's a qpartId foreign key in the Comment model
+        qpartId: instance.id, 
       },
     });
-    // Delete associated Comments for the destroyed QPart
+   
     await PartStatus.destroy({
       where: {
-        qpartId: instance.id, // Assuming there's a qpartId foreign key in the Comment model
+        qpartId: instance.id, 
       },
     });
-    // Delete associated Comments for the destroyed QPart
+   
     await Image.destroy({
       where: {
-        qpartId: instance.id, // Assuming there's a qpartId foreign key in the Comment model
+        qpartId: instance.id, 
       },
     });
   }

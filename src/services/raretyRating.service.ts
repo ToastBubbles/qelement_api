@@ -18,6 +18,12 @@ export class RaretyRatingsService {
     return this.raretyRatingsRepository.findAll<RaretyRating>();
   }
 
+  async findById(id: number): Promise<RaretyRating | null> {
+    return this.raretyRatingsRepository.findOne<RaretyRating>({
+      where: { id },
+    });
+  }
+
   async findByUserAndQPartId(
     userId: number,
     qpartId: number,

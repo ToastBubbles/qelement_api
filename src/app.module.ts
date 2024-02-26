@@ -160,6 +160,7 @@ export class AppModule implements NestModule {
       { path: 'qPart/mass', method: RequestMethod.POST },
       { path: 'rating/getMyRating/:qpartId', method: RequestMethod.GET },
       { path: 'rating/addRating', method: RequestMethod.POST },
+      { path: 'rating/delete', method: RequestMethod.POST },
       {
         path: 'sculpture/byIdWithPendingParts/:id',
         method: RequestMethod.GET,
