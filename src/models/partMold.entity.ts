@@ -45,4 +45,10 @@ export class PartMold extends Model {
   creator: User;
   @Column
   approvalDate: Date;
+
+  static async findByParentPartID(partId: number): Promise<PartMold[]> {
+    return this.findAll<PartMold>({
+      where: { parentPartId: partId },
+    });
+  }
 }

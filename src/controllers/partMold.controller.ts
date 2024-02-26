@@ -1,7 +1,15 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, Req } from '@nestjs/common';
 import { PartMold } from 'src/models/partMold.entity';
 import { PartMoldsService } from '../services/partMold.service';
-import { IAPIResponse, ISearchOnly, iIdOnly } from 'src/interfaces/general';
+import {
+  IAPIResponse,
+  IAPIResponseWithIds,
+  IMoldEdits,
+  ISearchOnly,
+  iIdOnly,
+} from 'src/interfaces/general';
+import { User } from 'src/models/user.entity';
+import { QPart } from 'src/models/qPart.entity';
 
 @Controller('partMold')
 export class PartMoldsController {
@@ -22,6 +30,13 @@ export class PartMoldsController {
     @Query() data: ISearchOnly,
   ): Promise<PartMold[] | null> {
     return this.partMoldsService.findPartsBySearch(data.search);
+  }
+
+  @Get('/id/:id')
+  async findById(@Param('id') id: number): Promise<PartMold | null> {
+    let output = await this.partMoldsService.findById(id);
+
+    return output;
   }
 
   @Get('/number')
@@ -48,13 +63,62 @@ export class PartMoldsController {
     }
   }
 
+  @Post('/edit')
+  async editMold(
+    @Body()
+    data: IMoldEdits,
+    @Req() req: any,
+  ): Promise<IAPIResponse> {
+    try {
+      const userId = req.user.id;
+      const user = await User.findByPk(userId);
+      if (!user) return { code: 504, message: 'User not found' };
+      if (user.role !== 'trusted' && user.role !== 'admin')
+        return { code: 403, message: 'User not authorized' };
+
+      if (data.id > 0) {
+        let thisPart = await this.partMoldsService.findById(data.id);
+
+        if (!thisPart) return { code: 404, message: 'Mold not Found' };
+
+        if (data.note !== '') {
+          thisPart.note = data.note;
+        }
+        if (data.number !== '') {
+          thisPart.number = data.number;
+        }
+        if (data.parentPartId !== -1) {
+          thisPart.parentPartId = data.parentPartId;
+        }
+
+        await thisPart.save();
+
+        return { code: 200, message: 'Changes saved!' };
+      }
+
+      return { code: 500, message: `Mold not Found` };
+    } catch (error) {
+      console.log(error);
+      return { code: 500, message: `Generic error` };
+    }
+  }
+
   @Post('/deny')
   async denyPartMold(
     @Body()
     data: iIdOnly,
-  ): Promise<IAPIResponse> {
+  ): Promise<IAPIResponse | IAPIResponseWithIds> {
     try {
       let thisObj = await this.partMoldsService.findByIdAll(data.id);
+      const qParts = await QPart.findByMoldId(data.id);
+      if (qParts.length > 0) {
+        let ids: number[] = qParts.map((qPart) => qPart.id);
+        return {
+          code: 400,
+          message: `QParts are associated with this PartMold. Delete or modify the associated QParts first.`,
+          ids,
+        };
+      }
 
       if (thisObj) {
         await thisObj.destroy();

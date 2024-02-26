@@ -22,6 +22,20 @@ export class PartMoldsService {
       },
     });
   }
+
+  async findById(id: number): Promise<PartMold | null> {
+    const foundMold = await this.partMoldsRepository.findOne<PartMold>({
+      include: [Part],
+      where: {
+        approvalDate: {
+          [Op.ne]: null,
+        },
+        id,
+      },
+    });
+
+    return foundMold || null; // Return null explicitly if no data found
+  }
   async findPartsBySearch(search: string): Promise<PartMold[] | null> {
     const result = await this.partMoldsRepository.findAll({
       include: [Part],

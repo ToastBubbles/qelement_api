@@ -51,4 +51,6 @@ export class Part extends Model {
 
   @Column
   approvalDate: Date;
+
+ 
 }

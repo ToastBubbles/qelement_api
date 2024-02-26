@@ -260,6 +260,12 @@ export interface IPartEdits {
   catId: number;
   blURL: string;
 }
+export interface IMoldEdits {
+  id: number;
+  number: string;
+  parentPartId: number;
+  note: string;
+}
 
 export interface IPartMoldDTO {
   id: number;

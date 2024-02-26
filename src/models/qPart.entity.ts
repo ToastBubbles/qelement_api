@@ -105,4 +105,10 @@ export class QPart extends Model {
 
   @Column
   approvalDate: Date;
+
+  static async findByMoldId(moldId: number): Promise<QPart[]> {
+    return this.findAll<QPart>({
+      where: { moldId },
+    });
+  }
 }

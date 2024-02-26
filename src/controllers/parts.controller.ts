@@ -1,6 +1,7 @@
 import { Controller, Get, Param, Post, Body, Query, Req } from '@nestjs/common';
 import {
   IAPIResponse,
+  IAPIResponseWithIds,
   IPartEdits,
   IPartWithMoldDTO,
   ISearchOnly,
@@ -89,9 +90,19 @@ export class PartsController {
   async denyPart(
     @Body()
     data: iIdOnly,
-  ): Promise<IAPIResponse> {
+  ): Promise<IAPIResponse | IAPIResponseWithIds> {
     try {
       let thisObj = await this.partsService.findByIdAll(data.id);
+
+      const molds = await PartMold.findByParentPartID(data.id);
+      if (molds.length > 0) {
+        let ids: number[] = molds.map((mold) => mold.id);
+        return {
+          code: 400,
+          message: `Molds are associated with this Part. Delete or modify the associated Molds first.`,
+          ids,
+        };
+      }
 
       if (thisObj) {
         let children = await this.partMoldsService.findPartMoldsByParentID(
@@ -157,6 +168,7 @@ export class PartsController {
         approvalDate: isAdmin
           ? new Date().toISOString().slice(0, 23).replace('T', ' ')
           : null,
+        creatorId: data.creatorId,
       }).catch((e) => {
         return { code: 500, message: `generic error` };
       });
@@ -182,7 +194,6 @@ export class PartsController {
       if (!user) return { code: 504, message: 'User not found' };
       if (user.role !== 'trusted' && user.role !== 'admin')
         return { code: 403, message: 'User not authorized' };
-
 
       if (data.id > 0) {
         let thisPart = await this.partsService.findById(data.id);
