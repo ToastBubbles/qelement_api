@@ -145,23 +145,12 @@ export class QPartsController {
       let thisObj = await this.qPartsService.findByIdAll(data.id);
 
       if (thisObj) {
-        let children = await this.partStatusesService.findPartMoldsByQPartID(
-          data.id,
-        );
-        if (children && children.length > 0) {
-          // let canDelete = true;
-          // children.forEach((child) => {
-          //   if (child.approvalDate != null) {
-          //     canDelete = false;
-          //   }
-          // });
-          // if (!canDelete)
-          //   return {
-          //     code: 509,
-          //     message: `cannot delete children, requires indepth review`,
-          //   };
-          await Promise.all(children.map((child) => child.destroy()));
-        }
+        // let children = await this.partStatusesService.findPartMoldsByQPartID(
+        //   data.id,
+        // );
+        // if (children && children.length > 0) {
+        //   await Promise.all(children.map((child) => child.destroy()));
+        // }
 
         await thisObj.destroy();
         return { code: 200, message: `deleted` };
@@ -242,7 +231,7 @@ export class QPartsController {
           thisPart.isMoldUnknown = data.isMoldUnknown > 0 ? true : false;
         }
         await thisPart.save();
-        
+
         return { code: 200, message: 'Changes saved!' };
       }
 
