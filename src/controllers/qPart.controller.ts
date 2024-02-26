@@ -6,12 +6,14 @@ import {
   Param,
   Post,
   Query,
+  Req,
 } from '@nestjs/common';
 import {
   IAPIResponse,
   IAPIResponseWithIds,
   IKnownRow,
   IMassKnown,
+  IQPartEdits,
   IQPartVerifcation,
   ISearchOnly,
   iIdOnly,
@@ -19,11 +21,12 @@ import {
 } from 'src/interfaces/general';
 import { QPart } from 'src/models/qPart.entity';
 import { QPartsService } from '../services/qPart.service';
-import { trimAndReturn } from 'src/utils/utils';
+import { trimAndReturn, validateQPartType } from 'src/utils/utils';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { UsersService } from 'src/services/user.service';
 import { PartStatusesService } from 'src/services/partStatus.service';
+import { User } from 'src/models/user.entity';
 
 @Controller('qpart')
 export class QPartsController {
@@ -183,7 +186,7 @@ export class QPartsController {
       const newQPart = await QPart.create({
         moldId: data.moldId,
         colorId: data.colorId,
-        type: trimAndReturn(data.type),
+        type: validateQPartType(data.type),
         creatorId: data.creatorId == -1 ? 1 : data.creatorId,
         isMoldUnknown: data.isMoldUnknown,
         note: trimAndReturn(data.note),
@@ -202,6 +205,51 @@ export class QPartsController {
     } catch (error) {
       console.log(error);
       return { code: 500, message: `generic error` };
+    }
+  }
+
+  @Post('/edit')
+  async editPart(
+    @Body()
+    data: IQPartEdits,
+    @Req() req: any,
+  ): Promise<IAPIResponse> {
+    try {
+      const userId = req.user.id;
+      const user = await User.findByPk(userId);
+      if (!user) return { code: 504, message: 'User not found' };
+      if (user.role !== 'trusted' && user.role !== 'admin')
+        return { code: 403, message: 'User not authorized' };
+
+      if (data.id > 0) {
+        let thisPart = await this.qPartsService.findById(data.id);
+
+        if (!thisPart) return { code: 404, message: 'Part not found' };
+
+        if (data.type.trim() !== '') {
+          thisPart.type = validateQPartType(data.type);
+        }
+        if (data.note !== '') {
+          thisPart.note = trimAndReturn(data.note);
+        }
+        if (data.moldId !== -1) {
+          thisPart.moldId = data.moldId;
+        }
+        if (data.colorId !== -1) {
+          thisPart.colorId = data.colorId;
+        }
+        if (data.isMoldUnknown !== 0) {
+          thisPart.isMoldUnknown = data.isMoldUnknown > 0 ? true : false;
+        }
+        await thisPart.save();
+        
+        return { code: 200, message: 'Changes saved!' };
+      }
+
+      return { code: 500, message: `Part not added` };
+    } catch (error) {
+      console.log(error);
+      return { code: 500, message: `Generic error` };
     }
   }
 

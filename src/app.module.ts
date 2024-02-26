@@ -120,6 +120,7 @@ export class AppModule implements NestModule {
       { path: 'partMold/edit', method: RequestMethod.POST },
       { path: 'partStatus/approve', method: RequestMethod.POST },
       { path: 'partStatus/deny', method: RequestMethod.POST },
+      { path: 'qPart/edit', method: RequestMethod.POST },
       { path: 'qPart/approve', method: RequestMethod.POST },
       { path: 'qPart/deny', method: RequestMethod.POST },
       { path: 'sculpture/approve', method: RequestMethod.POST },

@@ -267,6 +267,15 @@ export interface IMoldEdits {
   note: string;
 }
 
+export interface IQPartEdits {
+  id: number;
+  type: string;
+  moldId: number;
+  colorId: number;
+  isMoldUnknown: number; //three state boolean -1 = false, 1 = true, 0 = unchanged
+  note: string;
+}
+
 export interface IPartMoldDTO {
   id: number;
   number: string;

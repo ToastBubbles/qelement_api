@@ -10,6 +10,7 @@ import {
 } from 'src/interfaces/general';
 import { User } from 'src/models/user.entity';
 import { QPart } from 'src/models/qPart.entity';
+import { trimAndReturn } from 'src/utils/utils';
 
 @Controller('partMold')
 export class PartMoldsController {
@@ -81,8 +82,8 @@ export class PartMoldsController {
 
         if (!thisPart) return { code: 404, message: 'Mold not Found' };
 
-        if (data.note !== '') {
-          thisPart.note = data.note;
+        if (data.note.trim() !== '') {
+          thisPart.note = trimAndReturn(data.note);
         }
         if (data.number !== '') {
           thisPart.number = data.number;

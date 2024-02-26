@@ -17,3 +17,18 @@ export function validateImageType(str: string): boolean {
     return true;
   return false;
 }
+
+export function validateQPartType(str: string): string {
+  let output = str.trim();
+  if (
+    output == 'qelement' ||
+    output == 'prototype' ||
+    output == 'test' ||
+    output == 'employee' ||
+    output == 'nightshift' ||
+    output == 'unknown'
+  ) {
+    return output;
+  }
+  return 'other';
+}

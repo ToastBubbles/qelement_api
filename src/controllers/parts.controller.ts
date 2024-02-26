@@ -162,8 +162,8 @@ export class PartsController {
         id = data.id;
       }
       let newMold = PartMold.create({
-        number: data.number,
-        note: data.moldNote,
+        number: trimAndReturn(data.number),
+        note: trimAndReturn(data.moldNote),
         parentPartId: id,
         approvalDate: isAdmin
           ? new Date().toISOString().slice(0, 23).replace('T', ' ')
