@@ -133,6 +133,10 @@ export class AppModule implements NestModule {
         path: 'sculptureInventory/denyInventory',
         method: RequestMethod.POST,
       },
+      {
+        path: 'sculptureInventory/denyOne',
+        method: RequestMethod.POST,
+      },
       { path: 'similarColor/approve', method: RequestMethod.POST },
       { path: 'similarColor/deny', method: RequestMethod.POST },
     );

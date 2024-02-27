@@ -1,13 +1,15 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
 import { SculptureInventory } from 'src/models/sculptureInventory.entity';
 import { SculptureInventoriesService } from '../services/sculptureInventory.service';
 import {
   IAPIResponse,
   IArrayOfIDs,
   IArrayOfSculptureInvIds,
+  ISculpturePartIdPair,
 } from 'src/interfaces/general';
 import { UsersService } from 'src/services/user.service';
 import { SculpturesService } from 'src/services/sculpture.service';
+import { User } from 'src/models/user.entity';
 
 @Controller('sculptureInventory')
 export class SculptureInventoriesController {
@@ -122,6 +124,34 @@ export class SculptureInventoriesController {
       } else {
         return { code: 500, message: 'not found' };
       }
+    } catch (error) {
+      console.error(`Generic error: ${error}`);
+      return { code: 500, message: 'generic error' };
+    }
+  }
+
+  @Post('/denyOne')
+  async denyOneSculptureInventory(
+    @Body() data: ISculpturePartIdPair,
+    @Req() req: any,
+  ): Promise<IAPIResponse> {
+    try {
+      const userId = req.user.id;
+      const user = await User.findByPk(userId);
+      if (!user) return { code: 504, message: 'User not found' };
+      if (user.role !== 'trusted' && user.role !== 'admin')
+        return { code: 403, message: 'User not authorized' };
+
+      let thisEntry = await this.sculptureInventoriesService.findByIdPair(
+        data,
+      );
+      if (thisEntry) {
+        await thisEntry.destroy();
+
+        return { code: 200, message: 'denied successfully' };
+      }
+
+      return { code: 500, message: 'not found' };
     } catch (error) {
       console.error(`Generic error: ${error}`);
       return { code: 500, message: 'generic error' };

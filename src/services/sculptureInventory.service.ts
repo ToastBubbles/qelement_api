@@ -8,6 +8,7 @@ import { PartStatus } from 'src/models/partStatus.entity';
 import { Image } from 'src/models/image.entity';
 import { Color } from 'src/models/color.entity';
 import { User } from 'src/models/user.entity';
+import { ISculpturePartIdPair } from 'src/interfaces/general';
 
 @Injectable()
 export class SculptureInventoriesService {
@@ -56,6 +57,19 @@ export class SculptureInventoriesService {
       where: {
         sculptureId,
         approvalDate: null,
+      },
+    });
+
+    return result;
+  }
+
+  async findByIdPair(
+    data: ISculpturePartIdPair,
+  ): Promise<SculptureInventory | null> {
+    const result = await this.sculptureInventoriesRepository.findOne({
+      where: {
+        sculptureId: data.sculptureId,
+        qpartId: data.qpartId,
       },
     });
 

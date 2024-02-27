@@ -335,6 +335,11 @@ export interface IQPartVerifcation {
   moldId: number;
   colorId: number;
 }
+
+export interface ISculpturePartIdPair {
+  sculptureId: number;
+  qpartId: number;
+}
 export interface IElementIDCreationDTO {
   number: number;
   creatorId: number;
