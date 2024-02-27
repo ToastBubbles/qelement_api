@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Inject, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Inject,
+  Param,
+  Post,
+  Req,
+} from '@nestjs/common';
 import {
   IAPIResponse,
   ISimColorIdWithInversionId,
@@ -11,6 +19,7 @@ import { SimilarColor } from 'src/models/similarColor.entity';
 import { ColorsService } from 'src/services/color.service';
 import { SimilarColorsService } from '../services/similarColor.service';
 import { UsersService } from 'src/services/user.service';
+import { User } from 'src/models/user.entity';
 
 @Controller('similarColor')
 export class SimilarColorsController {
@@ -39,20 +48,16 @@ export class SimilarColorsController {
   @Post('/approve')
   async approveSimilarColor(
     @Body()
-    data: ISimColorIdWithInversionId,
+    data: iIdOnly,
   ): Promise<IAPIResponse> {
     try {
       let thisObj = await this.similarColorsService.findByIdAll(data.id);
-      let thisInvObj = await this.similarColorsService.findByIdAll(
-        data.inversionId,
-      );
-      if (thisObj && thisInvObj) {
+
+      if (thisObj) {
         await thisObj.update({
           approvalDate: new Date().toISOString().slice(0, 23).replace('T', ' '),
         });
-        await thisInvObj.update({
-          approvalDate: new Date().toISOString().slice(0, 23).replace('T', ' '),
-        });
+        await SimilarColor.approveSimilarColorInversion(thisObj);
         return { code: 200, message: `approved` };
       } else return { code: 500, message: `not found` };
     } catch (error) {
@@ -62,19 +67,17 @@ export class SimilarColorsController {
   }
 
   @Post('/deny')
-  async denySimColor(
-    @Body() data: ISimColorIdWithInversionId,
-  ): Promise<IAPIResponse> {
+  async denySimColor(@Body() data: iIdOnly): Promise<IAPIResponse> {
     try {
       // Find the color by ID
       const thisObj = await this.similarColorsService.findByIdAll(data.id);
-      const thisInvObj = await this.similarColorsService.findByIdAll(
-        data.inversionId,
-      );
-      if (thisObj && thisInvObj) {
+      // const thisInvObj = await this.similarColorsService.findByIdAll(
+      //   data.inversionId,
+      // );
+      if (thisObj) {
         // Delete the color if found
         await thisObj.destroy();
-        await thisInvObj.destroy();
+
         return { code: 200, message: `deleted` };
       } else {
         // Return 404 if color not found
@@ -89,10 +92,13 @@ export class SimilarColorsController {
 
   @Post('/add')
   async addSimilar(
-    @Body() { color_one, color_two, creatorId }: ISimilarColorDTO,
+    @Body() { color_one, color_two }: ISimilarColorDTO,
+    @Req() req: any,
   ): Promise<IAPIResponse> {
     try {
-      let user = await this.userService.findOneById(creatorId);
+      const userId = req.user.id;
+      const user = await User.findByPk(userId);
+      if (!user) return { code: 504, message: 'User not found' };
       let isAdmin = false;
       if ((user && user?.role == 'admin') || user.role == 'trusted') {
         isAdmin = true;
@@ -103,68 +109,40 @@ export class SimilarColorsController {
 
       if (!col1 || !col2) return { message: "color doesn't exist", code: 502 };
 
-      let newMatch = new SimilarColor({
-        colorId1: color_one,
-        colorId2: color_two,
-        creatorId,
-        approvalDate: isAdmin
-          ? new Date().toISOString().slice(0, 23).replace('T', ' ')
-          : null,
+      let similarColor = await SimilarColor.findOne({
+        paranoid: false, // Include soft-deleted entries
+        where: {
+          colorId1: color_one,
+          colorId2: color_two,
+        },
       });
-      let invertMatch = new SimilarColor({
-        colorId1: color_two,
-        colorId2: color_one,
-        creatorId,
-        approvalDate: isAdmin
-          ? new Date().toISOString().slice(0, 23).replace('T', ' ')
-          : null,
-      });
-      let doesExist = await this.similarColorsService.checkIfExists(
-        newMatch,
-        true,
-      );
-      let invertedDoesExist = await this.similarColorsService.checkIfExists(
-        invertMatch,
-        true,
-      );
 
-      if (doesExist && invertedDoesExist) {
-        if (
-          doesExist.deletedAt != null &&
-          invertedDoesExist.deletedAt != null
-        ) {
-          doesExist.restore();
-          if (doesExist.approvalDate != null) {
-            doesExist.update({
-              approvalDate: isAdmin
-                ? new Date().toISOString().slice(0, 23).replace('T', ' ')
-                : null,
-            });
-            doesExist.save();
-          }
-          invertedDoesExist.restore();
-          if (invertedDoesExist.approvalDate != null) {
-            invertedDoesExist.update({
-              approvalDate: isAdmin
-                ? new Date().toISOString().slice(0, 23).replace('T', ' ')
-                : null,
-            });
-            invertMatch.save();
-          }
+      // If the inverse similar color does not exist (including soft-deleted entries), create it
+      if (!similarColor) {
+        similarColor = await SimilarColor.create({
+          colorId1: color_one,
+          colorId2: color_two,
+          creatorId: userId, // You may want to adjust this based on your requirements
+          approvalDate: isAdmin
+            ? new Date().toISOString().slice(0, 23).replace('T', ' ')
+            : null,
+          // You may need to set other properties like approvalDate based on your requirements
+        });
+        if (!isAdmin) return { code: 202, message: 'Similar Color requested' };
+        return { code: 200, message: 'Similar Color created' };
+      } else if (similarColor.deletedAt !== null) {
+        // If the inverse similar color exists but is soft-deleted, restore it
+        await similarColor.update({
+          approvalDate: isAdmin
+            ? new Date().toISOString().slice(0, 23).replace('T', ' ')
+            : null,
+        });
+        await similarColor.restore();
 
-          doesExist.save();
-          invertedDoesExist.save();
-          return { message: 'entries restored', code: 205 };
-        }
-        return { message: 'already exists', code: 501 };
-      } else {
-        newMatch.save();
-        invertMatch.save();
-        return {
-          message: `color ${color_one} is similar to color ${color_two}`,
-          code: 200,
-        };
+        if (!isAdmin) return { code: 202, message: 'Similar Color requested' };
+        return { code: 201, message: 'Similar Color restored' };
       }
+      return { code: 501, message: 'Similar Color failed to create' };
     } catch (error) {
       console.log(error);
 

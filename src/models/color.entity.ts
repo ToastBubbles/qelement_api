@@ -8,10 +8,12 @@ import {
   DeletedAt,
   ForeignKey,
   BelongsTo,
+  AfterDestroy,
 } from 'sequelize-typescript';
 import { SimilarColor } from './similarColor.entity';
 import { User } from './user.entity';
 import { Sculpture } from './sculpture.entity';
+import { Op } from 'sequelize';
 
 @Table({
   timestamps: true,
@@ -55,11 +57,27 @@ export class Color extends Model {
   @BelongsTo(() => User)
   creator: User;
 
-  // @BelongsToMany(() => Sculpture, {
-  //   through: { model: () => SculptureColor, unique: false },
-  // })
-  // sculptureColors: Sculpture[];
+  @AfterDestroy
+  static async deleteAssociatedModels(instance: Color) {
+    // Find all users whose favoriteColorId is the same as the deleted color's id
+    const affectedUsers = await User.findAll({
+      where: {
+        favoriteColorId: instance.id,
+      },
+    });
 
-  // @HasMany(() => Color)
-  // similarColors: Color[];
+    // Set favoriteColorId to null for all affected users
+    await Promise.all(
+      affectedUsers.map(async (user) => {
+        user.favoriteColorId = undefined;
+        await user.save();
+      }),
+    );
+
+    await SimilarColor.destroy({
+      where: {
+        [Op.or]: [{ colorId1: instance.id }, { colorId2: instance.id }],
+      },
+    });
+  }
 }
