@@ -30,7 +30,7 @@ export class UserMiddleware implements NestMiddleware {
           message: 'Forbidden: User not found',
         });
       }
-      console.log('User data:', userData);
+      // console.log('User data:', userData);
 
       // Check if the decoded token has admin privileges
       if (

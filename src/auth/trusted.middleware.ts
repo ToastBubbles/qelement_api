@@ -17,7 +17,6 @@ export class TrustedMiddleware implements NestMiddleware {
     if (!token) {
       return res.status(401).json({ message: 'Unauthorized: Token missing' });
     }
- 
 
     try {
       const decodedToken = this.jwtService.verify(token);
@@ -33,12 +32,16 @@ export class TrustedMiddleware implements NestMiddleware {
         decodedToken &&
         (userData.role === 'trusted' || userData.role === 'admin')
       ) {
-        console.log(`${purpleColor}########################################################${resetColor}`);
+        console.log(
+          `${purpleColor}########################################################${resetColor}`,
+        );
 
         console.log(
           `${purpleColor}Allowing passage for ${decodedToken.username} through ${req.originalUrl} at trusted level${resetColor}`,
         );
-        console.log(`${purpleColor}########################################################${resetColor}`);
+        console.log(
+          `${purpleColor}########################################################${resetColor}`,
+        );
 
         req.user = decodedToken; // Attach user information to the request
         return next(); // Continue to the next middleware or route handler

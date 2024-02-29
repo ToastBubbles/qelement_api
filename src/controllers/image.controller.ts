@@ -141,22 +141,25 @@ export class ImagesController {
   async uploadProfilePicture(
     @UploadedFile() image: Express.Multer.File,
     @Body() data: any,
+    @Req() req: any,
   ): Promise<IAPIResponse> {
     try {
+      const userId = req.user.id;
+      const user = await User.findByPk(userId);
+      if (!user) return { code: 504, message: 'User not found' };
+      let isAdmin = false;
+      if ((user && user?.role == 'admin') || user.role == 'trusted') {
+        isAdmin = true;
+      }
+
       let imageData = JSON.parse(data?.imageData);
 
-      if (imageData.id > 0) {
-        let user = await this.userService.findOneById(imageData.id);
-        let isAdmin = false;
-        if ((user && user?.role == 'admin') || user.role == 'trusted') {
-          isAdmin = true;
-        }
-
+      if (user) {
         await this.minioService.createBucketIfNotExists();
         const fileName = await this.minioService.uploadFile(
           image,
           null,
-          imageData.id,
+          userId,
           null,
           'pfp',
         );
@@ -164,7 +167,7 @@ export class ImagesController {
         let newImage = await Image.create({
           fileName: fileName,
           type: 'pfp',
-          userId: imageData.id,
+          userId,
           qpartId: undefined,
           sculptureId: undefined,
           approvalDate: isAdmin
@@ -311,12 +314,8 @@ export class ImagesController {
       let thisObj = await this.imagesService.findByIdAll(data.id);
 
       if (thisObj) {
-        console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$');
-        console.log(thisObj.userId, userId);
-        console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$');
-
         if (isAdmin || thisObj.userId == userId) {
-          thisObj.destroy();
+          await thisObj.destroy();
           return { code: 200, message: `deleted` };
         } else {
           return { code: 403, message: 'Unauthorized' };
@@ -327,7 +326,42 @@ export class ImagesController {
       return { code: 500, message: `generic error` };
     }
   }
+  @Post('/removeMyPFP')
+  async removePFP(@Req() req: any): Promise<IAPIResponse> {
+    try {
+      console.log('$$$$$$$$$$$$$$ 1 $$$$$$$$$$$$$');
 
+      const userId = req.user.id;
+      const requestor = await User.findByPk(userId);
+      console.log('requestor:', requestor);
+
+      if (!requestor) return { code: 504, message: 'User not found' };
+      if (!requestor.profilePictureId)
+        return { code: 505, message: `user has no pfp` };
+      console.log('$$$$$$$$$$$$ 2 $$$$$$$$$$$$$$$');
+      let thisObj = await this.imagesService.findByIdAll(
+        requestor.profilePictureId,
+      );
+      console.log('$$$$$$$$$$$$$ 3 $$$$$$$$$$$$$$');
+      if (thisObj && thisObj.type == 'pfp') {
+        if (thisObj.userId == userId) {
+          await requestor.update({
+            profilePictureId: null,
+          });
+          await requestor.save();
+          await thisObj.destroy();
+          return { code: 200, message: `deleted` };
+        } else {
+          return { code: 403, message: 'Unauthorized' };
+        }
+      } else if (thisObj && thisObj.type != 'pfp') {
+        return { code: 503, message: `Not a pfp` };
+      } else return { code: 502, message: `not found` };
+    } catch (error) {
+      console.log(error);
+      return { code: 500, message: `generic error` };
+    }
+  }
   @Get('/id/:id')
   async getImagesById(@Param('id') id: number): Promise<Image[]> {
     return this.imagesService.findAllByQPartId(id);

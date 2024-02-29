@@ -167,7 +167,7 @@ export class UsersService {
         {
           model: Image,
           as: 'profilePicture',
-          where: { type: 'pfp' }, 
+          where: { type: 'pfp', id: { [Op.ne]: null } },
           required: false,
         },
       ],
