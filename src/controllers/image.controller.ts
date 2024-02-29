@@ -84,6 +84,12 @@ export class ImagesController {
   ): Promise<IAPIResponse> {
     try {
       let imageData = JSON.parse(data?.imageData);
+      // console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
+
+      // console.log(imageData);
+      // console.log(image);
+
+      // console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
       if (!validateImageType(imageData.type))
         return { code: 508, message: 'invalid type' };
       console.log(imageData, typeof imageData);
@@ -293,12 +299,28 @@ export class ImagesController {
   async denyImage(
     @Body()
     data: iIdOnly,
+    @Req() req: any,
   ): Promise<IAPIResponse> {
     try {
+      const userId = req.user.id;
+      const user = await User.findByPk(userId);
+      if (!user) return { code: 504, message: 'User not found' };
+      let isAdmin = false;
+      if (user.role !== 'admin') isAdmin = true;
+
       let thisObj = await this.imagesService.findByIdAll(data.id);
+
       if (thisObj) {
-        thisObj.destroy();
-        return { code: 200, message: `deleted` };
+        console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$');
+        console.log(thisObj.userId, userId);
+        console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$');
+
+        if (isAdmin || thisObj.userId == userId) {
+          thisObj.destroy();
+          return { code: 200, message: `deleted` };
+        } else {
+          return { code: 403, message: 'Unauthorized' };
+        }
       } else return { code: 500, message: `not found` };
     } catch (error) {
       console.log(error);

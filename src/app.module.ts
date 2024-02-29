@@ -111,7 +111,7 @@ export class AppModule implements NestModule {
       { path: 'image/markPrimary', method: RequestMethod.POST },
       { path: 'image/approve', method: RequestMethod.POST },
       { path: 'image/edit', method: RequestMethod.POST },
-      { path: 'image/deny', method: RequestMethod.POST },
+
       { path: 'partMold/approve', method: RequestMethod.POST },
       { path: 'partMold/deny', method: RequestMethod.POST },
       { path: 'parts/approve', method: RequestMethod.POST },
@@ -154,6 +154,7 @@ export class AppModule implements NestModule {
       { path: 'message/getOneById/:id', method: RequestMethod.GET },
       { path: 'message/getAllById/:id', method: RequestMethod.GET },
       { path: 'message/getUnreadCountById/:id', method: RequestMethod.GET },
+      { path: 'image/deny', method: RequestMethod.POST },
       { path: 'message/send', method: RequestMethod.POST },
       { path: 'message/delete/:id', method: RequestMethod.POST },
       { path: 'message/read/:id', method: RequestMethod.POST },
