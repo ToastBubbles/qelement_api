@@ -36,7 +36,8 @@ This API is powered by the following:
 
 -[Docker](https://www.docker.com/) empowers containerization, streamlining deployment and enhancing flexibility.
 
-Soon to add:
+### Soon to add:
+
 -[Amazon Simple Email Service](https://aws.amazon.com/ses/) for lightweight email distribution.
 
 -[DigitalOcean S3 Bucket](https://www.digitalocean.com/products/spaces) for image hosting once this project is deployed (to replace MinIO).
