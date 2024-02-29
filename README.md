@@ -24,49 +24,24 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+qelement-api is a cutting-edge NestJS API designed to complement [qelement-web](https://github.com/ToastBubbles/qelement-web) by  forming the backbone of a Full-Stack Single Page Application tailored for LEGO enthusiasts. Focused on Q-Elements—non-production LEGO bricks and pieces—these projects serve as a tribute and comprehensive resource for aficionados dedicated to collecting and preserving information and imagery of these rare pieces.
 
-## Installation
+This API is powered by the following:
 
-```bash
-$ npm install
-```
+-[Nest](https://github.com/nestjs/nest) as the primary framework, epitomizes modern development practices with its robust architecture and seamless integration.
 
-## Running the app
+-[PostgreSQL](https://www.postgresql.org/) database implemented through [sequelize-typescript](https://www.npmjs.com/package/sequelize-typescript) for easy and powerful database management.
 
-```bash
-# development
-$ npm run start
+-[MinIO](https://min.io/) facilitates local image hosting, ensuring efficient storage and retrieval while in the testing & development phase.
 
-# watch mode
-$ npm run start:dev
+-[Docker](https://www.docker.com/) empowers containerization, streamlining deployment and enhancing flexibility.
 
-# production mode
-$ npm run start:prod
-```
+Soon to add:
+-[Amazon Simple Email Service](https://aws.amazon.com/ses/) for lightweight email distribution.
 
-## Test
+-[DigitalOcean S3 Bucket](https://www.digitalocean.com/products/spaces) for image hosting once this project is deployed (to replace MinIO).
 
-```bash
-# unit tests
-$ npm run test
 
-# e2e tests
-$ npm run test:e2e
+## Disclaimer
 
-# test coverage
-$ npm run test:cov
-```
-
-## RSA Key Generation
-
-`openssl genrsa -out jwtRSA256-private.pem 2048`
-`openssl rsa -in jwtRSA256-private.pem -pubout -outform PEM -out jwtRSA256-public.pem`
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+The qelement project as a whole is a fan-made website and has no affiliation with The LEGO Group, and is only to be used for information purposes only.
