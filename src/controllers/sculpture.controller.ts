@@ -121,7 +121,7 @@ export class SculpturesController {
         location: data.location,
         yearMade: validateYear(data.yearMade),
         yearRetired: validateYear(data.yearRetired),
-        keywords: trimAndReturn(data.keywords, 50),
+        keywords: trimAndReturn(data.keywords, 255),
         note: trimAndReturn(data.note, 255),
         approvalDate: isAdmin
           ? new Date().toISOString().slice(0, 23).replace('T', ' ')

@@ -117,26 +117,24 @@ export class SculpturesService {
       include: [
         {
           model: QPart,
-          // include: [
-          //   { model: PartMold, include: [Part] },
-          //   PartStatus,
-          //   Image,
-          //   Color,
-          // ],
         },
         User,
         Image,
       ],
       where: {
-        // [Op.or]: [
-        name: { [Op.iLike]: `%${searchTerm}%` },
-        // literal(`REPLACE("elementId", ' ', '') ILIKE '%${searchTerm}%'`),
-
-        // { '$PartMold.number$': { [Op.iLike]: `%${search}%` } },
-        // ],
-        approvalDate: {
-          [Op.ne]: null,
-        },
+        [Op.and]: [
+          {
+            approvalDate: {
+              [Op.ne]: null,
+            },
+          },
+          {
+            [Op.or]: [
+              { name: { [Op.iLike]: `%${searchTerm}%` } },
+              { keywords: { [Op.iLike]: `%${searchTerm}%` } },
+            ],
+          },
+        ],
       },
     });
 
