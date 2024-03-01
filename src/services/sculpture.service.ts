@@ -83,32 +83,7 @@ export class SculpturesService {
         },
       ],
     });
-    // return this.sculpturesRepository.findOne<Sculpture>({
-    //   where: { id: id },
-    //   include: [
-    //     {
-    //       model: QPart,
-    //       as: 'inventory',
-    //       include: [
-    //         { model: PartMold, include: [Part] },
-    //         PartStatus,
-    //         Image,
-    //         Color,
-    //       ],
-    //       // where: { isApproved: true },
-    //       required: false,
-    //     },
-    //     User,
-    //     {
-    //       model: Image,
-    //       include: [{ model: User, as: 'uploader' }],
-    //     },
-    //     {
-    //       model: Comment,
-    //       include: [{ model: User, as: 'creator' }],
-    //     },
-    //   ],
-    // });
+
   }
 
   async findSculpsBySearch(search: string): Promise<Sculpture[] | null> {

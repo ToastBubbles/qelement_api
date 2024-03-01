@@ -32,3 +32,12 @@ export function validateQPartType(str: string): string {
   }
   return 'other';
 }
+
+export function verifyKeywordsString(str: string): boolean {
+  const pattern = /^[a-zA-Z0-9;]+$/;
+  return pattern.test(str);
+}
+export function verifyKeyword(str: string): boolean {
+  const pattern = /^[a-zA-Z0-9]+$/;
+  return pattern.test(str);
+}
