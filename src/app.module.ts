@@ -125,6 +125,7 @@ export class AppModule implements NestModule {
       { path: 'qPart/deny', method: RequestMethod.POST },
       { path: 'sculpture/approve', method: RequestMethod.POST },
       { path: 'sculpture/keyword', method: RequestMethod.POST },
+      { path: 'sculpture/edit', method: RequestMethod.POST },
       { path: 'sculpture/deny', method: RequestMethod.POST },
       {
         path: 'sculptureInventory/approveInventory',

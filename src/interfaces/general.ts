@@ -251,6 +251,16 @@ export interface IAPIResponse {
   code: number;
   message: string;
 }
+
+export interface ISculptureEdits {
+  id: number;
+  name: string;
+  brickSystem: string;
+  location: string;
+  yearMade: number;
+  yearRetired: number;
+  note: string;
+}
 export interface IPartDTO {
   name: string;
   catId: number;

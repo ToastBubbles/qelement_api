@@ -41,3 +41,10 @@ export function verifyKeyword(str: string): boolean {
   const pattern = /^[a-zA-Z0-9]+$/;
   return pattern.test(str);
 }
+
+export function validateYear(year: number | null): number | null {
+  let min = 1932;
+  let max = 2500;
+  if (year == null || year < min || year > max) return null;
+  return year;
+}
