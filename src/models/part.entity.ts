@@ -12,6 +12,7 @@ import { Category } from './category.entity';
 import { PartMold } from './partMold.entity';
 import { User } from './user.entity';
 import { UserGoal } from './userGoal.entity';
+import { Comment } from './comment.entity';
 
 @Table({
   timestamps: true,
@@ -49,8 +50,9 @@ export class Part extends Model {
   @HasMany(() => UserGoal)
   goals: UserGoal[];
 
+  @HasMany(() => Comment)
+  comments: Comment[];
+
   @Column
   approvalDate: Date;
-
- 
 }

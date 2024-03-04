@@ -33,11 +33,19 @@ export class CommentsController {
     comment: ICommentCreationDTO,
   ): Promise<IAPIResponse> {
     try {
+      if (
+        !(comment.partId && comment.partId > 0) &&
+        !(comment.qpartId && comment.qpartId > 0) &&
+        !(comment.sculptureId && comment.sculptureId > 0)
+      ) {
+        return { code: 509, message: 'No valid ID found!' };
+      }
       let newComment = Comment.create({
         content: trimAndReturn(comment.content, 1000),
         userId: comment.userId,
         qpartId: comment.qpartId ? comment.qpartId : null,
         sculptureId: comment.sculptureId ? comment.sculptureId : null,
+        partId: comment.partId ? comment.partId : null,
       }).catch((e) => {
         return { code: 500, message: `generic error` };
       });

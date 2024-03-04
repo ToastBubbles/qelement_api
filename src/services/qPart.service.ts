@@ -305,7 +305,13 @@ export class QPartsService {
           include: [
             {
               model: Part,
-              include: [Category],
+              include: [
+                Category,
+                {
+                  model: Comment,
+                  include: [{ model: User, as: 'creator' }],
+                },
+              ],
               required: true,
               duplicating: false,
             },

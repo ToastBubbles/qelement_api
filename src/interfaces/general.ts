@@ -320,6 +320,7 @@ export interface ICommentCreationDTO {
   content: string;
   qpartId?: number;
   sculptureId?: number;
+  partId?: number;
 }
 export interface ImageSubmission {
   qpartId: number;
