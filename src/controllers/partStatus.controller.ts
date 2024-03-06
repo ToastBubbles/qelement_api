@@ -99,7 +99,10 @@ export class PartStatusesController {
       });
 
       if (newPart instanceof PartStatus) {
-        if (isAdmin) return { code: 200, message: `new part status added` };
+        if (isAdmin) {
+          return { code: 200, message: `new part status added` };
+        }
+
         return { code: 201, message: `new part status submitted.` };
       } else return { code: 500, message: `part status aready exists` };
     } catch (error) {

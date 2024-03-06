@@ -13,6 +13,8 @@ import {
   UpdatedAt,
   BeforeSave,
   AfterDestroy,
+  AfterCreate,
+  AfterUpdate,
 } from 'sequelize-typescript';
 import { Color } from './color.entity';
 import { Comment } from './comment.entity';
@@ -29,6 +31,7 @@ import { ElementID } from './elementID.entity';
 import { Sculpture } from './sculpture.entity';
 import { SculptureInventory } from './sculptureInventory.entity';
 import { Op } from 'sequelize';
+import { SubmissionCount } from './submissionCount.entity';
 @Table({
   timestamps: true,
   paranoid: true,
@@ -147,6 +150,25 @@ export class QPart extends Model {
     
       ],
     });
+  }
+
+  @AfterCreate
+  static async increaseSubmissionCount(instance: QPart) {
+    if (instance.approvalDate != null) {
+      await SubmissionCount.increaseApproved(instance.creatorId, false);
+    } else {
+      await SubmissionCount.increasePending(instance.creatorId);
+    }
+  }
+  @AfterUpdate
+  static async handleSubmissionCount(instance: QPart) {
+    const previousInstance = instance.previous();
+    const previousApprovalDate = previousInstance.getDataValue('approvalDate');
+    const currentApprovalDate = instance.approvalDate;
+
+    if (previousApprovalDate === null && currentApprovalDate !== null) {
+      await SubmissionCount.increaseApproved(instance.creatorId, true);
+    }
   }
 
   @AfterDestroy

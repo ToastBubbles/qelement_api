@@ -333,7 +333,10 @@ export class SculpturesController {
       });
 
       if (newSculpture instanceof Sculpture) {
-        if (isAdmin) return { code: 201, message: newSculpture.id };
+        if (isAdmin) {
+          return { code: 201, message: newSculpture.id };
+        }
+
         return { code: 200, message: newSculpture.id };
       } else return { code: 500, message: `sculpture aready exists` };
     } catch (error) {

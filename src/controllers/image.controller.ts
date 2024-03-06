@@ -125,7 +125,10 @@ export class ImagesController {
         //   return { code: 500, message: `generic error` };
         // });
         if (newImage instanceof Image) {
-          if (isAdmin) return { code: 202, message: fileName };
+          if (isAdmin) {
+            return { code: 202, message: fileName };
+          }
+
           return { code: 201, message: fileName };
         }
       }

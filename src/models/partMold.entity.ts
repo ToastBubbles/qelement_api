@@ -6,11 +6,14 @@ import {
   ForeignKey,
   BelongsToMany,
   HasMany,
+  AfterCreate,
+  AfterUpdate,
 } from 'sequelize-typescript';
 import { Part } from './part.entity';
 import { User } from './user.entity';
 import { UserGoal } from './userGoal.entity';
 import { QPart } from './qPart.entity';
+import { SubmissionCount } from './submissionCount.entity';
 
 @Table({
   timestamps: true,
@@ -59,5 +62,22 @@ export class PartMold extends Model {
     });
   }
 
-  
+  @AfterCreate
+  static async increaseSubmissionCount(instance: PartMold) {
+    if (instance.approvalDate != null) {
+      await SubmissionCount.increaseApproved(instance.creatorId, false);
+    } else {
+      await SubmissionCount.increasePending(instance.creatorId);
+    }
+  }
+  @AfterUpdate
+  static async handleSubmissionCount(instance: PartMold) {
+    const previousInstance = instance.previous();
+    const previousApprovalDate = previousInstance.getDataValue('approvalDate');
+    const currentApprovalDate = instance.approvalDate;
+
+    if (previousApprovalDate === null && currentApprovalDate !== null) {
+      await SubmissionCount.increaseApproved(instance.creatorId, true);
+    }
+  }
 }

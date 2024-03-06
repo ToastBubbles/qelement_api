@@ -189,13 +189,14 @@ export class QPartsController {
         approvalDate: isAdmin
           ? new Date().toISOString().slice(0, 23).replace('T', ' ')
           : null,
-      }).catch((e) => {
-        return { code: 500, message: `generic error` };
       });
       console.log(newQPart);
 
       if (newQPart instanceof QPart) {
-        if (isAdmin) return { code: 201, message: newQPart.id };
+        if (isAdmin) {
+          return { code: 201, message: newQPart.id };
+        }
+
         return { code: 200, message: newQPart.id };
       } else return { code: 500, message: `part aready exists` };
     } catch (error) {

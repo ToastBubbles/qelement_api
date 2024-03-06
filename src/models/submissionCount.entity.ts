@@ -7,7 +7,7 @@ import {
   BelongsTo,
 } from 'sequelize-typescript';
 import { User } from './user.entity';
-import { IAPIResponse } from 'src/interfaces/general';
+import { IAPIResponse, purpleColor, resetColor } from 'src/interfaces/general';
 
 @Table
 export class SubmissionCount extends Model {
@@ -24,21 +24,22 @@ export class SubmissionCount extends Model {
   @BelongsTo(() => User)
   user: User;
 
-  static async findByCreatorId(
-    creatorId: number,
-  ): Promise<SubmissionCount | null> {
+  static async findByUserId(userId: number): Promise<SubmissionCount | null> {
     return this.findOne<SubmissionCount>({
-      where: { creatorId },
+      where: { userId },
     });
   }
 
   static async increaseApproved(
-    creatorId: number,
+    userId: number,
     decreasePending: boolean,
   ): Promise<IAPIResponse> {
     const submissionObj = await this.findOne<SubmissionCount>({
-      where: { creatorId },
+      where: { userId },
     });
+    console.log(
+      `${purpleColor}~~~~~~~~~~~~~~~ Increasing Approved. Decreasing Pending: ${decreasePending} for ${userId} ~~~~~~~~~~~~~~~~~~${resetColor}`,
+    );
 
     if (submissionObj) {
       let newPendingValue = submissionObj.totalPending;
@@ -46,11 +47,11 @@ export class SubmissionCount extends Model {
         if (newPendingValue - 1 < 0) {
           newPendingValue = 0;
         } else {
-          newPendingValue--;
+          newPendingValue - 1;
         }
       }
       await submissionObj.update({
-        totalApproved: submissionObj.totalApproved++,
+        totalApproved: submissionObj.totalApproved + 1,
         totalPending: newPendingValue,
       });
       await submissionObj.save();
@@ -59,14 +60,16 @@ export class SubmissionCount extends Model {
     return { code: 500, message: 'error' };
   }
 
-  static async increasePending(creatorId: number): Promise<IAPIResponse> {
+  static async increasePending(userId: number): Promise<IAPIResponse> {
     const submissionObj = await this.findOne<SubmissionCount>({
-      where: { creatorId },
+      where: { userId },
     });
-
+    console.log(
+      `${purpleColor}~~~~~~~~~~~~~~~ Increasing Pending for ${userId} ~~~~~~~~~~~~~~~~~~${resetColor}`,
+    );
     if (submissionObj) {
       await submissionObj.update({
-        totalPending: submissionObj.totalPending++,
+        totalPending: submissionObj.totalPending + 1,
       });
       await submissionObj.save();
       return { code: 200, message: 'success' };
@@ -74,18 +77,20 @@ export class SubmissionCount extends Model {
     return { code: 500, message: 'error' };
   }
 
-  static async decreasePending(creatorId: number): Promise<IAPIResponse> {
+  static async decreasePending(userId: number): Promise<IAPIResponse> {
     const submissionObj = await this.findOne<SubmissionCount>({
-      where: { creatorId },
+      where: { userId },
     });
-
+    console.log(
+      `${purpleColor}~~~~~~~~~~~~~~~ Decresing Pending for ${userId} ~~~~~~~~~~~~~~~~~~${resetColor}`,
+    );
     if (submissionObj) {
       let newPendingValue = submissionObj.totalPending;
 
       if (newPendingValue - 1 < 0) {
         return { code: 501, message: 'cannot decrease value!' };
       } else {
-        newPendingValue--;
+        newPendingValue - 1;
       }
       await submissionObj.update({
         totalPending: newPendingValue,
@@ -96,19 +101,20 @@ export class SubmissionCount extends Model {
     return { code: 500, message: 'error' };
   }
 
-
-  static async decreaseApproved(creatorId: number): Promise<IAPIResponse> {
+  static async decreaseApproved(userId: number): Promise<IAPIResponse> {
     const submissionObj = await this.findOne<SubmissionCount>({
-      where: { creatorId },
+      where: { userId },
     });
-
+    console.log(
+      `${purpleColor}~~~~~~~~~~~~~~~ Decresing Approved for ${userId} ~~~~~~~~~~~~~~~~~~${resetColor}`,
+    );
     if (submissionObj) {
       let newApprovedValue = submissionObj.totalApproved;
 
       if (newApprovedValue - 1 < 0) {
         return { code: 501, message: 'cannot decrease value!' };
       } else {
-        newApprovedValue--;
+        newApprovedValue - 1;
       }
       await submissionObj.update({
         totalApproved: newApprovedValue,

@@ -5,10 +5,13 @@ import {
   BelongsTo,
   ForeignKey,
   DeletedAt,
+  AfterCreate,
+  AfterUpdate,
 } from 'sequelize-typescript';
 import { QPart } from './qPart.entity';
 import { User } from './user.entity';
 import { DataTypes, Sequelize } from 'sequelize';
+import { SubmissionCount } from './submissionCount.entity';
 
 @Table({
   timestamps: true,
@@ -57,12 +60,27 @@ export class PartStatus extends Model {
   @Column
   approvalDate: Date;
 
-  
   static async findByCreatorId(creatorId: number): Promise<PartStatus[]> {
     return this.findAll<PartStatus>({
       where: { creatorId },
     });
   }
+  @AfterCreate
+  static async increaseSubmissionCount(instance: PartStatus) {
+    if (instance.approvalDate != null) {
+      await SubmissionCount.increaseApproved(instance.creatorId, false);
+    } else {
+      await SubmissionCount.increasePending(instance.creatorId);
+    }
+  }
+  @AfterUpdate
+  static async handleSubmissionCount(instance: PartStatus) {
+    const previousInstance = instance.previous();
+    const previousApprovalDate = previousInstance.getDataValue('approvalDate');
+    const currentApprovalDate = instance.approvalDate;
 
-  
+    if (previousApprovalDate === null && currentApprovalDate !== null) {
+      await SubmissionCount.increaseApproved(instance.creatorId, true);
+    }
+  }
 }

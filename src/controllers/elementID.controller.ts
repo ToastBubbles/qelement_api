@@ -55,10 +55,10 @@ export class ElementIDsController {
     try {
       let thisObj = await this.elementIDsService.findByIdAll(data.id);
       if (thisObj) {
-        if(thisObj.approvalDate == null){
-          await SubmissionCount.decreasePending(thisObj.creatorId)
-        }else{
-          await SubmissionCount.decreaseApproved(thisObj.creatorId)
+        if (thisObj.approvalDate == null) {
+          await SubmissionCount.decreasePending(thisObj.creatorId);
+        } else {
+          await SubmissionCount.decreaseApproved(thisObj.creatorId);
         }
         await thisObj.destroy({ force: true });
         return { code: 200, message: `deleted` };
@@ -117,15 +117,15 @@ export class ElementIDsController {
         approvalDate: isAdmin
           ? new Date().toISOString().slice(0, 23).replace('T', ' ')
           : null,
-      }).catch((e) => {
-        return { code: 502, message: `generic error` };
       });
       console.log(newElementID);
       console.log(newElementID instanceof ElementID);
 
       if (newElementID instanceof ElementID) {
-        if (isAdmin) return { code: 201, message: 'approved' };
-        else return { code: 200, message: 'submitted' };
+        if (isAdmin) {
+          return { code: 201, message: 'approved' };
+        }
+        return { code: 200, message: 'submitted' };
       }
       return { code: 501, message: 'failed' };
     } catch (error) {

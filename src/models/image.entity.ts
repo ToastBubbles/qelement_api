@@ -6,11 +6,14 @@ import {
   BelongsTo,
   DeletedAt,
   BeforeSave,
+  AfterCreate,
+  AfterUpdate,
 } from 'sequelize-typescript';
 import { QPart } from './qPart.entity';
 import { User } from './user.entity';
 import { DataTypes } from 'sequelize';
 import { Sculpture } from './sculpture.entity';
+import { SubmissionCount } from './submissionCount.entity';
 
 @Table({
   timestamps: true,
@@ -67,5 +70,29 @@ export class Image extends Model {
     return this.findAll<Image>({
       where: { userId: creatorId },
     });
+  }
+
+  @AfterCreate
+  static async increaseSubmissionCount(instance: Image) {
+    if (instance.type != 'pfp') {
+      if (instance.approvalDate != null) {
+        await SubmissionCount.increaseApproved(instance.userId, false);
+      } else {
+        await SubmissionCount.increasePending(instance.userId);
+      }
+    }
+  }
+  @AfterUpdate
+  static async handleSubmissionCount(instance: Image) {
+    if (instance.type != 'pfp') {
+      const previousInstance = instance.previous();
+      const previousApprovalDate =
+        previousInstance.getDataValue('approvalDate');
+      const currentApprovalDate = instance.approvalDate;
+
+      if (previousApprovalDate === null && currentApprovalDate !== null) {
+        await SubmissionCount.increaseApproved(instance.userId, true);
+      }
+    }
   }
 }

@@ -160,9 +160,8 @@ export class PartsController {
           approvalDate: isAdmin
             ? new Date().toISOString().slice(0, 23).replace('T', ' ')
             : null,
-        }).catch((e) => {
-          return { code: 500, message: `generic error` };
         });
+
         id = ((await newPart) as Part).dataValues.id;
       } else {
         id = data.id;
@@ -175,13 +174,11 @@ export class PartsController {
           ? new Date().toISOString().slice(0, 23).replace('T', ' ')
           : null,
         creatorId: data.creatorId,
-      }).catch((e) => {
-        return { code: 500, message: `generic error` };
       });
 
-      if (newMold instanceof PartMold)
+      if (newMold instanceof PartMold) {
         return { code: 200, message: `new part added` };
-      else return { code: 500, message: `part not added` };
+      } else return { code: 500, message: `part not added` };
     } catch (error) {
       console.log(error);
       return { code: 500, message: `generic error` };

@@ -9,6 +9,8 @@ import {
   ForeignKey,
   BelongsTo,
   AfterDestroy,
+  AfterCreate,
+  AfterUpdate,
 } from 'sequelize-typescript';
 import { QPart } from './qPart.entity';
 import { SculptureInventory } from './sculptureInventory.entity';
@@ -16,6 +18,7 @@ import { Image } from './image.entity';
 
 import { User } from './user.entity';
 import { Comment } from './comment.entity';
+import { SubmissionCount } from './submissionCount.entity';
 
 @Table({
   timestamps: true,
@@ -107,7 +110,25 @@ export class Sculpture extends Model {
     });
   }
 
-  
+  @AfterCreate
+  static async increaseSubmissionCount(instance: Sculpture) {
+    if (instance.approvalDate != null) {
+      await SubmissionCount.increaseApproved(instance.creatorId, false);
+    } else {
+      await SubmissionCount.increasePending(instance.creatorId);
+    }
+  }
+  @AfterUpdate
+  static async handleSubmissionCount(instance: Sculpture) {
+    const previousInstance = instance.previous();
+    const previousApprovalDate = previousInstance.getDataValue('approvalDate');
+    const currentApprovalDate = instance.approvalDate;
+
+    if (previousApprovalDate === null && currentApprovalDate !== null) {
+      await SubmissionCount.increaseApproved(instance.creatorId, true);
+    }
+  }
+
   @AfterDestroy
   static async deleteAssociatedModels(instance: Sculpture) {
     // Soft-delete associated models

@@ -11,9 +11,11 @@ import {
   AfterDestroy,
   AfterCreate,
   AfterRestore,
+  AfterUpdate,
 } from 'sequelize-typescript';
 import { Color } from './color.entity';
 import { User } from './user.entity';
+import { SubmissionCount } from './submissionCount.entity';
 
 @Table({
   timestamps: true,
@@ -55,7 +57,6 @@ export class SimilarColor extends Model {
     });
   }
 
-  
   @AfterDestroy
   static async deleteAssociatedModels(instance: SimilarColor) {
     let inverseSimilarColor = await SimilarColor.findOne({
@@ -101,6 +102,11 @@ export class SimilarColor extends Model {
   @AfterCreate
   static async createInverseSimilarColor(instance: SimilarColor) {
     // Check if the inverse similar color exists, including soft-deleted entries
+    if (instance.approvalDate != null) {
+      await SubmissionCount.increaseApproved(instance.creatorId, false);
+    } else {
+      await SubmissionCount.increasePending(instance.creatorId);
+    }
     let inverseSimilarColor = await SimilarColor.findOne({
       paranoid: false, // Include soft-deleted entries
       where: {
@@ -159,6 +165,17 @@ export class SimilarColor extends Model {
         creatorId: instance.creatorId, // You may want to adjust this based on your requirements
         approvalDate: instance.approvalDate,
       });
+    }
+  }
+
+  @AfterUpdate
+  static async handleSubmissionCount(instance: SimilarColor) {
+    const previousInstance = instance.previous();
+    const previousApprovalDate = previousInstance.getDataValue('approvalDate');
+    const currentApprovalDate = instance.approvalDate;
+
+    if (previousApprovalDate === null && currentApprovalDate !== null) {
+      await SubmissionCount.increaseApproved(instance.creatorId, true);
     }
   }
 }

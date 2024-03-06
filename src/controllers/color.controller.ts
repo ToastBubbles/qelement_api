@@ -62,10 +62,10 @@ export class ColorsController {
       const thisObj = await this.colorsService.findByIdAll(data.id);
 
       if (thisObj) {
-        if(thisObj.approvalDate == null){
-          await SubmissionCount.decreasePending(thisObj.creatorId)
-        }else{
-          await SubmissionCount.decreaseApproved(thisObj.creatorId)
+        if (thisObj.approvalDate == null) {
+          await SubmissionCount.decreasePending(thisObj.creatorId);
+        } else {
+          await SubmissionCount.decreaseApproved(thisObj.creatorId);
         }
         // Delete the color if found
         await thisObj.destroy();
@@ -123,8 +123,9 @@ export class ColorsController {
           : null,
       });
 
-      if (newColor instanceof Color) return `new color added`;
-      else return 'error';
+      if (newColor instanceof Color) {
+        return `new color added`;
+      } else return 'error';
     } catch (error) {
       console.log(error);
 
