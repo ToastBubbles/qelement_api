@@ -22,6 +22,7 @@ import { MinioService } from 'src/services/minio.service';
 import { UsersService } from 'src/services/user.service';
 import { User } from 'src/models/user.entity';
 import { validateImageType } from 'src/utils/utils';
+import { SubmissionCount } from 'src/models/submissionCount.entity';
 
 @Controller('image')
 export class ImagesController {
@@ -314,6 +315,13 @@ export class ImagesController {
       let thisObj = await this.imagesService.findByIdAll(data.id);
 
       if (thisObj) {
+        if (thisObj.type != 'pfp') {
+          if (thisObj.approvalDate == null) {
+            await SubmissionCount.decreasePending(thisObj.userId);
+          } else {
+            await SubmissionCount.decreaseApproved(thisObj.userId);
+          }
+        }
         if (isAdmin || thisObj.userId == userId) {
           await thisObj.destroy();
           return { code: 200, message: `deleted` };

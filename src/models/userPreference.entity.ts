@@ -28,6 +28,9 @@ export class UserPreference extends Model {
   lang: string;
 
   @Column({ defaultValue: true })
+  automaticallyFollowOnComment: boolean;
+
+  @Column({ defaultValue: true })
   isCollectionVisible: boolean;
 
   @Column({ defaultValue: true })

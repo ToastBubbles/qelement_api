@@ -7,6 +7,7 @@ import { Color } from 'src/models/color.entity';
 import { RaretyRating } from 'src/models/raretyRating.entity';
 import { User } from 'src/models/user.entity';
 import { Category } from 'src/models/category.entity';
+import { Comment } from 'src/models/comment.entity';
 
 @Injectable()
 export class PartsService {
@@ -50,7 +51,13 @@ export class PartsService {
   }
   async findById(id: number): Promise<Part | null> {
     const result = await this.partsRepository.findOne({
-      include: [Category],
+      include: [
+        Category,
+        {
+          model: Comment,
+          include: [{ model: User, as: 'creator' }],
+        },
+      ],
       where: {
         id: id,
         approvalDate: {

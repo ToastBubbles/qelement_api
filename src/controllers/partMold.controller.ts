@@ -11,6 +11,7 @@ import {
 import { User } from 'src/models/user.entity';
 import { QPart } from 'src/models/qPart.entity';
 import { trimAndReturn } from 'src/utils/utils';
+import { SubmissionCount } from 'src/models/submissionCount.entity';
 
 @Controller('partMold')
 export class PartMoldsController {
@@ -122,6 +123,11 @@ export class PartMoldsController {
       }
 
       if (thisObj) {
+        if (thisObj.approvalDate == null) {
+          await SubmissionCount.decreasePending(thisObj.creatorId);
+        } else {
+          await SubmissionCount.decreaseApproved(thisObj.creatorId);
+        }
         await thisObj.destroy();
         return { code: 200, message: `deleted` };
       } else return { code: 500, message: `not found` };

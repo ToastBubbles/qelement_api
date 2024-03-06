@@ -7,6 +7,7 @@ import {
 } from 'sequelize-typescript';
 import { QPart } from './qPart.entity';
 import { Sculpture } from './sculpture.entity';
+import { User } from './user.entity';
 
 @Table({
   timestamps: true,
@@ -28,6 +29,22 @@ export class SculptureInventory extends Model {
   @BelongsTo(() => Sculpture)
   sculpture: Sculpture;
 
+  @ForeignKey(() => User)
+  @Column
+  creatorId: number;
+
+  @BelongsTo(() => User)
+  creator: User;
+
   @Column
   approvalDate: Date;
+
+  
+  static async findByCreatorId(creatorId: number): Promise<SculptureInventory[]> {
+    return this.findAll<SculptureInventory>({
+      where: { creatorId },
+    });
+  }
+
+  
 }

@@ -27,6 +27,7 @@ import { Cache } from 'cache-manager';
 import { UsersService } from 'src/services/user.service';
 import { PartStatusesService } from 'src/services/partStatus.service';
 import { User } from 'src/models/user.entity';
+import { SubmissionCount } from 'src/models/submissionCount.entity';
 
 @Controller('qpart')
 export class QPartsController {
@@ -151,6 +152,12 @@ export class QPartsController {
         // if (children && children.length > 0) {
         //   await Promise.all(children.map((child) => child.destroy()));
         // }
+
+        if (thisObj.approvalDate == null) {
+          await SubmissionCount.decreasePending(thisObj.creatorId);
+        } else {
+          await SubmissionCount.decreaseApproved(thisObj.creatorId);
+        }
 
         await thisObj.destroy();
         return { code: 200, message: `deleted` };

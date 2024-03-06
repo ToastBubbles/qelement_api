@@ -30,4 +30,12 @@ export class ElementID extends Model {
 
   @Column
   approvalDate: Date;
+  
+  static async findByCreatorId(creatorId: number): Promise<ElementID[]> {
+    return this.findAll<ElementID>({
+      where: { creatorId },
+    });
+  }
+
+  
 }

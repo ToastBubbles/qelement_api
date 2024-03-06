@@ -45,6 +45,7 @@ import { UserMiddleware } from './auth/user.middleware';
 import { LoggerMiddleware } from './auth/logger.middleware';
 
 import { NotificationModule } from './modules/notification.module';
+import { SubmissionCount } from './models/submissionCount.entity';
 
 @Module({
   imports: [
@@ -78,7 +79,7 @@ import { NotificationModule } from './modules/notification.module';
     PredefinedSecurityQuestionModule,
     SculptureModule,
     SculptureInventoryModule,
-
+    SubmissionCount,
     NotificationModule,
   ],
   controllers: [AppController, EverythingController],
@@ -144,6 +145,7 @@ export class AppModule implements NestModule {
     );
 
     consumer.apply(UserMiddleware).forRoutes(
+      { path: 'extra/getSubmissions', method: RequestMethod.GET },
       { path: 'auth/profile', method: RequestMethod.GET },
       { path: 'categories/add', method: RequestMethod.POST },
       { path: 'color/add', method: RequestMethod.POST },

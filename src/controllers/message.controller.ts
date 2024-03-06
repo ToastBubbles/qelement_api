@@ -13,7 +13,6 @@ import { trimAndReturn } from 'src/utils/utils';
 export class MessagesController {
   constructor(private readonly messagesService: MessagesService) {}
 
-
   @Get('/getOneById/:id')
   async getMessageById(@Param('id') id: number): Promise<IExtendedMessageDTO> {
     return this.messagesService.findByIdAsDTO(id);
@@ -35,13 +34,11 @@ export class MessagesController {
     messageDTO: IMessageDTO,
   ): Promise<IAPIResponse> {
     try {
-      let newMessage = Message.create({
+      let newMessage = await Message.create({
         subject: trimAndReturn(messageDTO.subject),
         content: trimAndReturn(messageDTO.body),
         senderId: messageDTO.senderId,
         recipientId: messageDTO.recipientId,
-      }).catch((e) => {
-        return { code: 500, message: `generic error` };
       });
       if (newMessage instanceof Message)
         return { code: 200, message: 'success' };

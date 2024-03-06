@@ -10,6 +10,7 @@ import {
   DeletedAt,
   Unique,
   BelongsTo,
+  AfterCreate,
 } from 'sequelize-typescript';
 import { Comment } from './comment.entity';
 import { Image } from './image.entity';
@@ -25,6 +26,7 @@ import { Title } from './title.entity';
 import { UserGoal } from './userGoal.entity';
 import { SecurityQuestion } from './securityQuestion.entity';
 import { Color } from './color.entity';
+import { SubmissionCount } from './submissionCount.entity';
 
 @Table({
   timestamps: true,
@@ -87,17 +89,11 @@ export class User extends Model {
   ratings: RaretyRating[];
 
   @ForeignKey(() => Message)
-  @Column
-  sentMessageId: number;
-
-  @HasMany(() => Message)
+  @HasMany(() => Message, { foreignKey: 'recipientId' })
   recievedMessages: Message[];
 
   @ForeignKey(() => Message)
-  @Column
-  recievedMessageId: number;
-
-  @HasMany(() => Message)
+  @HasMany(() => Message, { foreignKey: 'senderId' })
   sentMessages: Message[];
 
   @HasMany(() => PartStatus)
@@ -105,6 +101,9 @@ export class User extends Model {
 
   @HasOne(() => UserPreference)
   preferences: UserPreference;
+
+  @HasOne(() => SubmissionCount)
+  submissionCount: SubmissionCount;
 
   @BelongsToMany(() => QPart, {
     through: { model: () => UserFavorite, unique: false },
@@ -136,5 +135,11 @@ export class User extends Model {
   @Column
   profilePictureId: number;
 
-
+  @AfterCreate
+  static async createAssociatedModels(instance: User) {
+    await SubmissionCount.create({ userId: instance.id });
+    await UserPreference.create({
+      userId: instance.id,
+    });
+  }
 }

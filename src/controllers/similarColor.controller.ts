@@ -20,6 +20,7 @@ import { ColorsService } from 'src/services/color.service';
 import { SimilarColorsService } from '../services/similarColor.service';
 import { UsersService } from 'src/services/user.service';
 import { User } from 'src/models/user.entity';
+import { SubmissionCount } from 'src/models/submissionCount.entity';
 
 @Controller('similarColor')
 export class SimilarColorsController {
@@ -75,6 +76,12 @@ export class SimilarColorsController {
       //   data.inversionId,
       // );
       if (thisObj) {
+
+        if (thisObj.approvalDate == null) {
+          await SubmissionCount.decreasePending(thisObj.creatorId);
+        } else {
+          await SubmissionCount.decreaseApproved(thisObj.creatorId);
+        }
         // Delete the color if found
         await thisObj.destroy();
 

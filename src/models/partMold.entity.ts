@@ -51,4 +51,13 @@ export class PartMold extends Model {
       where: { parentPartId: partId },
     });
   }
+
+  
+  static async findByCreatorId(creatorId: number): Promise<PartMold[]> {
+    return this.findAll<PartMold>({
+      where: { creatorId },
+    });
+  }
+
+  
 }

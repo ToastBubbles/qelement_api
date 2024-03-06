@@ -34,6 +34,7 @@ export function validateQPartType(str: string): string {
 }
 
 export function verifyKeywordsString(str: string): boolean {
+  if (str.length == 0) return true;
   const pattern = /^[a-zA-Z0-9;]+$/;
   return pattern.test(str);
 }

@@ -55,4 +55,13 @@ export class Part extends Model {
 
   @Column
   approvalDate: Date;
+
+  
+  static async findByCreatorId(creatorId: number): Promise<Part[]> {
+    return this.findAll<Part>({
+      where: { creatorId },
+    });
+  }
+
+  
 }

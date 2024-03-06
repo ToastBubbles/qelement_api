@@ -57,6 +57,13 @@ export class Color extends Model {
   @BelongsTo(() => User)
   creator: User;
 
+  static async findByCreatorId(creatorId: number): Promise<Color[]> {
+    return this.findAll<Color>({
+      where: { creatorId },
+    });
+  }
+
+
   @AfterDestroy
   static async deleteAssociatedModels(instance: Color) {
     // Find all users whose favoriteColorId is the same as the deleted color's id

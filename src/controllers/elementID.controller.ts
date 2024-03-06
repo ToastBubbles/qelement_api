@@ -10,6 +10,7 @@ import {
 } from 'src/interfaces/general';
 import { UsersService } from 'src/services/user.service';
 import { User } from 'src/models/user.entity';
+import { SubmissionCount } from 'src/models/submissionCount.entity';
 
 @Controller('elementID')
 export class ElementIDsController {
@@ -54,6 +55,11 @@ export class ElementIDsController {
     try {
       let thisObj = await this.elementIDsService.findByIdAll(data.id);
       if (thisObj) {
+        if(thisObj.approvalDate == null){
+          await SubmissionCount.decreasePending(thisObj.creatorId)
+        }else{
+          await SubmissionCount.decreaseApproved(thisObj.creatorId)
+        }
         await thisObj.destroy({ force: true });
         return { code: 200, message: `deleted` };
       } else return { code: 500, message: `not found` };

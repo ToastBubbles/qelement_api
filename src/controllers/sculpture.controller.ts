@@ -18,6 +18,7 @@ import {
   verifyKeywordsString,
 } from 'src/utils/utils';
 import { User } from 'src/models/user.entity';
+import { SubmissionCount } from 'src/models/submissionCount.entity';
 
 @Controller('sculpture')
 export class SculpturesController {
@@ -271,6 +272,11 @@ export class SculpturesController {
       let thisObj = await this.sculpturesService.findByIdAll(data.id);
 
       if (thisObj) {
+        if (thisObj.approvalDate == null) {
+          await SubmissionCount.decreasePending(thisObj.creatorId);
+        } else {
+          await SubmissionCount.decreaseApproved(thisObj.creatorId);
+        }
         await thisObj.destroy();
         return { code: 200, message: `deleted` };
       } else return { code: 500, message: `not found` };
@@ -288,12 +294,30 @@ export class SculpturesController {
     try {
       if (!verifyKeywordsString(data.keywords))
         return { code: 501, message: 'Keyword contains illegal characters!' };
+      if (data.name.length <= 2)
+        return { code: 501, message: 'Name too short' };
+
+      const nameCheck = await this.sculpturesService.checkNameAll(
+        trimAndReturn(data.name, 255),
+      );
+
+      if (nameCheck) {
+        if (nameCheck.isSoftDeleted()) {
+          await nameCheck.destroy({ force: true });
+        } else {
+          return {
+            code: 505,
+            message: 'Name already in use by existing sculpture!',
+          };
+        }
+      }
 
       let user = await this.userService.findOneById(data.creatorId);
       let isAdmin = false;
       if ((user && user?.role == 'admin') || user.role == 'trusted') {
         isAdmin = true;
       }
+
       const newSculpture = await Sculpture.create({
         name: trimAndReturn(data.name, 255),
         brickSystem: data.brickSystem,
@@ -306,10 +330,7 @@ export class SculpturesController {
           ? new Date().toISOString().slice(0, 23).replace('T', ' ')
           : null,
         creatorId: data.creatorId == -1 ? 1 : data.creatorId,
-      }).catch((e) => {
-        return { code: 500, message: e };
       });
-      console.log(newSculpture);
 
       if (newSculpture instanceof Sculpture) {
         if (isAdmin) return { code: 201, message: newSculpture.id };

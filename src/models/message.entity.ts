@@ -38,7 +38,7 @@ export class Message extends Model {
 
   @Column
   deletedBySender: boolean;
-  
+
   @Column
   deletedByRecipient: boolean;
 }

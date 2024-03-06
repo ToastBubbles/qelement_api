@@ -231,33 +231,25 @@ export class UsersController {
           password: hash,
           role: 'user',
           favoriteColorId: !badColor ? userDTO.favoriteColorId : null,
-        }).catch((e) => {
-          return { code: 501, message: `generic error` };
-        });
+        })
         if (newUser instanceof User) {
           const q1 = await SecurityQuestion.create({
             predefinedQuestionId: userDTO.q1.questionId,
             answer: hashA1,
             userId: newUser.id, // Set the userId for the user association
-          }).catch((e) => {
-            return { code: 501, message: `generic error` };
-          });
+          })
 
           const q2 = await SecurityQuestion.create({
             predefinedQuestionId: userDTO.q2.questionId,
             answer: hashA2,
             userId: newUser.id, // Set the userId for the user association
-          }).catch((e) => {
-            return { code: 501, message: `generic error` };
-          });
+          })
 
           const q3 = await SecurityQuestion.create({
             predefinedQuestionId: userDTO.q3.questionId,
             answer: hashA3,
             userId: newUser.id, // Set the userId for the user association
-          }).catch((e) => {
-            return { code: 501, message: `generic error` };
-          });
+          })
           let questions: SecurityQuestion[];
           if (
             q1 instanceof SecurityQuestion &&
@@ -266,10 +258,10 @@ export class UsersController {
           ) {
             questions = [q1, q2, q3];
             await newUser.$set('securityQuestions', questions);
-            const prefs = await UserPreference.create({
-              userId: newUser.id,
-            });
-            await newUser.$set('preferences', prefs);
+            // const prefs = await UserPreference.create({
+            //   userId: newUser.id,
+            // });
+            // await newUser.$set('preferences', prefs);
             return { code: 200, message: `created!` };
           } else {
             return { code: 501, message: `generic error` };

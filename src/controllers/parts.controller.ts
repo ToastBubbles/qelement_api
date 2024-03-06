@@ -14,6 +14,7 @@ import { PartMoldsService } from 'src/services/partMold.service';
 import { PartMold } from 'src/models/partMold.entity';
 import { UsersService } from 'src/services/user.service';
 import { User } from 'src/models/user.entity';
+import { SubmissionCount } from 'src/models/submissionCount.entity';
 
 @Controller('parts')
 export class PartsController {
@@ -105,6 +106,11 @@ export class PartsController {
       }
 
       if (thisObj) {
+        if (thisObj.approvalDate == null) {
+          await SubmissionCount.decreasePending(thisObj.creatorId);
+        } else {
+          await SubmissionCount.decreaseApproved(thisObj.creatorId);
+        }
         let children = await this.partMoldsService.findPartMoldsByParentID(
           data.id,
         );

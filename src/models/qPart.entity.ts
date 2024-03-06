@@ -28,6 +28,7 @@ import { DataTypes } from 'sequelize';
 import { ElementID } from './elementID.entity';
 import { Sculpture } from './sculpture.entity';
 import { SculptureInventory } from './sculptureInventory.entity';
+import { Op } from 'sequelize';
 @Table({
   timestamps: true,
   paranoid: true,
@@ -110,6 +111,41 @@ export class QPart extends Model {
   static async findByMoldId(moldId: number): Promise<QPart[]> {
     return this.findAll<QPart>({
       where: { moldId },
+    });
+  }
+
+  static async findByCreatorId(creatorId: number): Promise<QPart[]> {
+    return this.findAll<QPart>({
+      where: { creatorId },
+      include: [
+        {
+          model: ElementID,
+          where: {
+            approvalDate: {
+              [Op.ne]: null,
+            },
+          },
+          required: false,
+        },
+        { model: PartMold, include: [Part] },
+        Color,
+        { model: User, as: 'creator' },
+        RaretyRating,
+        {
+          model: PartStatus,
+          where: {
+            approvalDate: {
+              [Op.ne]: null,
+            },
+          },
+          required: false,
+        },
+        {
+          model: Image,
+          include: [{ model: User, as: 'uploader' }],
+        },
+    
+      ],
     });
   }
 

@@ -10,6 +10,7 @@ import {
 import { UsersService } from 'src/services/user.service';
 import { SculpturesService } from 'src/services/sculpture.service';
 import { User } from 'src/models/user.entity';
+import { SubmissionCount } from 'src/models/submissionCount.entity';
 
 @Controller('sculptureInventory')
 export class SculptureInventoriesController {
@@ -34,11 +35,15 @@ export class SculptureInventoriesController {
     @Param('id') id: number,
     @Body()
     data: IArrayOfIDs,
+    @Req() req: any,
   ): Promise<IAPIResponse> {
     try {
+      const userId = req.user.id;
+      const user = await User.findByPk(userId);
+      if (!user) return { code: 501, message: 'requestor not found' };
       let sculpture = await this.sculpturesService.findById(id, false);
       if (sculpture == null) return { code: 506, message: 'Bad Sculpture ID' };
-      let user = await this.userService.findOneById(data.userId);
+
       let isAdmin = false;
       if ((user && user?.role == 'admin') || user.role == 'trusted') {
         isAdmin = true;
@@ -49,6 +54,7 @@ export class SculptureInventoriesController {
         let thisItem = await SculptureInventory.create({
           qpartId,
           sculptureId: id,
+          creatorId: userId,
           approvalDate: isAdmin
             ? new Date().toISOString().slice(0, 23).replace('T', ' ')
             : null,
@@ -142,10 +148,13 @@ export class SculptureInventoriesController {
       if (user.role !== 'trusted' && user.role !== 'admin')
         return { code: 403, message: 'User not authorized' };
 
-      let thisEntry = await this.sculptureInventoriesService.findByIdPair(
-        data,
-      );
+      let thisEntry = await this.sculptureInventoriesService.findByIdPair(data);
       if (thisEntry) {
+        if (thisEntry.approvalDate == null) {
+          await SubmissionCount.decreasePending(thisEntry.creatorId);
+        } else {
+          await SubmissionCount.decreaseApproved(thisEntry.creatorId);
+        }
         await thisEntry.destroy();
 
         return { code: 200, message: 'denied successfully' };
@@ -178,6 +187,11 @@ export class SculptureInventoriesController {
 
               await Promise.all(
                 itemsToApprove.map(async (item) => {
+                  if (item.approvalDate == null) {
+                    await SubmissionCount.decreasePending(item.creatorId);
+                  } else {
+                    await SubmissionCount.decreaseApproved(item.creatorId);
+                  }
                   await item.destroy();
                 }),
               );

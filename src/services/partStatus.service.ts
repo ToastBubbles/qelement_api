@@ -42,23 +42,20 @@ export class PartStatusesService {
       include: [
         {
           model: QPart,
+
           include: [
             {
               model: PartStatus,
-              where: {
-                approvalDate: {
-                  [Op.ne]: null,
-                },
-              },
+
               required: false,
             },
 
             Image,
             { model: PartMold, include: [Part] },
             Color,
-            { model: User, as: 'creator' },
           ],
         },
+        { model: User, as: 'creator' },
       ],
     });
   }

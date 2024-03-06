@@ -49,6 +49,13 @@ export class SimilarColor extends Model {
   @Column
   approvalDate: Date;
 
+  static async findByCreatorId(creatorId: number): Promise<SimilarColor[]> {
+    return this.findAll<SimilarColor>({
+      where: { creatorId },
+    });
+  }
+
+  
   @AfterDestroy
   static async deleteAssociatedModels(instance: SimilarColor) {
     let inverseSimilarColor = await SimilarColor.findOne({

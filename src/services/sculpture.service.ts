@@ -83,7 +83,6 @@ export class SculpturesService {
         },
       ],
     });
-
   }
 
   async findSculpsBySearch(search: string): Promise<Sculpture[] | null> {
@@ -220,6 +219,17 @@ export class SculpturesService {
       //   },
       // },
     });
+  }
+
+  async checkNameAll(name: string): Promise<Sculpture | null> {
+    const result = await this.sculpturesRepository.findOne({
+      where: {
+        name: name.trim(),
+      },
+      paranoid: false,
+    });
+
+    return result;
   }
 
   async findByIdAll(id: number): Promise<Sculpture | null> {

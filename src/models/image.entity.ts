@@ -62,4 +62,10 @@ export class Image extends Model {
 
   @Column
   approvalDate: Date;
+
+  static async findByCreatorId(creatorId: number): Promise<Image[]> {
+    return this.findAll<Image>({
+      where: { userId: creatorId },
+    });
+  }
 }

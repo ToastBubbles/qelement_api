@@ -2,7 +2,9 @@ import { Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import {
   IAPIResponse,
   INotApporvedCounts,
+  ISubmissions,
   Public,
+  iIdOnly,
 } from 'src/interfaces/general';
 
 import { Color } from 'src/models/color.entity';
@@ -21,6 +23,14 @@ import { ElementIDsService } from 'src/services/elementID.service';
 import { SculptureInventoriesService } from 'src/services/sculptureInventory.service';
 import { AdminMiddleware } from 'src/auth/admin.middleware';
 import { User } from 'src/models/user.entity';
+import { QPart } from 'src/models/qPart.entity';
+import { ElementID } from 'src/models/elementID.entity';
+import { Image } from 'src/models/image.entity';
+import { PartMold } from 'src/models/partMold.entity';
+import { Part } from 'src/models/part.entity';
+import { PartStatus } from 'src/models/partStatus.entity';
+import { SculptureInventory } from 'src/models/sculptureInventory.entity';
+import { Sculpture } from 'src/models/sculpture.entity';
 
 @Controller('extra')
 export class EverythingController {
@@ -74,22 +84,56 @@ export class EverythingController {
 
   @Public()
   @Get('/getNotApprovedCounts')
-  async getNotApprovedCounts(): Promise<INotApporvedCounts> {
-    return {
-      colors: (await this.colorsService.findAllNotApproved()).length,
-      categories: (await this.categoriesService.findAllNotApproved()).length,
-      parts: (await this.partsService.findAllNotApproved()).length,
-      partMolds: (await this.partMoldsService.findAllNotApproved()).length,
-      qelements: (await this.qelementsService.findAllNotApproved()).length,
-      partStatuses: (await this.partStatusService.findAllNotApproved()).length,
-      similarColors: (await this.similarColorsService.findAllNotApproved())
-        .length,
-      images: (await this.imagesService.findAllNotApproved()).length,
-      sculptures: (await this.sculpturesService.findAllNotApproved()).length,
-      sculptureInventories: (
-        await this.sculptureInventoriesService.findAllNotApproved()
-      ).length,
-      elementIDs: (await this.elementIDsService.findAllNotApproved()).length,
-    };
+  async getNotApprovedCounts(): Promise<INotApporvedCounts | IAPIResponse> {
+    try {
+      return {
+        colors: (await this.colorsService.findAllNotApproved()).length,
+        categories: (await this.categoriesService.findAllNotApproved()).length,
+        parts: (await this.partsService.findAllNotApproved()).length,
+        partMolds: (await this.partMoldsService.findAllNotApproved()).length,
+        qelements: (await this.qelementsService.findAllNotApproved()).length,
+        partStatuses: (await this.partStatusService.findAllNotApproved())
+          .length,
+        similarColors: (await this.similarColorsService.findAllNotApproved())
+          .length,
+        images: (await this.imagesService.findAllNotApproved()).length,
+        sculptures: (await this.sculpturesService.findAllNotApproved()).length,
+        sculptureInventories: (
+          await this.sculptureInventoriesService.findAllNotApproved()
+        ).length,
+        elementIDs: (await this.elementIDsService.findAllNotApproved()).length,
+      };
+    } catch (e) {
+      return { code: 500, message: 'error' };
+    }
+  }
+
+  @Public()
+  @Get('/getSubmissions')
+  async getSubmissions(@Req() req: any): Promise<ISubmissions | IAPIResponse> {
+    try {
+      const userId = req.user.id;
+      const user = await User.findByPk(userId);
+      if (!user) return { code: 504, message: 'User not found' };
+      let images = await Image.findByCreatorId(userId);
+      let output: ISubmissions = {
+        colors: await Color.findByCreatorId(userId),
+        eIDs: await ElementID.findByCreatorId(userId),
+        images: images.filter(
+          (x) => x.type != 'pfp',
+        ),
+        molds: await PartMold.findByCreatorId(userId),
+        parts: await Part.findByCreatorId(userId),
+        statuses: await PartStatus.findByCreatorId(userId),
+        qparts: await QPart.findByCreatorId(userId),
+        sculptureInventories: await SculptureInventory.findByCreatorId(userId),
+        sculptures: await Sculpture.findByCreatorId(userId),
+        similarColors: await SimilarColor.findByCreatorId(userId),
+      };
+
+      return output;
+    } catch (e) {
+      return { code: 500, message: 'error' };
+    }
   }
 }

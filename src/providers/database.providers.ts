@@ -24,6 +24,7 @@ import { Sculpture } from 'src/models/sculpture.entity';
 import { SculptureInventory } from 'src/models/sculptureInventory.entity';
 
 import { Notification } from 'src/models/notification.entity';
+import { SubmissionCount } from 'src/models/submissionCount.entity';
 
 export const databaseProviders = [
   {
@@ -62,7 +63,7 @@ export const databaseProviders = [
         PredefinedSecurityQuestion,
         Sculpture,
         SculptureInventory,
-
+        SubmissionCount,
         Notification,
       ]);
 

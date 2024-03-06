@@ -1,7 +1,15 @@
 import { SetMetadata } from '@nestjs/common';
 import { Color } from 'src/models/color.entity';
+import { ElementID } from 'src/models/elementID.entity';
+import { Image } from 'src/models/image.entity';
 import { Part } from 'src/models/part.entity';
+import { PartMold } from 'src/models/partMold.entity';
+import { PartStatus } from 'src/models/partStatus.entity';
+import { QPart } from 'src/models/qPart.entity';
 import { RaretyRating } from 'src/models/raretyRating.entity';
+import { Sculpture } from 'src/models/sculpture.entity';
+import { SculptureInventory } from 'src/models/sculptureInventory.entity';
+import { SimilarColor } from 'src/models/similarColor.entity';
 import { User } from 'src/models/user.entity';
 
 export const IS_PUBLIC_KEY = 'isPublic';
@@ -321,6 +329,19 @@ export interface ICommentCreationDTO {
   qpartId?: number;
   sculptureId?: number;
   partId?: number;
+}
+
+export interface ISubmissions {
+  colors: Color[];
+  eIDs: ElementID[];
+  images: Image[];
+  molds: PartMold[];
+  parts: Part[];
+  statuses: PartStatus[];
+  qparts: QPart[];
+  sculptureInventories: SculptureInventory[];
+  sculptures: Sculpture[];
+  similarColors: SimilarColor[];
 }
 export interface ImageSubmission {
   qpartId: number;

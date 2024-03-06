@@ -15,6 +15,7 @@ import { Part } from 'src/models/part.entity';
 import { RaretyRating } from 'src/models/raretyRating.entity';
 import { PartStatus } from 'src/models/partStatus.entity';
 import { Title } from 'src/models/title.entity';
+import { SubmissionCount } from 'src/models/submissionCount.entity';
 
 @Injectable()
 export class UsersService {
@@ -164,6 +165,7 @@ export class UsersService {
         UserPreference,
         Color,
         Title,
+        SubmissionCount,
         {
           model: Image,
           as: 'profilePicture',

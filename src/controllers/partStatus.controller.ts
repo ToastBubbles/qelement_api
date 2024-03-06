@@ -9,6 +9,7 @@ import {
 } from 'src/interfaces/general';
 import { trimAndReturn } from 'src/utils/utils';
 import { UsersService } from 'src/services/user.service';
+import { SubmissionCount } from 'src/models/submissionCount.entity';
 
 @Controller('partStatus')
 export class PartStatusesController {
@@ -60,6 +61,11 @@ export class PartStatusesController {
       let thisObj = await this.partStatusesService.findByIdAll(data.id);
 
       if (thisObj) {
+        if (thisObj.approvalDate == null) {
+          await SubmissionCount.decreasePending(thisObj.creatorId);
+        } else {
+          await SubmissionCount.decreaseApproved(thisObj.creatorId);
+        }
         await thisObj.destroy();
         return { code: 200, message: `deleted` };
       } else return { code: 500, message: `not found` };
@@ -80,7 +86,7 @@ export class PartStatusesController {
       if ((user && user?.role == 'admin') || user.role == 'trusted') {
         isAdmin = true;
       }
-      let newPart = PartStatus.create({
+      let newPart = await PartStatus.create({
         status: data.status,
         date: data.date,
         location: trimAndReturn(data.location, 100),
@@ -90,13 +96,12 @@ export class PartStatusesController {
         approvalDate: isAdmin
           ? new Date().toISOString().slice(0, 23).replace('T', ' ')
           : null,
-      }).catch((e) => {
-        return { code: 500, message: `generic error` };
       });
 
-      if (newPart instanceof PartStatus)
-        return { code: 200, message: `new part status added` };
-      else return { code: 500, message: `part status aready exists` };
+      if (newPart instanceof PartStatus) {
+        if (isAdmin) return { code: 200, message: `new part status added` };
+        return { code: 201, message: `new part status submitted.` };
+      } else return { code: 500, message: `part status aready exists` };
     } catch (error) {
       console.log(error);
       return { code: 500, message: `generic error` };
@@ -109,8 +114,6 @@ export class PartStatusesController {
     data: IArrayOfIDs,
   ): Promise<IAPIResponse> {
     try {
-     
-
       let user = await this.userService.findOneById(data.userId);
       let isAdmin = false;
       if ((user && user?.role == 'admin') || user.role == 'trusted') {

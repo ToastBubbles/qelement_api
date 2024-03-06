@@ -11,6 +11,7 @@ import { Color } from 'src/models/color.entity';
 import { ColorsService } from '../services/color.service';
 import { trimAndReturn } from 'src/utils/utils';
 import { UsersService } from 'src/services/user.service';
+import { SubmissionCount } from 'src/models/submissionCount.entity';
 
 @Controller('color')
 export class ColorsController {
@@ -61,6 +62,11 @@ export class ColorsController {
       const thisObj = await this.colorsService.findByIdAll(data.id);
 
       if (thisObj) {
+        if(thisObj.approvalDate == null){
+          await SubmissionCount.decreasePending(thisObj.creatorId)
+        }else{
+          await SubmissionCount.decreaseApproved(thisObj.creatorId)
+        }
         // Delete the color if found
         await thisObj.destroy();
         return { code: 200, message: `deleted` };

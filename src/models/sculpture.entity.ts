@@ -101,19 +101,30 @@ export class Sculpture extends Model {
   @Column
   approvalDate: Date;
 
+  static async findByCreatorId(creatorId: number): Promise<Sculpture[]> {
+    return this.findAll<Sculpture>({
+      where: { creatorId },
+    });
+  }
+
+  
   @AfterDestroy
-  static async deleteAssociatedModels(instance: QPart) {
+  static async deleteAssociatedModels(instance: Sculpture) {
+    // Soft-delete associated models
     await SculptureInventory.destroy({
       where: {
         sculptureId: instance.id,
       },
     });
 
+    // Delete associated Comments
     await Comment.destroy({
       where: {
         sculptureId: instance.id,
       },
     });
+
+    // Delete associated Images
     await Image.destroy({
       where: {
         sculptureId: instance.id,
