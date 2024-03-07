@@ -75,8 +75,7 @@ export class Color extends Model {
   }
   @AfterUpdate
   static async handleSubmissionCount(instance: Color) {
-    const previousInstance = instance.previous();
-    const previousApprovalDate = previousInstance.getDataValue('approvalDate');
+    const previousApprovalDate = instance.previous('approvalDate');
     const currentApprovalDate = instance.approvalDate;
 
     if (previousApprovalDate === null && currentApprovalDate !== null) {
@@ -85,6 +84,10 @@ export class Color extends Model {
   }
   @AfterDestroy
   static async deleteAssociatedModels(instance: Color) {
+    const previousApprovalDate = instance.previous('approvalDate');
+    if (previousApprovalDate === null) {
+      await SubmissionCount.decreasePending(instance.creatorId);
+    }
     // Find all users whose favoriteColorId is the same as the deleted color's id
     const affectedUsers = await User.findAll({
       where: {

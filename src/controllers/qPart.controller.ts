@@ -146,18 +146,7 @@ export class QPartsController {
       let thisObj = await this.qPartsService.findByIdAll(data.id);
 
       if (thisObj) {
-        // let children = await this.partStatusesService.findPartMoldsByQPartID(
-        //   data.id,
-        // );
-        // if (children && children.length > 0) {
-        //   await Promise.all(children.map((child) => child.destroy()));
-        // }
-
-        if (thisObj.approvalDate == null) {
-          await SubmissionCount.decreasePending(thisObj.creatorId);
-        } else {
-          await SubmissionCount.decreaseApproved(thisObj.creatorId);
-        }
+  
 
         await thisObj.destroy();
         return { code: 200, message: `deleted` };

@@ -59,6 +59,10 @@ export class SimilarColor extends Model {
 
   @AfterDestroy
   static async deleteAssociatedModels(instance: SimilarColor) {
+    const previousApprovalDate = instance.previous('approvalDate');
+    if (previousApprovalDate === null) {
+      await SubmissionCount.decreasePending(instance.creatorId);
+    }
     let inverseSimilarColor = await SimilarColor.findOne({
       where: {
         colorId1: instance.colorId2,
@@ -170,8 +174,7 @@ export class SimilarColor extends Model {
 
   @AfterUpdate
   static async handleSubmissionCount(instance: SimilarColor) {
-    const previousInstance = instance.previous();
-    const previousApprovalDate = previousInstance.getDataValue('approvalDate');
+    const previousApprovalDate = instance.previous('approvalDate');
     const currentApprovalDate = instance.approvalDate;
 
     if (previousApprovalDate === null && currentApprovalDate !== null) {

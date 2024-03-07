@@ -8,6 +8,7 @@ import {
   BeforeSave,
   AfterCreate,
   AfterUpdate,
+  AfterDestroy,
 } from 'sequelize-typescript';
 import { QPart } from './qPart.entity';
 import { User } from './user.entity';
@@ -85,13 +86,20 @@ export class Image extends Model {
   @AfterUpdate
   static async handleSubmissionCount(instance: Image) {
     if (instance.type != 'pfp') {
-      const previousInstance = instance.previous();
-      const previousApprovalDate =
-        previousInstance.getDataValue('approvalDate');
+      const previousApprovalDate = instance.previous('approvalDate');
       const currentApprovalDate = instance.approvalDate;
 
       if (previousApprovalDate === null && currentApprovalDate !== null) {
         await SubmissionCount.increaseApproved(instance.userId, true);
+      }
+    }
+  }
+  @AfterDestroy
+  static async deleteAssociatedModels(instance: Image) {
+    if (instance.type != 'pfp') {
+      const previousApprovalDate = instance.previous('approvalDate');
+      if (previousApprovalDate === null) {
+        await SubmissionCount.decreasePending(instance.userId);
       }
     }
   }

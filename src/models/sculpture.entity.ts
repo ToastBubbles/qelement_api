@@ -120,8 +120,7 @@ export class Sculpture extends Model {
   }
   @AfterUpdate
   static async handleSubmissionCount(instance: Sculpture) {
-    const previousInstance = instance.previous();
-    const previousApprovalDate = previousInstance.getDataValue('approvalDate');
+    const previousApprovalDate = instance.previous('approvalDate');
     const currentApprovalDate = instance.approvalDate;
 
     if (previousApprovalDate === null && currentApprovalDate !== null) {
@@ -129,8 +128,16 @@ export class Sculpture extends Model {
     }
   }
 
+ 
+
   @AfterDestroy
   static async deleteAssociatedModels(instance: Sculpture) {
+
+const previousApprovalDate = instance.previous('approvalDate');
+    if (previousApprovalDate === null) {
+      await SubmissionCount.decreasePending(instance.creatorId);
+    }
+
     // Soft-delete associated models
     await SculptureInventory.destroy({
       where: {

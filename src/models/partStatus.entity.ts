@@ -7,6 +7,7 @@ import {
   DeletedAt,
   AfterCreate,
   AfterUpdate,
+  AfterDestroy,
 } from 'sequelize-typescript';
 import { QPart } from './qPart.entity';
 import { User } from './user.entity';
@@ -75,12 +76,18 @@ export class PartStatus extends Model {
   }
   @AfterUpdate
   static async handleSubmissionCount(instance: PartStatus) {
-    const previousInstance = instance.previous();
-    const previousApprovalDate = previousInstance.getDataValue('approvalDate');
+    const previousApprovalDate = instance.previous('approvalDate');
     const currentApprovalDate = instance.approvalDate;
 
     if (previousApprovalDate === null && currentApprovalDate !== null) {
       await SubmissionCount.increaseApproved(instance.creatorId, true);
+    }
+  }
+  @AfterDestroy
+  static async deleteAssociatedModels(instance: PartStatus) {
+    const previousApprovalDate = instance.previous('approvalDate');
+    if (previousApprovalDate === null) {
+      await SubmissionCount.decreasePending(instance.creatorId);
     }
   }
 }

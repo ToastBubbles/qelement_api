@@ -147,7 +147,6 @@ export class QPart extends Model {
           model: Image,
           include: [{ model: User, as: 'uploader' }],
         },
-    
       ],
     });
   }
@@ -162,63 +161,71 @@ export class QPart extends Model {
   }
   @AfterUpdate
   static async handleSubmissionCount(instance: QPart) {
-    const previousInstance = instance.previous();
-    const previousApprovalDate = previousInstance.getDataValue('approvalDate');
-    const currentApprovalDate = instance.approvalDate;
+    const previousApprovalDate = instance.previous('approvalDate');
 
+    const currentApprovalDate = instance.approvalDate;
+    console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
+
+    console.log(previousApprovalDate, currentApprovalDate);
     if (previousApprovalDate === null && currentApprovalDate !== null) {
+      console.log('Increasing and dec');
+
       await SubmissionCount.increaseApproved(instance.creatorId, true);
     }
   }
 
   @AfterDestroy
   static async deleteAssociatedModels(instance: QPart) {
+    const previousApprovalDate = instance.previous('approvalDate');
+    if (previousApprovalDate === null) {
+      await SubmissionCount.decreasePending(instance.creatorId);
+    }
+
     await ElementID.destroy({
       where: {
-        qpartId: instance.id, 
+        qpartId: instance.id,
       },
     });
 
     await Comment.destroy({
       where: {
-        qpartId: instance.id, 
-      },
-    });
-   
-    await UserInventory.destroy({
-      where: {
-        qpartId: instance.id, 
-      },
-    });
-   
-    await UserFavorite.destroy({
-      where: {
-        qpartId: instance.id, 
-      },
-    });
-   
-    await SculptureInventory.destroy({
-      where: {
-        qpartId: instance.id, 
+        qpartId: instance.id,
       },
     });
 
-   
+    await UserInventory.destroy({
+      where: {
+        qpartId: instance.id,
+      },
+    });
+
+    await UserFavorite.destroy({
+      where: {
+        qpartId: instance.id,
+      },
+    });
+
+    await SculptureInventory.destroy({
+      where: {
+        qpartId: instance.id,
+      },
+    });
+
     await RaretyRating.destroy({
       where: {
-        qpartId: instance.id, 
+        qpartId: instance.id,
       },
     });
-   
+
     await PartStatus.destroy({
       where: {
-        qpartId: instance.id, 
+        qpartId: instance.id,
       },
     });
-   
+
     await Image.destroy({
       where: {
-        qpartId: instance.id, 
+        qpartId: instance.id,
       },
     });
   }

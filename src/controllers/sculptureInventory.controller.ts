@@ -150,11 +150,7 @@ export class SculptureInventoriesController {
 
       let thisEntry = await this.sculptureInventoriesService.findByIdPair(data);
       if (thisEntry) {
-        if (thisEntry.approvalDate == null) {
-          await SubmissionCount.decreasePending(thisEntry.creatorId);
-        } else {
-          await SubmissionCount.decreaseApproved(thisEntry.creatorId);
-        }
+      
         await thisEntry.destroy();
 
         return { code: 200, message: 'denied successfully' };
@@ -187,11 +183,7 @@ export class SculptureInventoriesController {
 
               await Promise.all(
                 itemsToApprove.map(async (item) => {
-                  if (item.approvalDate == null) {
-                    await SubmissionCount.decreasePending(item.creatorId);
-                  } else {
-                    await SubmissionCount.decreaseApproved(item.creatorId);
-                  }
+                 
                   await item.destroy();
                 }),
               );

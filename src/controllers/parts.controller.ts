@@ -106,11 +106,7 @@ export class PartsController {
       }
 
       if (thisObj) {
-        if (thisObj.approvalDate == null) {
-          await SubmissionCount.decreasePending(thisObj.creatorId);
-        } else {
-          await SubmissionCount.decreaseApproved(thisObj.creatorId);
-        }
+      
         let children = await this.partMoldsService.findPartMoldsByParentID(
           data.id,
         );

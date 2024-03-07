@@ -319,11 +319,7 @@ export class ImagesController {
 
       if (thisObj) {
         if (thisObj.type != 'pfp') {
-          if (thisObj.approvalDate == null) {
-            await SubmissionCount.decreasePending(thisObj.userId);
-          } else {
-            await SubmissionCount.decreaseApproved(thisObj.userId);
-          }
+          
         }
         if (isAdmin || thisObj.userId == userId) {
           await thisObj.destroy();

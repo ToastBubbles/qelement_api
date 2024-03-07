@@ -76,12 +76,6 @@ export class SimilarColorsController {
       //   data.inversionId,
       // );
       if (thisObj) {
-
-        if (thisObj.approvalDate == null) {
-          await SubmissionCount.decreasePending(thisObj.creatorId);
-        } else {
-          await SubmissionCount.decreaseApproved(thisObj.creatorId);
-        }
         // Delete the color if found
         await thisObj.destroy();
 

@@ -47,7 +47,7 @@ export class SubmissionCount extends Model {
         if (newPendingValue - 1 < 0) {
           newPendingValue = 0;
         } else {
-          newPendingValue - 1;
+          newPendingValue = newPendingValue - 1;
         }
       }
       await submissionObj.update({
@@ -90,7 +90,7 @@ export class SubmissionCount extends Model {
       if (newPendingValue - 1 < 0) {
         return { code: 501, message: 'cannot decrease value!' };
       } else {
-        newPendingValue - 1;
+        newPendingValue = newPendingValue - 1;
       }
       await submissionObj.update({
         totalPending: newPendingValue,
@@ -114,7 +114,7 @@ export class SubmissionCount extends Model {
       if (newApprovedValue - 1 < 0) {
         return { code: 501, message: 'cannot decrease value!' };
       } else {
-        newApprovedValue - 1;
+        newApprovedValue = newApprovedValue - 1;
       }
       await submissionObj.update({
         totalApproved: newApprovedValue,

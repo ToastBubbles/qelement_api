@@ -9,6 +9,7 @@ import {
   BelongsToMany,
   AfterCreate,
   AfterUpdate,
+  AfterDestroy,
 } from 'sequelize-typescript';
 import { Category } from './category.entity';
 import { PartMold } from './partMold.entity';
@@ -74,12 +75,18 @@ export class Part extends Model {
   }
   @AfterUpdate
   static async handleSubmissionCount(instance: Part) {
-    const previousInstance = instance.previous();
-    const previousApprovalDate = previousInstance.getDataValue('approvalDate');
+    const previousApprovalDate = instance.previous('approvalDate');
     const currentApprovalDate = instance.approvalDate;
 
     if (previousApprovalDate === null && currentApprovalDate !== null) {
       await SubmissionCount.increaseApproved(instance.creatorId, true);
+    }
+  }
+  @AfterDestroy
+  static async deleteAssociatedModels(instance: Part) {
+    const previousApprovalDate = instance.previous('approvalDate');
+    if (previousApprovalDate === null) {
+      await SubmissionCount.decreasePending(instance.creatorId);
     }
   }
 }
