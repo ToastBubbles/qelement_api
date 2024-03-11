@@ -107,6 +107,7 @@ export class Sculpture extends Model {
   static async findByCreatorId(creatorId: number): Promise<Sculpture[]> {
     return this.findAll<Sculpture>({
       where: { creatorId },
+      include: [Image, User],
     });
   }
 
@@ -128,12 +129,9 @@ export class Sculpture extends Model {
     }
   }
 
- 
-
   @AfterDestroy
   static async deleteAssociatedModels(instance: Sculpture) {
-
-const previousApprovalDate = instance.previous('approvalDate');
+    const previousApprovalDate = instance.previous('approvalDate');
     if (previousApprovalDate === null) {
       await SubmissionCount.decreasePending(instance.creatorId);
     }

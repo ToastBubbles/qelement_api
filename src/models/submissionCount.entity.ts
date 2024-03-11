@@ -15,10 +15,10 @@ export class SubmissionCount extends Model {
   @Column
   userId: number;
 
-  @Column({ defaultValue: 0 })
+  @Column({ type: DataType.FLOAT, defaultValue: 0 })
   totalPending: number;
 
-  @Column({ defaultValue: 0 })
+  @Column({ type: DataType.FLOAT, defaultValue: 0 })
   totalApproved: number;
 
   @BelongsTo(() => User)
@@ -33,6 +33,7 @@ export class SubmissionCount extends Model {
   static async increaseApproved(
     userId: number,
     decreasePending: boolean,
+    amount: number = 1,
   ): Promise<IAPIResponse> {
     const submissionObj = await this.findOne<SubmissionCount>({
       where: { userId },
@@ -44,14 +45,14 @@ export class SubmissionCount extends Model {
     if (submissionObj) {
       let newPendingValue = submissionObj.totalPending;
       if (decreasePending) {
-        if (newPendingValue - 1 < 0) {
+        if (newPendingValue - amount < 0) {
           newPendingValue = 0;
         } else {
-          newPendingValue = newPendingValue - 1;
+          newPendingValue = newPendingValue - amount;
         }
       }
       await submissionObj.update({
-        totalApproved: submissionObj.totalApproved + 1,
+        totalApproved: submissionObj.totalApproved + amount,
         totalPending: newPendingValue,
       });
       await submissionObj.save();
@@ -60,7 +61,10 @@ export class SubmissionCount extends Model {
     return { code: 500, message: 'error' };
   }
 
-  static async increasePending(userId: number): Promise<IAPIResponse> {
+  static async increasePending(
+    userId: number,
+    amount: number = 1,
+  ): Promise<IAPIResponse> {
     const submissionObj = await this.findOne<SubmissionCount>({
       where: { userId },
     });
@@ -69,7 +73,7 @@ export class SubmissionCount extends Model {
     );
     if (submissionObj) {
       await submissionObj.update({
-        totalPending: submissionObj.totalPending + 1,
+        totalPending: submissionObj.totalPending + amount,
       });
       await submissionObj.save();
       return { code: 200, message: 'success' };
@@ -77,7 +81,10 @@ export class SubmissionCount extends Model {
     return { code: 500, message: 'error' };
   }
 
-  static async decreasePending(userId: number): Promise<IAPIResponse> {
+  static async decreasePending(
+    userId: number,
+    amount: number = 1,
+  ): Promise<IAPIResponse> {
     const submissionObj = await this.findOne<SubmissionCount>({
       where: { userId },
     });
@@ -87,10 +94,10 @@ export class SubmissionCount extends Model {
     if (submissionObj) {
       let newPendingValue = submissionObj.totalPending;
 
-      if (newPendingValue - 1 < 0) {
+      if (newPendingValue - amount < 0) {
         return { code: 501, message: 'cannot decrease value!' };
       } else {
-        newPendingValue = newPendingValue - 1;
+        newPendingValue = newPendingValue - amount;
       }
       await submissionObj.update({
         totalPending: newPendingValue,
@@ -101,7 +108,10 @@ export class SubmissionCount extends Model {
     return { code: 500, message: 'error' };
   }
 
-  static async decreaseApproved(userId: number): Promise<IAPIResponse> {
+  static async decreaseApproved(
+    userId: number,
+    amount: number = 1,
+  ): Promise<IAPIResponse> {
     const submissionObj = await this.findOne<SubmissionCount>({
       where: { userId },
     });
@@ -111,10 +121,10 @@ export class SubmissionCount extends Model {
     if (submissionObj) {
       let newApprovedValue = submissionObj.totalApproved;
 
-      if (newApprovedValue - 1 < 0) {
+      if (newApprovedValue - amount < 0) {
         return { code: 501, message: 'cannot decrease value!' };
       } else {
-        newApprovedValue = newApprovedValue - 1;
+        newApprovedValue = newApprovedValue - amount;
       }
       await submissionObj.update({
         totalApproved: newApprovedValue,

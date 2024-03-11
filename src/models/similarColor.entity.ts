@@ -54,6 +54,10 @@ export class SimilarColor extends Model {
   static async findByCreatorId(creatorId: number): Promise<SimilarColor[]> {
     return this.findAll<SimilarColor>({
       where: { creatorId },
+      include: [
+        { model: Color, as: 'color1' },
+        { model: Color, as: 'color2' },
+      ],
     });
   }
 
@@ -61,7 +65,7 @@ export class SimilarColor extends Model {
   static async deleteAssociatedModels(instance: SimilarColor) {
     const previousApprovalDate = instance.previous('approvalDate');
     if (previousApprovalDate === null) {
-      await SubmissionCount.decreasePending(instance.creatorId);
+      await SubmissionCount.decreasePending(instance.creatorId, 0.5);
     }
     let inverseSimilarColor = await SimilarColor.findOne({
       where: {
@@ -107,9 +111,9 @@ export class SimilarColor extends Model {
   static async createInverseSimilarColor(instance: SimilarColor) {
     // Check if the inverse similar color exists, including soft-deleted entries
     if (instance.approvalDate != null) {
-      await SubmissionCount.increaseApproved(instance.creatorId, false);
+      await SubmissionCount.increaseApproved(instance.creatorId, false, 0.5);
     } else {
-      await SubmissionCount.increasePending(instance.creatorId);
+      await SubmissionCount.increasePending(instance.creatorId, 0.5);
     }
     let inverseSimilarColor = await SimilarColor.findOne({
       paranoid: false, // Include soft-deleted entries
@@ -178,7 +182,7 @@ export class SimilarColor extends Model {
     const currentApprovalDate = instance.approvalDate;
 
     if (previousApprovalDate === null && currentApprovalDate !== null) {
-      await SubmissionCount.increaseApproved(instance.creatorId, true);
+      await SubmissionCount.increaseApproved(instance.creatorId, true, 0.5);
     }
   }
 }

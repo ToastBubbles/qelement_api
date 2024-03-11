@@ -50,9 +50,10 @@ export class ColorsService {
         {
           model: Color,
           as: 'similar',
+
           // where: { approvalDate: { [Op.ne]: null } },
           through: {
-            attributes: ['approvalDate'],
+            attributes: ['approvalDate', 'id'],
             where: {
               approvalDate: { [Op.ne]: null },
             },

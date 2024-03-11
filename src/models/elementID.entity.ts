@@ -11,6 +11,13 @@ import {
 import { QPart } from './qPart.entity';
 import { User } from './user.entity';
 import { SubmissionCount } from './submissionCount.entity';
+import { Image } from './image.entity';
+import { Op } from 'sequelize';
+import { Color } from './color.entity';
+import { Part } from './part.entity';
+import { PartMold } from './partMold.entity';
+import { PartStatus } from './partStatus.entity';
+import { RaretyRating } from './raretyRating.entity';
 
 @Table({
   timestamps: true,
@@ -38,6 +45,40 @@ export class ElementID extends Model {
   static async findByCreatorId(creatorId: number): Promise<ElementID[]> {
     return this.findAll<ElementID>({
       where: { creatorId },
+      include: [
+        {
+          model: QPart,
+          include: [
+            {
+              model: ElementID,
+              where: {
+                approvalDate: {
+                  [Op.ne]: null,
+                },
+              },
+              required: false,
+            },
+            { model: PartMold, include: [Part] },
+            Color,
+            { model: User, as: 'creator' },
+            RaretyRating,
+            {
+              model: PartStatus,
+              where: {
+                approvalDate: {
+                  [Op.ne]: null,
+                },
+              },
+              required: false,
+            },
+
+            {
+              model: Image,
+              include: [{ model: User, as: 'uploader' }],
+            },
+          ],
+        },
+      ],
     });
   }
   @AfterCreate
