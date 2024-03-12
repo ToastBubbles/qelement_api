@@ -13,6 +13,10 @@ import { QPart } from './qPart.entity';
 import { User } from './user.entity';
 import { DataTypes, Sequelize } from 'sequelize';
 import { SubmissionCount } from './submissionCount.entity';
+import { PartMold } from './partMold.entity';
+import { Part } from './part.entity';
+import { Color } from './color.entity';
+import { Image } from './image.entity';
 
 @Table({
   timestamps: true,
@@ -64,6 +68,21 @@ export class PartStatus extends Model {
   static async findByCreatorId(creatorId: number): Promise<PartStatus[]> {
     return this.findAll<PartStatus>({
       where: { creatorId },
+      include: [
+        {
+          model: QPart,
+          include: [
+            {
+              model: PartStatus,
+              required: false,
+            },
+            Image,
+            { model: PartMold, include: [Part] },
+            Color,
+          ],
+        },
+        { model: User, as: 'creator' },
+      ],
     });
   }
   @AfterCreate

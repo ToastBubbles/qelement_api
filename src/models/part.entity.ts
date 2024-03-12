@@ -63,6 +63,7 @@ export class Part extends Model {
   static async findByCreatorId(creatorId: number): Promise<Part[]> {
     return this.findAll<Part>({
       where: { creatorId },
+      include: [Category],
     });
   }
   @AfterCreate
