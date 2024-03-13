@@ -159,6 +159,7 @@ export class AppModule implements NestModule {
       { path: 'elementID/add', method: RequestMethod.POST },
       { path: 'image/upload', method: RequestMethod.POST },
       { path: 'image/uploadPFP', method: RequestMethod.POST },
+      { path: 'image/uploadMarbled', method: RequestMethod.POST },
       { path: 'image/removeMyPFP', method: RequestMethod.POST },
       { path: 'message/getOneById/:id', method: RequestMethod.GET },
       { path: 'message/getAllById/:id', method: RequestMethod.GET },

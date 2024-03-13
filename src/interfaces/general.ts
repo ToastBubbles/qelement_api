@@ -2,6 +2,7 @@ import { SetMetadata } from '@nestjs/common';
 import { Color } from 'src/models/color.entity';
 import { ElementID } from 'src/models/elementID.entity';
 import { Image } from 'src/models/image.entity';
+import { MarbledPart } from 'src/models/marbledPart.entity';
 import { Part } from 'src/models/part.entity';
 import { PartMold } from 'src/models/partMold.entity';
 import { PartStatus } from 'src/models/partStatus.entity';
@@ -347,6 +348,7 @@ export interface ISubmissions {
   sculptureInventories: SculptureInventory[];
   sculptures: Sculpture[];
   similarColors: SimilarColor[];
+  marbledParts: MarbledPart[];
 }
 export interface ImageSubmission {
   qpartId: number;

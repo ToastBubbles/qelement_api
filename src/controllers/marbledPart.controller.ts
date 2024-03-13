@@ -30,9 +30,11 @@ export class MarbledPartsController {
         isAdmin = true;
       }
       if (data.colors.length <= 1)
-        return { code: 501, message: 'not enough colors' };
+        return { code: 501, message: 'Not enough colors' };
+      if (data.colors.length > 10)
+        return { code: 502, message: 'Too many colors!' };
       if (!validatePercentages(data.colors))
-        return { code: 502, message: 'invalid percentages' };
+        return { code: 503, message: 'Invalid percentages' };
 
       const newMarbledPart = await MarbledPart.create({
         moldId: data.moldId,

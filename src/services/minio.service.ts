@@ -31,6 +31,7 @@ export class MinioService {
     qpartId: number | null,
     userId: number,
     sculptureId: number | null,
+    marbledPartId: number | null,
     type: string,
   ) {
     function getType(filename: string): string {
@@ -41,9 +42,10 @@ export class MinioService {
       return filename.slice(dotIndex + 1);
     }
     let nameType = qpartId ? `q${qpartId}` : '';
-    nameType.length == 0 && sculptureId
-      ? (nameType = `s${sculptureId}`)
-      : 'error';
+    if (nameType.length == 0 && sculptureId) nameType = `s${sculptureId}`;
+    if (nameType.length == 0 && marbledPartId) nameType = `m${marbledPartId}`;
+    if (nameType.length == 0) nameType = `p${userId}`;
+    if (nameType.length == 0) nameType = 'error';
     const fileName = `${Date.now()}-${nameType}-${userId}-${type}.${getType(
       file.originalname,
     )}`;

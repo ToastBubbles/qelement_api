@@ -31,6 +31,7 @@ import { Part } from 'src/models/part.entity';
 import { PartStatus } from 'src/models/partStatus.entity';
 import { SculptureInventory } from 'src/models/sculptureInventory.entity';
 import { Sculpture } from 'src/models/sculpture.entity';
+import { MarbledPart } from 'src/models/marbledPart.entity';
 
 @Controller('extra')
 export class EverythingController {
@@ -119,7 +120,7 @@ export class EverythingController {
       let output: ISubmissions = {
         colors: await Color.findByCreatorId(userId),
         eIDs: await ElementID.findByCreatorId(userId),
-        images: images.filter((x) => x.type != 'pfp' && x.type != 'marbled'),
+        images: images.filter((x) => x.type != 'pfp'),
         molds: await PartMold.findByCreatorId(userId),
         parts: await Part.findByCreatorId(userId),
         statuses: await PartStatus.findByCreatorId(userId),
@@ -127,6 +128,7 @@ export class EverythingController {
         sculptureInventories: await SculptureInventory.findByCreatorId(userId),
         sculptures: await Sculpture.findByCreatorId(userId),
         similarColors: await SimilarColor.findByCreatorId(userId),
+        marbledParts: await MarbledPart.findByCreatorId(userId),
       };
 
       return output;

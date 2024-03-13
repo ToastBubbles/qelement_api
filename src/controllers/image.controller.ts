@@ -2,7 +2,6 @@ import {
   Body,
   Controller,
   Get,
-  Inject,
   Param,
   Post,
   Req,
@@ -22,7 +21,6 @@ import { MinioService } from 'src/services/minio.service';
 import { UsersService } from 'src/services/user.service';
 import { User } from 'src/models/user.entity';
 import { validateImageType } from 'src/utils/utils';
-import { SubmissionCount } from 'src/models/submissionCount.entity';
 
 @Controller('image')
 export class ImagesController {
@@ -106,6 +104,7 @@ export class ImagesController {
           imageData.qpartId,
           imageData.userId,
           imageData.sculptureId,
+          null,
           imageData.type,
         );
 
@@ -156,7 +155,7 @@ export class ImagesController {
         isAdmin = true;
       }
 
-      let imageData = JSON.parse(data?.imageData);
+      // let imageData = JSON.parse(data?.imageData);
 
       if (user) {
         await this.minioService.createBucketIfNotExists();
@@ -164,6 +163,7 @@ export class ImagesController {
           image,
           null,
           userId,
+          null,
           null,
           'pfp',
         );
@@ -179,9 +179,6 @@ export class ImagesController {
             : null,
         });
 
-        // .catch((e) => {
-        //   return { code: 500, message: `generic error` };
-        // });
         if (newImage instanceof Image) {
           if (user.profilePictureId != null) {
             let currentPFP = await this.imagesService.findByIdAll(
@@ -198,7 +195,61 @@ export class ImagesController {
           return { code: 201, message: fileName };
         }
       }
-      return { code: 2, message: 'failed1' };
+      return { code: 502, message: 'failed1' };
+    } catch (error) {
+      console.log(error);
+
+      return { code: 500, message: error };
+    }
+  }
+
+  @Post('/uploadMarbled')
+  @UseInterceptors(FileInterceptor('image'))
+  async uploadMarbledPicture(
+    @UploadedFile() image: Express.Multer.File,
+    @Body() data: any,
+    @Req() req: any,
+  ): Promise<IAPIResponse> {
+    try {
+      const userId = req.user.id;
+      const user = await User.findByPk(userId);
+      if (!user) return { code: 504, message: 'User not found' };
+      let isAdmin = false;
+      if ((user && user?.role == 'admin') || user.role == 'trusted') {
+        isAdmin = true;
+      }
+
+      let imageData = JSON.parse(data?.imageData);
+
+      if (!imageData || !imageData.id || imageData.id <= 0)
+        return { code: 505, message: 'could not extract id' };
+      if (user) {
+        await this.minioService.createBucketIfNotExists();
+        const fileName = await this.minioService.uploadFile(
+          image,
+          null,
+          userId,
+          null,
+          imageData.id,
+          'marbled',
+        );
+
+        let newImage = await Image.create({
+          fileName: fileName,
+          type: 'marbled',
+          userId,
+          marbledPartId: imageData.id,
+          approvalDate: isAdmin
+            ? new Date().toISOString().slice(0, 23).replace('T', ' ')
+            : null,
+        });
+
+        if (newImage instanceof Image) {
+          if (isAdmin) return { code: 202, message: fileName };
+          return { code: 201, message: fileName };
+        }
+      }
+      return { code: 502, message: 'failed1' };
     } catch (error) {
       console.log(error);
 
@@ -319,7 +370,6 @@ export class ImagesController {
 
       if (thisObj) {
         if (thisObj.type != 'pfp' && thisObj.type != 'marbled') {
-          
         }
         if (isAdmin || thisObj.userId == userId) {
           await thisObj.destroy();
@@ -336,8 +386,6 @@ export class ImagesController {
   @Post('/removeMyPFP')
   async removePFP(@Req() req: any): Promise<IAPIResponse> {
     try {
-  
-
       const userId = req.user.id;
       const requestor = await User.findByPk(userId);
       console.log('requestor:', requestor);
@@ -345,11 +393,11 @@ export class ImagesController {
       if (!requestor) return { code: 504, message: 'User not found' };
       if (!requestor.profilePictureId)
         return { code: 505, message: `user has no pfp` };
-     
+
       let thisObj = await this.imagesService.findByIdAll(
         requestor.profilePictureId,
       );
-     
+
       if (thisObj && thisObj.type == 'pfp') {
         if (thisObj.userId == userId) {
           await requestor.update({
