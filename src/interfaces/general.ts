@@ -24,7 +24,12 @@ export interface ISimilarColorDTO {
   color_two: number;
   creatorId: number;
 }
-
+export interface IMarbledPartDTO {
+  moldId: number;
+  colors: IIdAndNumber[];
+  isMoldUnknown: boolean;
+  note: string;
+}
 export interface IMailbox {
   inbox: IExtendedMessageDTO[];
   outbox: IExtendedMessageDTO[];

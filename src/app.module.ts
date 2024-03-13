@@ -46,6 +46,8 @@ import { LoggerMiddleware } from './auth/logger.middleware';
 
 import { NotificationModule } from './modules/notification.module';
 import { SubmissionCount } from './models/submissionCount.entity';
+import { MarbledPartModule } from './modules/marbledPart.module';
+import { MarbledPartColorModule } from './modules/marbledPartColor.module';
 
 @Module({
   imports: [
@@ -81,6 +83,8 @@ import { SubmissionCount } from './models/submissionCount.entity';
     SculptureInventoryModule,
     SubmissionCount,
     NotificationModule,
+    MarbledPartModule,
+    MarbledPartColorModule,
   ],
   controllers: [AppController, EverythingController],
   providers: [AppService],
@@ -162,6 +166,8 @@ export class AppModule implements NestModule {
       { path: 'message/send', method: RequestMethod.POST },
       { path: 'message/delete/:id', method: RequestMethod.POST },
       { path: 'message/read/:id', method: RequestMethod.POST },
+      { path: 'marbledPart/all', method: RequestMethod.GET },
+      { path: 'marbledPart/add', method: RequestMethod.POST },
       { path: 'parts/add', method: RequestMethod.POST },
       { path: 'partStatus/add', method: RequestMethod.POST },
       { path: 'partStatus/mass', method: RequestMethod.POST },

@@ -61,7 +61,6 @@ export class PartStatusesController {
       let thisObj = await this.partStatusesService.findByIdAll(data.id);
 
       if (thisObj) {
-     
         await thisObj.destroy();
         return { code: 200, message: `deleted` };
       } else return { code: 500, message: `not found` };
@@ -77,6 +76,19 @@ export class PartStatusesController {
     data: IPartStatusDTO,
   ): Promise<IAPIResponse> {
     try {
+      function testStatus(status: string): boolean {
+        const validStatuses = [
+          'unknown',
+          'idOnly',
+          'seen',
+          'found',
+          'known',
+          'other',
+        ];
+        return validStatuses.includes(status);
+      }
+
+      if (!testStatus(data.status)) return { code: 501, message: 'bad status' };
       let user = await this.userService.findOneById(data.creatorId);
       let isAdmin = false;
       if ((user && user?.role == 'admin') || user.role == 'trusted') {

@@ -318,7 +318,7 @@ export class ImagesController {
       let thisObj = await this.imagesService.findByIdAll(data.id);
 
       if (thisObj) {
-        if (thisObj.type != 'pfp') {
+        if (thisObj.type != 'pfp' && thisObj.type != 'marbled') {
           
         }
         if (isAdmin || thisObj.userId == userId) {
@@ -336,7 +336,7 @@ export class ImagesController {
   @Post('/removeMyPFP')
   async removePFP(@Req() req: any): Promise<IAPIResponse> {
     try {
-      console.log('$$$$$$$$$$$$$$ 1 $$$$$$$$$$$$$');
+  
 
       const userId = req.user.id;
       const requestor = await User.findByPk(userId);
@@ -345,11 +345,11 @@ export class ImagesController {
       if (!requestor) return { code: 504, message: 'User not found' };
       if (!requestor.profilePictureId)
         return { code: 505, message: `user has no pfp` };
-      console.log('$$$$$$$$$$$$ 2 $$$$$$$$$$$$$$$');
+     
       let thisObj = await this.imagesService.findByIdAll(
         requestor.profilePictureId,
       );
-      console.log('$$$$$$$$$$$$$ 3 $$$$$$$$$$$$$$');
+     
       if (thisObj && thisObj.type == 'pfp') {
         if (thisObj.userId == userId) {
           await requestor.update({

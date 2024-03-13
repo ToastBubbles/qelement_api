@@ -15,6 +15,7 @@ import { User } from './user.entity';
 import { DataTypes } from 'sequelize';
 import { Sculpture } from './sculpture.entity';
 import { SubmissionCount } from './submissionCount.entity';
+import { MarbledPart } from './marbledPart.entity';
 
 @Table({
   timestamps: true,
@@ -35,6 +36,7 @@ export class Image extends Model {
       'damaged',
       'other',
       'pfp',
+      'marbled',
     ),
     defaultValue: 'part',
   })
@@ -64,6 +66,13 @@ export class Image extends Model {
   @BelongsTo(() => Sculpture)
   sculpture?: Sculpture;
 
+  @ForeignKey(() => MarbledPart)
+  @Column
+  marbledPartId?: number;
+
+  @BelongsTo(() => MarbledPart)
+  marbledPart?: MarbledPart;
+
   @Column
   approvalDate: Date;
 
@@ -75,7 +84,7 @@ export class Image extends Model {
 
   @AfterCreate
   static async increaseSubmissionCount(instance: Image) {
-    if (instance.type != 'pfp') {
+    if (instance.type != 'pfp' && instance.type != 'marbled') {
       if (instance.approvalDate != null) {
         await SubmissionCount.increaseApproved(instance.userId, false);
       } else {
@@ -85,7 +94,7 @@ export class Image extends Model {
   }
   @AfterUpdate
   static async handleSubmissionCount(instance: Image) {
-    if (instance.type != 'pfp') {
+    if (instance.type != 'pfp' && instance.type != 'marbled') {
       const previousApprovalDate = instance.previous('approvalDate');
       const currentApprovalDate = instance.approvalDate;
 
@@ -96,7 +105,7 @@ export class Image extends Model {
   }
   @AfterDestroy
   static async deleteAssociatedModels(instance: Image) {
-    if (instance.type != 'pfp') {
+    if (instance.type != 'pfp' && instance.type != 'marbled') {
       const previousApprovalDate = instance.previous('approvalDate');
       if (previousApprovalDate === null) {
         await SubmissionCount.decreasePending(instance.userId);

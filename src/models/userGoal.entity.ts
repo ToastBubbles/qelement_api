@@ -18,46 +18,7 @@ import { DataTypes } from 'sequelize';
   //   indexes: [{ fields: ['id'], unique: true }],
 })
 export class UserGoal extends Model {
-  // @PrimaryKey
-  // @AutoIncrement
-  // @Column
-  // id: number;
 
-  //   @ForeignKey(() => Part)
-  //   @Column({ unique: false })
-  //   partId: number;
-
-  //   @BelongsTo(() => Part, 'partId')
-  //   part: Part;
-
-  //   @ForeignKey(() => PartMold)
-  //   @Column({ unique: false, defaultValue: null })
-  //   moldId: number;
-
-  //   @BelongsTo(() => PartMold, 'moldId')
-  //   mold: PartMold;
-
-  //   @ForeignKey(() => User)
-  //   @Column({ unique: false })
-  //   userId: number;
-
-  //   @BelongsTo(() => User, 'userId')
-  //   user: User;
-
-  // @ForeignKey(() => Part)
-  // @Column({ unique: false })
-  // partId: number;
-
-  // @ForeignKey(() => PartMold)
-  // @Column({ unique: false, defaultValue: null })
-  // moldId: number;
-
-  // @ForeignKey(() => User)
-  // @Column({ unique: false })
-  // userId: number;
-
-  // @BelongsTo(() => User)
-  // user: User;
 
   @Column({
     type: DataTypes.INTEGER,
@@ -72,6 +33,9 @@ export class UserGoal extends Model {
     allowNull: false,
   })
   userId!: number;
+
+  @BelongsTo(() => User)
+  user!: User;
 
   @ForeignKey(() => Part)
   @Column({
@@ -89,8 +53,7 @@ export class UserGoal extends Model {
 
   // ...
 
-  @BelongsTo(() => User)
-  user!: User;
+ 
 
   @BelongsTo(() => Part)
   part!: Part;

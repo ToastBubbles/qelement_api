@@ -119,9 +119,7 @@ export class EverythingController {
       let output: ISubmissions = {
         colors: await Color.findByCreatorId(userId),
         eIDs: await ElementID.findByCreatorId(userId),
-        images: images.filter(
-          (x) => x.type != 'pfp',
-        ),
+        images: images.filter((x) => x.type != 'pfp' && x.type != 'marbled'),
         molds: await PartMold.findByCreatorId(userId),
         parts: await Part.findByCreatorId(userId),
         statuses: await PartStatus.findByCreatorId(userId),
