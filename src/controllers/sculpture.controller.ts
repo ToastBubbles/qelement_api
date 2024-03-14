@@ -218,9 +218,12 @@ export class SculpturesController {
         if (data.bool) {
           //adding keyword
           let endsWithSemi = thisObj.keywords.endsWith(';');
+
           const newKeywordsString = endsWithSemi
             ? thisObj.keywords + data.string.trim()
-            : thisObj.keywords + ';' + data.string.trim();
+            : thisObj.keywords && thisObj.keywords.length > 0
+            ? thisObj.keywords + ';' + data.string.trim()
+            : data.string.trim();
 
           if (newKeywordsString.length > 255) {
             return {
@@ -272,7 +275,6 @@ export class SculpturesController {
       let thisObj = await this.sculpturesService.findByIdAll(data.id);
 
       if (thisObj) {
-     
         await thisObj.destroy();
         return { code: 200, message: `deleted` };
       } else return { code: 500, message: `not found` };

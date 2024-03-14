@@ -48,6 +48,7 @@ import { NotificationModule } from './modules/notification.module';
 import { SubmissionCount } from './models/submissionCount.entity';
 import { MarbledPartModule } from './modules/marbledPart.module';
 import { MarbledPartColorModule } from './modules/marbledPartColor.module';
+import { NotificationSubscriptionModule } from './modules/notificationSubscription.module';
 
 @Module({
   imports: [
@@ -83,6 +84,7 @@ import { MarbledPartColorModule } from './modules/marbledPartColor.module';
     SculptureInventoryModule,
     SubmissionCount,
     NotificationModule,
+    NotificationSubscriptionModule,
     MarbledPartModule,
     MarbledPartColorModule,
   ],
@@ -151,6 +153,7 @@ export class AppModule implements NestModule {
     consumer.apply(UserMiddleware).forRoutes(
       { path: 'extra/getSubmissions', method: RequestMethod.GET },
       { path: 'auth/profile', method: RequestMethod.GET },
+      { path: 'NotificationSubscription/', method: RequestMethod.POST },
       { path: 'categories/add', method: RequestMethod.POST },
       { path: 'color/add', method: RequestMethod.POST },
       { path: 'comment/add', method: RequestMethod.POST },

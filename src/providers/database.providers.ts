@@ -27,6 +27,7 @@ import { Notification } from 'src/models/notification.entity';
 import { SubmissionCount } from 'src/models/submissionCount.entity';
 import { MarbledPart } from 'src/models/marbledPart.entity';
 import { MarbledPartColor } from 'src/models/marbledPartColor.entity';
+import { NotificationSubscription } from 'src/models/notificationSubscription.entity';
 
 export const databaseProviders = [
   {
@@ -67,8 +68,9 @@ export const databaseProviders = [
         SculptureInventory,
         SubmissionCount,
         Notification,
+        NotificationSubscription,
         MarbledPart,
-        MarbledPartColor
+        MarbledPartColor,
       ]);
 
       await sequelize.sync();

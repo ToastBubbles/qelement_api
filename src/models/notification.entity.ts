@@ -11,10 +11,16 @@ import { User } from './user.entity';
 export class Notification extends Model {
   @Column
   name: string;
+
   @Column
   type: string;
+
   @Column
   content: string;
+
+  @Column
+  link: string;
+
   @Column
   read: boolean;
 

@@ -32,6 +32,9 @@ import { Sculpture } from './sculpture.entity';
 import { SculptureInventory } from './sculptureInventory.entity';
 import { Op } from 'sequelize';
 import { SubmissionCount } from './submissionCount.entity';
+import { Notification } from './notification.entity';
+import { NotificationSubscription } from './notificationSubscription.entity';
+
 @Table({
   timestamps: true,
   paranoid: true,
@@ -161,16 +164,37 @@ export class QPart extends Model {
   }
   @AfterUpdate
   static async handleSubmissionCount(instance: QPart) {
-    const previousApprovalDate = instance.previous('approvalDate');
+    try {
+      const previousApprovalDate = instance.previous('approvalDate');
 
-    const currentApprovalDate = instance.approvalDate;
-    console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
+      const currentApprovalDate = instance.approvalDate;
 
-    console.log(previousApprovalDate, currentApprovalDate);
-    if (previousApprovalDate === null && currentApprovalDate !== null) {
-      console.log('Increasing and dec');
-
-      await SubmissionCount.increaseApproved(instance.creatorId, true);
+      if (previousApprovalDate === null && currentApprovalDate !== null) {
+        let subsriptions = await NotificationSubscription.findByColorId(
+          instance.colorId,
+        );
+        if (subsriptions.length > 0) {
+          let colorName =
+            instance.color.bl_name.length > 0
+              ? instance.color.bl_name
+              : instance.color.tlg_name;
+          Promise.all(
+            subsriptions.map(
+              async (sub) =>
+                await Notification.create({
+                  name: `New QPart added.`,
+                  type: 'color',
+                  content: `New QPart in ${colorName}`,
+                  link: `/part/${instance.mold.parentPartId}?color=${instance.colorId}&mold=${instance.moldId}`,
+                  userId: sub.userId,
+                }),
+            ),
+          );
+        }
+        await SubmissionCount.increaseApproved(instance.creatorId, true);
+      }
+    } catch (error) {
+      console.log(error);
     }
   }
 
