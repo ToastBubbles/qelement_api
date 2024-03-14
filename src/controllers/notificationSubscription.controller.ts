@@ -16,7 +16,7 @@ export class NotificationSubscriptionsController {
     return this.notificationSubscriptionsService.findAll();
   }
 
-  @Post('/add/Color')
+  @Post('/add/color')
   async addColorSubscription(
     @Body()
     data: iIdOnly,
@@ -30,10 +30,19 @@ export class NotificationSubscriptionsController {
       const color = await Color.findByPk(data.id);
 
       if (color) {
-        await NotificationSubscription.create({
-          userId,
-          colorId: color.id,
-        });
+        const existingSubscription =
+          await this.notificationSubscriptionsService.checkIfColorSubExists(
+            userId,
+            color.id,
+          );
+        if (!existingSubscription) {
+          await NotificationSubscription.create({
+            userId,
+            colorId: color.id,
+          });
+          return { code: 200, message: `Subscription created!` };
+        }
+        return { code: 503, message: `Subscription already exists!` };
       }
 
       return { code: 500, message: `Subscription failed to be added` };

@@ -153,7 +153,11 @@ export class AppModule implements NestModule {
     consumer.apply(UserMiddleware).forRoutes(
       { path: 'extra/getSubmissions', method: RequestMethod.GET },
       { path: 'auth/profile', method: RequestMethod.GET },
-      { path: 'NotificationSubscription/', method: RequestMethod.POST },
+      { path: 'notificationSubscription/all', method: RequestMethod.GET },
+      {
+        path: 'notificationSubscription/add/color',
+        method: RequestMethod.POST,
+      },
       { path: 'categories/add', method: RequestMethod.POST },
       { path: 'color/add', method: RequestMethod.POST },
       { path: 'comment/add', method: RequestMethod.POST },

@@ -70,6 +70,8 @@ export function validatePercentages(data: IIdAndNumber[]): boolean {
 function isWholeNumber(num: number) {
   return num % 1 === 0;
 }
+
+export async function createColorNotification(userId: number) {}
 export function verifyKeywordsString(str: string): boolean {
   if (str.length == 0) return true;
   const pattern = /^[a-zA-Z0-9;]+$/;

@@ -27,6 +27,8 @@ import { UserGoal } from './userGoal.entity';
 import { SecurityQuestion } from './securityQuestion.entity';
 import { Color } from './color.entity';
 import { SubmissionCount } from './submissionCount.entity';
+import { Notification } from './notification.entity';
+import { NotificationSubscription } from './notificationSubscription.entity';
 
 @Table({
   timestamps: true,
@@ -127,6 +129,12 @@ export class User extends Model {
 
   @HasMany(() => SecurityQuestion)
   securityQuestions: SecurityQuestion[];
+
+  @HasMany(() => Notification)
+  notifications: Notification[];
+
+  @HasMany(() => NotificationSubscription)
+  notificationSubscriptions: NotificationSubscription[];
 
   @HasOne(() => Image)
   profilePicture: Image;
