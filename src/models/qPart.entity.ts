@@ -27,35 +27,7 @@ import { SculptureInventory } from './sculptureInventory.entity';
 import { Op } from 'sequelize';
 import { SubmissionCount } from './submissionCount.entity';
 import { Notification } from './notification.entity';
-import { NotificationSubscription } from './notificationSubscription.entity';
-async function createColorNotification(instance: QPart) {
-  try {
-    const subscriptions = await NotificationSubscription.findByColorId(
-      instance.colorId,
-    );
-    if (subscriptions.length > 0) {
-      const color = await Color.findByPk(instance.colorId);
-      if (!color) return;
-      const mold = await PartMold.findByPk(instance.moldId);
-      if (!mold) return;
-      const colorName =
-        color.bl_name.length > 0 ? color.bl_name : color.tlg_name;
-      await Promise.all(
-        subscriptions.map(async (sub) => {
-          await Notification.create({
-            name: 'New QPart added.',
-            type: 'color',
-            content: `New QPart in ${colorName}`,
-            link: `/part/${mold.parentPartId}?color=${instance.colorId}&mold=${instance.moldId}`,
-            userId: sub.userId,
-          });
-        }),
-      );
-    }
-  } catch (error) {
-    console.log(error);
-  }
-}
+
 @Table({
   timestamps: true,
   paranoid: true,
@@ -179,7 +151,7 @@ export class QPart extends Model {
   static async increaseSubmissionCount(instance: QPart) {
     if (instance.approvalDate != null) {
       await SubmissionCount.increaseApproved(instance.creatorId, false);
-      await createColorNotification(instance);
+      await Notification.createQPartNotification(instance);
     } else {
       await SubmissionCount.increasePending(instance.creatorId);
     }
@@ -192,7 +164,7 @@ export class QPart extends Model {
       const currentApprovalDate = instance.approvalDate;
 
       if (previousApprovalDate === null && currentApprovalDate !== null) {
-        await createColorNotification(instance);
+        await Notification.createQPartNotification(instance);
         await SubmissionCount.increaseApproved(instance.creatorId, true);
       }
     } catch (error) {
