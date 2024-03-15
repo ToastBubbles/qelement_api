@@ -70,7 +70,7 @@ export class Notification extends Model {
               const colorName =
                 color.bl_name.length > 0 ? color.bl_name : color.tlg_name;
               await this.create({
-                name: 'New QPart added.',
+                name: 'New QPart added',
                 type: 'qpart',
                 content: `${part.name} (${mold.number}${
                   instance.isMoldUnknown ? '*' : ''

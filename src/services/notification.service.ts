@@ -11,4 +11,15 @@ export class NotificationsService {
   async findAll(): Promise<Notification[]> {
     return this.notificationsRepository.findAll<Notification>();
   }
+  async findById(id: number): Promise<Notification | null> {
+    return this.notificationsRepository.findOne<Notification>({
+      where: { id },
+    });
+  }
+
+  async findAllByUserId(userId: number): Promise<Notification[]> {
+    return this.notificationsRepository.findAll<Notification>({
+      where: { userId },
+    });
+  }
 }

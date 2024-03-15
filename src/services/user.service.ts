@@ -167,7 +167,10 @@ export class UsersService {
         Color,
         Title,
         SubmissionCount,
-        Notification,
+        // {
+        //   model: Notification,
+        //   order: [['createdAt', 'DESC']],
+        // },
         {
           model: Image,
           as: 'profilePicture',

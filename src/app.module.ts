@@ -158,6 +158,8 @@ export class AppModule implements NestModule {
         path: 'notificationSubscription/add/color',
         method: RequestMethod.POST,
       },
+      { path: 'notification/read/:id', method: RequestMethod.POST },
+      { path: 'notification/myNotifications', method: RequestMethod.GET },
       { path: 'categories/add', method: RequestMethod.POST },
       { path: 'color/add', method: RequestMethod.POST },
       { path: 'comment/add', method: RequestMethod.POST },
