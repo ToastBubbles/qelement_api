@@ -22,4 +22,10 @@ export class NotificationsService {
       where: { userId },
     });
   }
+
+  async findAllUnreadByUserId(userId: number): Promise<Notification[]> {
+    return this.notificationsRepository.findAll<Notification>({
+      where: { userId, read: false },
+    });
+  }
 }

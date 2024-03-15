@@ -82,4 +82,56 @@ export class NotificationsController {
       return { code: 500, message: 'Error' };
     }
   }
+
+  @Post('/deleteAll')
+  async deleteAllNotificationsForUser(@Req() req: any): Promise<IAPIResponse> {
+    try {
+      const userId = req.user.id;
+      const user = await User.findByPk(userId);
+      if (!user) return { code: 504, message: 'User not found' };
+
+      let notifs = await this.notificationsService.findAllByUserId(userId);
+
+      if (notifs) {
+        if (notifs.length == 0)
+          return { code: 505, message: 'No notifications found' };
+        await Promise.all(notifs.map(async (notif) => await notif.destroy()));
+
+        return { code: 200, message: 'Success' };
+      }
+      return { code: 501, message: 'Error' };
+    } catch (error) {
+      console.log(error);
+      return { code: 500, message: 'Error' };
+    }
+  }
+
+  @Post('/readAll')
+  async readAllNotificationsForUser(@Req() req: any): Promise<IAPIResponse> {
+    try {
+      const userId = req.user.id;
+      const user = await User.findByPk(userId);
+      if (!user) return { code: 504, message: 'User not found' };
+
+      let notifs = await this.notificationsService.findAllUnreadByUserId(
+        userId,
+      );
+
+      if (notifs) {
+        if (notifs.length == 0)
+          return { code: 505, message: 'No notifications found' };
+        await Promise.all(
+          notifs.map(async (notif) => {
+            await notif.update({ read: true });
+          }),
+        );
+
+        return { code: 200, message: 'Success' };
+      }
+      return { code: 501, message: 'Error' };
+    } catch (error) {
+      console.log(error);
+      return { code: 500, message: 'Error' };
+    }
+  }
 }

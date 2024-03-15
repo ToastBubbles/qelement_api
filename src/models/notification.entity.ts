@@ -26,7 +26,7 @@ export class Notification extends Model {
   @Column
   link: string;
 
-  @Column
+  @Column({ defaultValue: false })
   read: boolean;
 
   @ForeignKey(() => User)
