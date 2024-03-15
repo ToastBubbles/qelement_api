@@ -34,7 +34,7 @@ export class NotificationsController {
     }
   }
   @Post('/read/:id')
-  async markMessageRead(
+  async markNotificationRead(
     @Param('id') id: number,
     @Req() req: any,
   ): Promise<IAPIResponse> {
@@ -50,6 +50,30 @@ export class NotificationsController {
           return { code: 505, message: 'User does not own this notification!' };
         await notif.update({ read: true });
         await notif.save();
+        return { code: 200, message: 'Success' };
+      }
+      return { code: 501, message: 'Error' };
+    } catch (error) {
+      console.log(error);
+      return { code: 500, message: 'Error' };
+    }
+  }
+  @Post('/delete/:id')
+  async deleteNotification(
+    @Param('id') id: number,
+    @Req() req: any,
+  ): Promise<IAPIResponse> {
+    try {
+      const userId = req.user.id;
+      const user = await User.findByPk(userId);
+      if (!user) return { code: 504, message: 'User not found' };
+
+      let notif = await this.notificationsService.findById(id);
+
+      if (notif) {
+        if (userId != notif.userId)
+          return { code: 505, message: 'User does not own this notification!' };
+        await notif.destroy();
         return { code: 200, message: 'Success' };
       }
       return { code: 501, message: 'Error' };
