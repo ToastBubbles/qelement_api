@@ -146,8 +146,6 @@ export class QPartsController {
       let thisObj = await this.qPartsService.findByIdAll(data.id);
 
       if (thisObj) {
-  
-
         await thisObj.destroy();
         return { code: 200, message: `deleted` };
       } else return { code: 500, message: `not found` };
@@ -173,6 +171,7 @@ export class QPartsController {
         colorId: data.colorId,
         type: validateQPartType(data.type),
         creatorId: data.creatorId == -1 ? 1 : data.creatorId,
+        material: trimAndReturn(data.material),
         isMoldUnknown: data.isMoldUnknown,
         note: trimAndReturn(data.note),
         approvalDate: isAdmin

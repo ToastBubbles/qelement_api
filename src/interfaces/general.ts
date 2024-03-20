@@ -120,6 +120,7 @@ export interface iQPartDTO {
   moldId: number;
   colorId: number;
   elementId: string;
+  material: string;
   isMoldUnknown: boolean;
   type: string;
   creatorId: number;
@@ -299,6 +300,7 @@ export interface IQPartEdits {
   type: string;
   moldId: number;
   colorId: number;
+  material: string;
   isMoldUnknown: number; //three state boolean -1 = false, 1 = true, 0 = unchanged
   note: string;
 }
