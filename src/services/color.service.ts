@@ -19,6 +19,19 @@ export class ColorsService {
           [Op.ne]: null,
         },
       },
+      include: [
+        {
+          model: Color,
+          as: 'similar',
+          through: {
+            attributes: ['approvalDate', 'id'],
+            where: {
+              approvalDate: { [Op.ne]: null },
+            },
+          },
+          required: false,
+        },
+      ],
     });
   }
   async findAllNotApproved(): Promise<Color[]> {

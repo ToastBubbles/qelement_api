@@ -15,7 +15,9 @@ import { User } from './user.entity';
 @Table({
   timestamps: true,
   tableName: 'UserInventory',
-  indexes: [{ fields: ['userId', 'qpartId', 'condition'], unique: true }],
+  indexes: [
+    { fields: ['userId', 'qpartId', 'condition', 'material'], unique: true },
+  ],
 })
 export class UserInventory extends Model {
   @PrimaryKey
@@ -37,6 +39,12 @@ export class UserInventory extends Model {
     defaultValue: false,
   })
   availDuplicates: boolean;
+
+  @Column({
+    type: DataTypes.STRING(15),
+    allowNull: true,
+  })
+  material: string | null;
 
   @ForeignKey(() => QPart)
   @Column({ unique: false })

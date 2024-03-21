@@ -39,6 +39,9 @@ export class UserPreference extends Model {
   @Column({ defaultValue: true })
   allowMessages: boolean;
 
+  @Column({ defaultValue: false })
+  differentiateMaterialsInCollection: boolean;
+
   @Column({
     type: DataTypes.ENUM('bl', 'tlg', 'bo'),
     defaultValue: 'bl',

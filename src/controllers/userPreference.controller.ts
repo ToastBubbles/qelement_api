@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
 import { UserPreference } from 'src/models/userPreference.entity';
 import { UserPreferencesService } from '../services/userPreference.service';
 import { IAPIResponse, IUserPrefDTO } from 'src/interfaces/general';
+import { User } from 'src/models/user.entity';
 
 @Controller('userPreference')
 export class UserPreferencesController {
@@ -14,13 +15,15 @@ export class UserPreferencesController {
     return this.userPreferencesService.findAll();
   }
 
-  @Post('/userId/:userId')
-  async editColor(
-    @Param('userId') userId: number,
-    @Body()
-    d: IUserPrefDTO,
+  @Post('/userId')
+  async editPrefs(
+    @Body() d: IUserPrefDTO,
+    @Req() req: any,
   ): Promise<IAPIResponse> {
     let hasChanged = false;
+    const userId = req.user.id;
+    const user = await User.findByPk(userId);
+    if (!user) return { code: 504, message: 'User not found' };
     let prefToChange = await this.userPreferencesService.findOneByUserId(
       userId,
     );
@@ -35,6 +38,14 @@ export class UserPreferencesController {
       }
       if (d.isWantedVisible != prefToChange.isWantedVisible) {
         prefToChange.isWantedVisible = d.isWantedVisible;
+        hasChanged = true;
+      }
+      if (
+        d.differentiateMaterialsInCollection !=
+        prefToChange.differentiateMaterialsInCollection
+      ) {
+        prefToChange.differentiateMaterialsInCollection =
+          d.differentiateMaterialsInCollection;
         hasChanged = true;
       }
       if (d.allowMessages != prefToChange.allowMessages) {
@@ -54,13 +65,14 @@ export class UserPreferencesController {
     } else {
       const newPref = await UserPreference.create({
         userId: userId,
-        lang: d.lang != null ? d.lang : null,
-        isCollectionVisible:
-          d.isCollectionVisible != null ? d.isCollectionVisible : null,
-        isWantedVisible: d.isWantedVisible != null ? d.isWantedVisible : null,
-        allowMessages: d.allowMessages != null ? d.allowMessages : null,
-        prefName: d.prefName != null ? d.prefName : null,
-        prefId: d.prefId != null ? d.prefId : null,
+        lang: d.lang,
+        isCollectionVisible: d.isCollectionVisible,
+        isWantedVisible: d.isWantedVisible,
+        differentiateMaterialsInCollection:
+          d.differentiateMaterialsInCollection,
+        allowMessages: d.allowMessages,
+        prefName: d.prefName,
+        prefId: d.prefId,
       }).catch((e) => {
         return { code: 501, message: `generic error` };
       });

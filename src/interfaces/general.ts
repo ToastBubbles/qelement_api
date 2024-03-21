@@ -40,6 +40,7 @@ export interface IUserPrefDTO {
   isCollectionVisible: boolean;
   isWantedVisible: boolean;
   allowMessages: boolean;
+  differentiateMaterialsInCollection: boolean;
   prefName: string;
   prefId: string;
 }
@@ -222,6 +223,18 @@ export interface IUserTitle {
 export interface ITitle {
   title: string;
   cssClasses: string;
+  requirement: string;
+  public: boolean;
+}
+
+export interface ICollectionItemEdits {
+  id: number;
+  forTrade: boolean;
+  forSale: boolean;
+  availDuplicates: boolean;
+  material: string;
+  quantity: number;
+  condition: string;
 }
 
 export interface ITitleDTO extends ITitle {
@@ -401,6 +414,7 @@ export interface ICollectionDTO {
   forTrade: boolean;
   forSale: boolean;
   availDupes: boolean;
+  material: string;
   qpartId: number;
   userId: number;
   quantity: number;

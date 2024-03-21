@@ -3,6 +3,7 @@ import { Title } from 'src/models/title.entity';
 import { TitlesService } from '../services/title.service';
 import { IAPIResponse, ITitle } from 'src/interfaces/general';
 import { User } from 'src/models/user.entity';
+import { trimAndReturn } from 'src/utils/utils';
 
 @Controller('title')
 export class TitlesController {
@@ -28,6 +29,11 @@ export class TitlesController {
       const newTitle = await Title.create({
         title: data.title,
         cssClasses: data.cssClasses,
+        requirement:
+          data.requirement.trim().length == 0
+            ? null
+            : trimAndReturn(data.requirement),
+        public: data.public,
       });
       await newTitle.save();
 

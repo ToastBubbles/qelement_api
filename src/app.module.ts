@@ -208,7 +208,9 @@ export class AppModule implements NestModule {
       { path: 'userGoal/add', method: RequestMethod.POST },
       { path: 'userInventory/id/:userid', method: RequestMethod.GET },
       { path: 'userInventory/add', method: RequestMethod.POST },
-      { path: 'userPreference/userId/:userId', method: RequestMethod.POST },
+      { path: 'userInventory/edit', method: RequestMethod.POST },
+      { path: 'userInventory/deleteOne', method: RequestMethod.POST },
+      { path: 'userPreference/userId', method: RequestMethod.POST },
     );
   }
 

@@ -41,6 +41,12 @@ export class UserInventoriesService {
     return this.userInventoriesRepository.findAll<UserInventory>();
   }
 
+  async findOneById(id: number): Promise<UserInventory | null> {
+    return this.userInventoriesRepository.findOne<UserInventory>({
+      where: { id },
+    });
+  }
+
   //   async getQPartsInUserInventory(userId: number): Promise<QPart[]> {
   //     const user = await User.findByPk(userId);
 
